@@ -11,6 +11,7 @@ import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
 
 import { useTenant } from '../../contexts/TenantContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { addInquiry } from '../../firebase/firestore';
 
 const CONTACT_ITEMS = [
@@ -55,8 +56,11 @@ const fadeUp = {
   show: (i) => ({ opacity: 1, y: 0, transition: { delay: i * 0.07, duration: 0.35 } }),
 };
 
+
+
 export default function ContactPage() {
   const { tenantId } = useTenant();
+  const { user } = useAuth();
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -86,7 +90,7 @@ export default function ContactPage() {
         city: form.city,
         message: form.message,
         pickupType: 'self-pickup',
-      });
+      }, user?.uid || 'guest');
       setSubmitted(true);
       toast.success('Message sent! We will reply within 2 hours.');
     } catch (err) {

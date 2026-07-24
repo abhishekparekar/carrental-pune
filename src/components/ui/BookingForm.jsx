@@ -6,6 +6,7 @@ import { FiSend, FiCheckCircle } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import { addInquiry } from '../../firebase/firestore';
 import { useTenant } from '../../contexts/TenantContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { formatCurrency } from '../../utils/formatCurrency';
 
 export default function BookingForm({ car, onSuccess }) {
@@ -36,6 +37,8 @@ export default function BookingForm({ car, onSuccess }) {
   const daysCount = calculateDays();
   const estimatedPrice = car ? (car.pricePerDay || 1499) * daysCount : 0;
 
+  const { user } = useAuth();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -59,7 +62,7 @@ export default function BookingForm({ car, onSuccess }) {
         message: formData.message,
         estimatedPrice,
         daysCount,
-      });
+      }, user?.uid || 'guest');
 
       setSubmitted(true);
       toast.success('Rental Inquiry submitted successfully!');

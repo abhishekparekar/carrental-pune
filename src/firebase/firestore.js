@@ -51,14 +51,25 @@ export async function getCar(tenantId, carId) {
   return { id: snap.id, ...snap.data() };
 }
 
-export async function addCar(tenantId, carData) {
+export async function addCar(tenantId, carData, adminUid = null) {
   const ref = tenantCollection(tenantId, 'cars');
-  return addDoc(ref, { ...carData, createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
+  return addDoc(ref, {
+    tenantId,
+    createdBy: adminUid || 'admin',
+    ...carData,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  });
 }
 
-export async function updateCar(tenantId, carId, updates) {
+export async function updateCar(tenantId, carId, updates, adminUid = null) {
   const ref = tenantDoc(tenantId, 'cars', carId);
-  return updateDoc(ref, { ...updates, updatedAt: serverTimestamp() });
+  return updateDoc(ref, {
+    ...updates,
+    tenantId,
+    updatedBy: adminUid || 'admin',
+    updatedAt: serverTimestamp(),
+  });
 }
 
 export async function deleteCar(tenantId, carId) {
@@ -85,30 +96,36 @@ export async function getBooking(tenantId, bookingId) {
   return { id: snap.id, ...snap.data() };
 }
 
-export async function addBooking(tenantId, bookingData) {
+export async function addBooking(tenantId, bookingData, userId = null) {
   const ref = tenantCollection(tenantId, 'bookings');
+  const activeUserId = userId || bookingData.userId || 'guest';
   const docRef = await addDoc(ref, {
+    tenantId,
+    userId: activeUserId,
+    createdBy: activeUserId,
     ...bookingData,
-    status: 'pending',
+    status: bookingData.status || 'pending',
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
   });
 
   // Upsert customer record
-  if (bookingData.customerEmail) {
+  if (bookingData.customerEmail || bookingData.email) {
     await upsertCustomer(tenantId, {
-      name: bookingData.customerName,
-      email: bookingData.customerEmail,
-      phone: bookingData.customerPhone || '',
-    });
+      name: bookingData.customerName || bookingData.name,
+      email: bookingData.customerEmail || bookingData.email,
+      phone: bookingData.customerPhone || bookingData.phone || '',
+    }, activeUserId);
   }
 
   return docRef;
 }
 
-export async function updateBookingStatus(tenantId, bookingId, status) {
+export async function updateBookingStatus(tenantId, bookingId, status, adminUid = null) {
   return updateDoc(tenantDoc(tenantId, 'bookings', bookingId), {
+    tenantId,
     status,
+    updatedBy: adminUid || 'admin',
     updatedAt: serverTimestamp(),
   });
 }
@@ -142,7 +159,7 @@ export async function getCustomers(tenantId) {
   return snap.docs.map(d => ({ id: d.id, ...d.data() }));
 }
 
-export async function upsertCustomer(tenantId, { name, email, phone }) {
+export async function upsertCustomer(tenantId, { name, email, phone }, userId = null) {
   // Check if customer with this email already exists
   const ref = query(
     tenantCollection(tenantId, 'customers'),
@@ -154,14 +171,18 @@ export async function upsertCustomer(tenantId, { name, email, phone }) {
   if (!snap.empty) {
     // Update last seen
     await updateDoc(snap.docs[0].ref, {
+      tenantId,
       name,
       phone: phone || snap.docs[0].data().phone,
+      userId: userId || snap.docs[0].data().userId || 'guest',
       lastBooking: serverTimestamp(),
       updatedAt: serverTimestamp(),
     });
     return snap.docs[0].id;
   } else {
     const docRef = await addDoc(tenantCollection(tenantId, 'customers'), {
+      tenantId,
+      userId: userId || 'guest',
       name,
       email,
       phone: phone || '',
@@ -181,11 +202,16 @@ export function subscribeToCustomers(tenantId, callback) {
 }
 
 // ─── Inquiries ─────────────────────────────────────────────────────────────────
-export async function addInquiry(tenantId, inquiryData) {
+export async function addInquiry(tenantId, inquiryData, userId = null) {
+  const activeUserId = userId || inquiryData.userId || 'guest';
   return addDoc(tenantCollection(tenantId, 'inquiries'), {
+    tenantId,
+    userId: activeUserId,
+    createdBy: activeUserId,
     ...inquiryData,
-    status: 'new',
+    status: inquiryData.status || 'new',
     createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
   });
 }
 
@@ -196,9 +222,11 @@ export function subscribeToInquiries(tenantId, callback) {
   });
 }
 
-export async function updateInquiryStatus(tenantId, inquiryId, status) {
+export async function updateInquiryStatus(tenantId, inquiryId, status, adminUid = null) {
   return updateDoc(tenantDoc(tenantId, 'inquiries', inquiryId), {
+    tenantId,
     status,
+    updatedBy: adminUid || 'admin',
     updatedAt: serverTimestamp(),
   });
 }

@@ -7,6 +7,7 @@ import AdminLayout from '../../components/layout/AdminLayout';
 import Modal from '../../components/ui/Modal';
 
 import { useTenant } from '../../contexts/TenantContext';
+import { useAuth } from '../../contexts/AuthContext';
 import {
   subscribeToCars,
   addCar,
@@ -18,6 +19,7 @@ import { formatCurrency } from '../../utils/formatCurrency';
 
 export default function AdminCars() {
   const { tenantId } = useTenant();
+  const { user } = useAuth();
 
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -84,7 +86,7 @@ export default function AdminCars() {
 
   const handleToggleActive = async (car) => {
     try {
-      await updateCar(tenantId, car.id, { isActive: !car.isActive });
+      await updateCar(tenantId, car.id, { isActive: !car.isActive }, user?.uid);
       toast.success(`${car.name} status updated`);
     } catch (err) {
       console.error(err);
@@ -122,10 +124,10 @@ export default function AdminCars() {
 
     try {
       if (editingCar) {
-        await updateCar(tenantId, editingCar.id, carDataPayload);
+        await updateCar(tenantId, editingCar.id, carDataPayload, user?.uid);
         toast.success('Car updated successfully');
       } else {
-        await addCar(tenantId, carDataPayload);
+        await addCar(tenantId, carDataPayload, user?.uid);
         toast.success('New car added to fleet');
       }
       setIsModalOpen(false);

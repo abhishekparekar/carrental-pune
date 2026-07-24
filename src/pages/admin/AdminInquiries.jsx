@@ -7,6 +7,7 @@ import AdminLayout from '../../components/layout/AdminLayout';
 import Modal from '../../components/ui/Modal';
 
 import { useTenant } from '../../contexts/TenantContext';
+import { useAuth } from '../../contexts/AuthContext';
 import {
   subscribeToInquiries,
   updateInquiryStatus,
@@ -17,6 +18,7 @@ import { formatCurrency } from '../../utils/formatCurrency';
 
 export default function AdminInquiries() {
   const { tenantId } = useTenant();
+  const { user } = useAuth();
 
   const [inquiries, setInquiries] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -36,7 +38,7 @@ export default function AdminInquiries() {
 
   const handleStatusUpdate = async (id, status) => {
     try {
-      await updateInquiryStatus(tenantId, id, status);
+      await updateInquiryStatus(tenantId, id, status, user?.uid);
       toast.success(`Inquiry status updated to ${status}`);
     } catch (err) {
       console.error(err);
