@@ -460,7 +460,7 @@ export default function HomePage() {
             <h2 className="section-title">Loved by <span style={{ color: '#EF4444' }}>Drivers</span></h2>
           </div>
 
-          <div className="grid-3" style={{ gap: 16 }}>
+          <div className="reviews-grid">
             {TESTIMONIALS.map((t, idx) => (
               <div
                 key={idx}
