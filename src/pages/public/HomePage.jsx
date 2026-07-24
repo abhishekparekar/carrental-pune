@@ -322,12 +322,13 @@ export default function HomePage() {
           ) : (
             <Swiper
               modules={[Navigation, Autoplay]}
-              spaceBetween={18}
-              slidesPerView={1.1}
+              spaceBetween={14}
+              slidesPerView={1.3}
               breakpoints={{
-                640: { slidesPerView: 2.1 },
-                1024: { slidesPerView: 3.2 },
-                1280: { slidesPerView: 3.5 },
+                480: { slidesPerView: 1.6, spaceBetween: 14 },
+                640: { slidesPerView: 2.1, spaceBetween: 16 },
+                1024: { slidesPerView: 3.1, spaceBetween: 18 },
+                1280: { slidesPerView: 3.4, spaceBetween: 20 },
               }}
               autoplay={{ delay: 5000, disableOnInteraction: false }}
               onInit={(swiper) => {

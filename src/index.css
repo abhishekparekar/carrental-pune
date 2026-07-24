@@ -134,7 +134,8 @@ ul, ol { list-style: none; }
 }
 
 @media (max-width: 640px) {
-  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; gap: 16px; }
+  .grid-2, .grid-4 { grid-template-columns: 1fr; gap: 12px; }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); gap: 12px; }
 }
 
 /* Glass Card */

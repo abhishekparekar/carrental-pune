@@ -43,27 +43,27 @@ export default function RevvCarCard({ car, onEnquire }) {
         </div>
 
         {/* Card Body */}
-        <div style={{ padding: '14px 16px 0' }}>
+        <div className="revv-card-body" style={{ flex: 1 }}>
           {/* Model year + name */}
-          <span style={{ fontSize: 11, color: '#94A3B8', fontWeight: 600, display: 'block', marginBottom: 2 }}>
+          <span className="revv-modelyear" style={{ fontSize: 11, color: '#94A3B8', fontWeight: 600, display: 'block', marginBottom: 2 }}>
             {car.modelYear || `${car.name.split(' ').slice(-1)[0]} 2025-26`}
           </span>
-          <h3 style={{ fontSize: 17, fontWeight: 800, color: '#0F172A', margin: '0 0 1px', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          <h3 className="revv-card-title" style={{ fontSize: 17, fontWeight: 800, color: '#0F172A', margin: '0 0 1px', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {car.brand || car.name.split(' ')[0]}
           </h3>
-          <p style={{ fontSize: 12, color: '#475569', margin: '0 0 12px', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          <p className="revv-card-subtitle" style={{ fontSize: 12, color: '#475569', margin: '0 0 0', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {car.name.replace(car.brand || '', '').trim()}
           </p>
 
           {/* Specs bar */}
-          <div style={{
+          <div className="revv-specs-bar" style={{
             display: 'flex',
             alignItems: 'center',
             gap: 10,
             fontSize: 11,
             color: '#64748B',
             paddingTop: 8,
-            paddingBottom: 12,
+            paddingBottom: 10,
             borderTop: '1px solid #F1F5F9',
             flexWrap: 'wrap',
           }}>
@@ -82,9 +82,10 @@ export default function RevvCarCard({ car, onEnquire }) {
           </div>
 
           {/* Price + CTA */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6, paddingBottom: 16 }}>
+        </div>
+        <div className="revv-card-footer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6 }}>
             <div>
-              <span style={{ fontSize: 18, fontWeight: 800, color: '#0F172A', display: 'block', lineHeight: 1 }}>
+              <span className="revv-card-price" style={{ fontSize: 18, fontWeight: 800, color: '#0F172A', display: 'block', lineHeight: 1 }}>
                 {formatCurrency(car.pricePerDay || 3480)}
               </span>
               <span style={{ fontSize: 10, color: '#94A3B8', fontWeight: 500 }}>per day</span>
@@ -92,7 +93,7 @@ export default function RevvCarCard({ car, onEnquire }) {
 
             <button
               onClick={handleInquireClick}
-              className="btn btn-primary btn-sm"
+              className="btn btn-primary btn-sm revv-inquire-btn"
               style={{
                 padding: '7px 16px',
                 fontSize: 12,
@@ -105,13 +106,12 @@ export default function RevvCarCard({ car, onEnquire }) {
               Inquire <FiArrowRight size={11} />
             </button>
           </div>
-        </div>
       </motion.div>
 
       <style>{`
         .revv-car-card {
           background: #FFFFFF;
-          border-radius: 16px;
+          border-radius: 14px;
           overflow: hidden;
           box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
           border: 1px solid #E2E8F0;
@@ -119,26 +119,37 @@ export default function RevvCarCard({ car, onEnquire }) {
           flex-direction: column;
           cursor: pointer;
           transition: box-shadow 0.2s ease;
+          height: 100%;
         }
         .revv-car-card:hover {
           box-shadow: 0 8px 28px rgba(15, 23, 42, 0.12);
         }
         .revv-card-img {
           width: 100%;
-          height: 160px;
+          height: 158px;
           overflow: hidden;
           background: #F1F5F9;
           flex-shrink: 0;
         }
-        @media (max-width: 640px) {
-          .revv-card-img {
-            height: 140px;
-          }
+        .revv-card-body {
+          padding: 12px 14px 0;
         }
-        @media (max-width: 400px) {
-          .revv-card-img {
-            height: 120px;
-          }
+        .revv-card-footer {
+          padding: 8px 14px 14px;
+        }
+        @media (max-width: 640px) {
+          .revv-card-img { height: 110px; }
+          .revv-card-body { padding: 8px 10px 0; }
+          .revv-card-footer { padding: 6px 10px 10px; }
+          .revv-card-title { font-size: 13px !important; }
+          .revv-card-subtitle { font-size: 11px !important; }
+          .revv-card-price { font-size: 14px !important; }
+          .revv-inquire-btn { padding: 5px 10px !important; font-size: 11px !important; }
+          .revv-specs-bar { gap: 6px !important; font-size: 10px !important; padding-top: 6px !important; padding-bottom: 8px !important; }
+          .revv-modelyear { font-size: 10px !important; }
+        }
+        @media (max-width: 380px) {
+          .revv-card-img { height: 90px; }
         }
       `}</style>
     </>
