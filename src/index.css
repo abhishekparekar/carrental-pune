@@ -524,27 +524,84 @@ ul, ol { list-style: none; }
 ::-webkit-scrollbar-track { background: var(--color-bg); }
 ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
 
-/* Mobile Touch & Layout Optimizations */
-@media (max-width: 768px) {
+/* ============================================
+   SYSTEMATIC DEVICE-BY-DEVICE BREAKPOINTS
+   ============================================ */
+
+/* 1. Ultra-Wide Displays (>= 1440px) */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1380px !important;
+  }
+}
+
+/* 2. Standard Desktop / Laptops (1025px – 1439px) */
+@media (min-width: 1025px) and (max-width: 1439px) {
+  .container {
+    max-width: 1140px !important;
+  }
+}
+
+/* 3. Tablets & Small Laptops (769px – 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .container {
+    max-width: 960px !important;
+    padding: 0 20px !important;
+  }
+  .section {
+    padding: 36px 0 !important;
+  }
+  .section-sm {
+    padding: 24px 0 !important;
+  }
+}
+
+/* 4. Large Mobile & Small Tablets (521px – 768px) */
+@media (min-width: 521px) and (max-width: 768px) {
+  .container {
+    padding: 0 16px !important;
+  }
   .hero-bg-section {
     padding-top: 86px !important;
     padding-bottom: 32px !important;
   }
-
-  .btn-lg {
-    padding: 12px 24px;
-    font-size: 15px;
-  }
-
   .section {
-    padding: 24px 0 !important;
+    padding: 28px 0 !important;
   }
-
   .section-sm {
-    padding: 16px 0 !important;
+    padding: 20px 0 !important;
   }
+  .btn-lg {
+    padding: 10px 20px !important;
+    font-size: 14px !important;
+  }
+}
 
+/* 5. Mobile Smartphones (<= 520px) */
+@media (max-width: 520px) {
   .container {
-    padding: 0 14px !important;
+    padding: 0 10px !important;
+  }
+  .hero-bg-section {
+    padding-top: 76px !important;
+    padding-bottom: 24px !important;
+  }
+  .section {
+    padding: 20px 0 !important;
+  }
+  .section-sm {
+    padding: 14px 0 !important;
+  }
+  .btn-lg {
+    padding: 10px 16px !important;
+    font-size: 13px !important;
+  }
+  .btn-md {
+    padding: 8px 14px !important;
+    font-size: 12px !important;
+  }
+  .btn-sm {
+    padding: 6px 12px !important;
+    font-size: 11px !important;
   }
 }
