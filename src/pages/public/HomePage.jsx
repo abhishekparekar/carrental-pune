@@ -117,7 +117,7 @@ export default function HomePage() {
 
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
           <div style={{ maxWidth: 880, margin: '0 auto', textAlign: 'center' }}>
-         
+
 
             {/* Main Animated Title */}
             <motion.h1
@@ -348,16 +348,19 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 4. CATEGORIES */}
+      {/* 4. CATEGORIES - INFINITE RIGHT-SIDE SCROLL MARQUEE */}
       <section className="section-sm" style={{ background: 'linear-gradient(180deg, #FFF5F5 0%, #FFFFFF 100%)', borderTop: '1px solid #FEE2E2', borderBottom: '1px solid #FEE2E2' }}>
         <div className="container">
           <div className="section-header text-center" style={{ marginBottom: 28 }}>
             <span className="section-label-red">Browse Fleet</span>
             <h2 className="section-title">Explore by <span style={{ color: '#EF4444' }}>Category</span></h2>
           </div>
+        </div>
 
-          <div className="grid-4" style={{ gap: 16 }}>
-            {CATEGORIES.map((cat, idx) => (
+        {/* Right-Side Marquee Track */}
+        <div className="marquee-container">
+          <div className="category-marquee-track">
+            {[...CATEGORIES, ...CATEGORIES, ...CATEGORIES, ...CATEGORIES].map((cat, idx) => (
               <Link
                 key={idx}
                 to={`/fleet?category=${cat.id}`}
@@ -365,7 +368,9 @@ export default function HomePage() {
               >
                 <div
                   style={{
-                    padding: 20,
+                    width: 260,
+                    flexShrink: 0,
+                    padding: 22,
                     textAlign: 'center',
                     background: '#FFFFFF',
                     cursor: 'pointer',
@@ -373,7 +378,6 @@ export default function HomePage() {
                     border: '1px solid rgba(239, 68, 68, 0.18)',
                     boxShadow: '0 4px 20px rgba(15, 23, 42, 0.04)',
                     transition: 'all 0.2s ease',
-                    height: '100%',
                   }}
                 >
                   <div style={{
@@ -399,20 +403,25 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 5. WHY CHOOSE US */}
+      {/* 5. WHY CHOOSE US - INFINITE RUNNING MARQUEE */}
       <section className="section-sm" style={{ background: '#FFFFFF' }}>
         <div className="container">
           <div className="section-header text-center" style={{ marginBottom: 28 }}>
             <span className="section-label">Why Choose NextRent</span>
             <h2 className="section-title">The Ultimate <span>Self-Drive</span> Experience</h2>
           </div>
+        </div>
 
-          <div className="grid-4" style={{ gap: 16 }}>
-            {FEATURES.map((feat, idx) => (
+        {/* Marquee Track */}
+        <div className="marquee-container">
+          <div className="marquee-track">
+            {[...FEATURES, ...FEATURES].map((feat, idx) => (
               <div
                 key={idx}
                 style={{
-                  padding: 20,
+                  width: 290,
+                  flexShrink: 0,
+                  padding: 22,
                   background: '#FFFFFF',
                   borderRadius: 16,
                   border: '1px solid #E2E8F0',
