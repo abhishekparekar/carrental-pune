@@ -128,30 +128,20 @@ export default function FleetPage() {
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#F8FAFC' }}>
       <Navbar />
 
-      <main style={{ paddingTop: 90, paddingBottom: 60, flex: 1 }}>
+      <main style={{ paddingTop: 76, paddingBottom: 32, flex: 1 }}>
         <div className="container">
-          {/* Header Title Section */}
-          <div style={{ marginBottom: 20 }}>
-            <span className="section-label-red">Self-Drive Fleet</span>
-            <h1 style={{ fontSize: 32, margin: '6px 0 4px', color: '#0F172A', fontWeight: 800 }}>
-              Choose Your Perfect <span style={{ color: '#EF4444' }}>Self-Drive Car</span>
-            </h1>
-            <p style={{ fontSize: 14, color: '#475569', margin: 0 }}>
-              Showing {filteredCars.length} available sanitized vehicle{filteredCars.length === 1 ? '' : 's'} with doorstep delivery & unlimited km
-            </p>
-          </div>
 
           {/* Top Integrated Search & Filter Console Card */}
           <div style={{
             background: '#FFFFFF',
             borderRadius: 16,
-            padding: '20px 22px',
+            padding: '16px 20px',
             border: '1px solid #E2E8F0',
             boxShadow: '0 4px 20px rgba(15, 23, 42, 0.05)',
-            marginBottom: 28,
+            marginBottom: 20,
             display: 'flex',
             flexDirection: 'column',
-            gap: 16,
+            gap: 12,
           }}>
             {/* Top Row: Search Input & City / Sort Dropdowns */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
