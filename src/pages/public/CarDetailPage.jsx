@@ -16,7 +16,7 @@ import toast from 'react-hot-toast';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
 import BookingForm from '../../components/ui/BookingForm';
-import CarCard from '../../components/ui/CarCard';
+import RevvCarCard from '../../components/ui/RevvCarCard';
 import CarSkeleton from '../../components/ui/CarSkeleton';
 
 import { useTenant } from '../../contexts/TenantContext';
@@ -90,7 +90,7 @@ export default function CarDetailPage() {
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--color-bg)' }}>
       <Navbar />
 
-      <main style={{ paddingTop: 90, paddingBottom: 60, flex: 1 }}>
+      <main style={{ paddingTop: 76, paddingBottom: 40, flex: 1 }}>
         <div className="container">
           {/* Back button */}
           <Link
@@ -258,11 +258,11 @@ export default function CarDetailPage() {
 
           {/* Similar Vehicles */}
           {similarCars.length > 0 && (
-            <div style={{ marginTop: 48 }}>
-              <h2 style={{ fontSize: 22, marginBottom: 20, color: 'var(--color-text)' }}>Similar Vehicles</h2>
+            <div style={{ marginTop: 40 }}>
+              <h2 style={{ fontSize: 22, marginBottom: 20, color: 'var(--color-text)', fontWeight: 800 }}>Similar Vehicles</h2>
               <div className="grid-3">
                 {similarCars.map((sCar) => (
-                  <CarCard key={sCar.id} car={sCar} onEnquire={(c) => navigate(`/cars/${c.id}`)} />
+                  <RevvCarCard key={sCar.id} car={sCar} onEnquire={(c) => navigate(`/cars/${c.id}`)} />
                 ))}
               </div>
             </div>
