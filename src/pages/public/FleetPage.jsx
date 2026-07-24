@@ -129,7 +129,7 @@ export default function FleetPage() {
       <Navbar />
 
       <main style={{ paddingTop: 72, paddingBottom: 24, flex: 1 }}>
-        <div style={{ width: '100%', maxWidth: '100%', padding: '0 16px' }}>
+        <div className="fleet-container" style={{ width: '100%', maxWidth: '100%' }}>
 
           {/* Top Integrated Search & Filter Console Card */}
           <div style={{
@@ -418,6 +418,9 @@ export default function FleetPage() {
           </section>
 
           <style>{`
+            .fleet-container {
+              padding: 0 16px;
+            }
             .grid-fleet-catalog {
               display: grid;
               grid-template-columns: repeat(4, 1fr);
@@ -442,9 +445,12 @@ export default function FleetPage() {
               }
             }
             @media (max-width: 520px) {
+              .fleet-container {
+                padding: 0 8px;
+              }
               .grid-fleet-catalog {
-                grid-template-columns: 1fr;
-                gap: 12px;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
               }
             }
           `}</style>
