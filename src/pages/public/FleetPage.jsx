@@ -129,7 +129,7 @@ export default function FleetPage() {
       <Navbar />
 
       <main style={{ paddingTop: 76, paddingBottom: 32, flex: 1 }}>
-        <div className="container">
+        <div style={{ width: '100%', maxWidth: 1600, margin: '0 auto', padding: '0 28px' }}>
 
           {/* Top Integrated Search & Filter Console Card */}
           <div style={{
@@ -362,7 +362,8 @@ export default function FleetPage() {
           {/* Full-Width Car Cards Grid */}
           <section>
             {loading ? (
-              <div className="grid-3">
+              <div className="grid-fleet-catalog">
+                <CarSkeleton />
                 <CarSkeleton />
                 <CarSkeleton />
                 <CarSkeleton />
@@ -401,7 +402,7 @@ export default function FleetPage() {
                 </button>
               </div>
             ) : (
-              <div className="grid-3">
+              <div className="grid-fleet-catalog">
                 {filteredCars.map(car => (
                   <RevvCarCard
                     key={car.id}
@@ -415,6 +416,32 @@ export default function FleetPage() {
               </div>
             )}
           </section>
+
+          <style>{`
+            .grid-fleet-catalog {
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              gap: 20px;
+            }
+            @media (min-width: 1380px) {
+              .grid-fleet-catalog {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 22px;
+              }
+            }
+            @media (max-width: 1024px) {
+              .grid-fleet-catalog {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+              }
+            }
+            @media (max-width: 640px) {
+              .grid-fleet-catalog {
+                grid-template-columns: 1fr;
+                gap: 16px;
+              }
+            }
+          `}</style>
         </div>
       </main>
 
