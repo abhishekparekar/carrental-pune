@@ -47,10 +47,7 @@ const PROMISES = [
   },
 ];
 
-const CITIES_SERVED = [
-  'Mumbai', 'Delhi NCR', 'Bangalore', 'Hyderabad',
-  'Pune', 'Chennai', 'Kolkata', 'Ahmedabad', 'Jaipur', 'Chandigarh',
-];
+
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -247,40 +244,6 @@ export default function AboutPage() {
                   <h3 style={{ fontSize: 15, fontWeight: 800, color: '#0F172A', margin: '0 0 6px' }}>{p.title}</h3>
                   <p style={{ fontSize: 13, color: '#64748B', margin: 0, lineHeight: 1.5 }}>{p.desc}</p>
                 </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* ─── Cities Presence ─── */}
-          <div style={{
-            background: '#FFFFFF',
-            borderRadius: 16,
-            padding: '24px 22px',
-            border: '1px solid #E2E8F0',
-            boxShadow: '0 4px 16px rgba(15, 23, 42, 0.04)',
-          }}>
-            <div style={{ marginBottom: 16 }}>
-              <span className="section-label-red" style={{ display: 'inline-block', marginBottom: 6 }}>Presence</span>
-              <h2 style={{ fontSize: 'clamp(17px, 3vw, 22px)', fontWeight: 800, color: '#0F172A', margin: 0 }}>
-                Serving Major Metros Across India
-              </h2>
-            </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-              {CITIES_SERVED.map(city => (
-                <div key={city} style={{
-                  padding: '7px 14px',
-                  borderRadius: 'var(--radius-full)',
-                  background: '#F8FAFC',
-                  border: '1px solid #E2E8F0',
-                  fontSize: 13,
-                  fontWeight: 600,
-                  color: '#0F172A',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 6,
-                }}>
-                  <FiMapPin size={12} style={{ color: '#EF4444' }} /> {city}
-                </div>
               ))}
             </div>
           </div>
