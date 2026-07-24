@@ -9,123 +9,102 @@ export default function RevvCarCard({ car, onEnquire }) {
 
   if (!car) return null;
 
-  const primaryImage = car.images && car.images.length > 0 
-    ? car.images[0] 
+  const primaryImage = car.images && car.images.length > 0
+    ? car.images[0]
     : 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=600&q=80';
 
   const categoryName = (car.category || 'Hatchback').toUpperCase();
 
-  const handleCardClick = () => {
-    navigate(`/cars/${car.id}`);
-  };
+  const handleCardClick = () => navigate(`/cars/${car.id}`);
 
   const handleInquireClick = (e) => {
     e.stopPropagation();
-    if (onEnquire) {
-      onEnquire(car);
-    }
+    if (onEnquire) onEnquire(car);
   };
 
   return (
     <>
       <motion.div
-        whileHover={{ y: -4 }}
-        transition={{ duration: 0.2 }}
+        whileHover={{ y: -3 }}
+        transition={{ duration: 0.18 }}
         className="revv-car-card"
         onClick={handleCardClick}
       >
-        {/* Top Header & Car Image Row */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 10, marginBottom: 14 }}>
-          {/* Left Text */}
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <span style={{ fontSize: 11, color: '#64748B', fontWeight: 600, display: 'block', marginBottom: 2 }}>
-              {car.modelYear || `${car.name.split(' ').slice(-1)[0]} 2025-26`}
-            </span>
-            <h3 className="car-card-title" style={{ fontSize: 19, fontWeight: 800, color: '#0F172A', margin: 0, lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-              {car.brand || car.name.split(' ')[0]}
-            </h3>
-            <p style={{ fontSize: 12, color: '#475569', margin: '2px 0 0', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-              {car.name.replace(car.brand || '', '').trim()}
-            </p>
-          </div>
+        {/* Car Image — full width on top */}
+        <div className="revv-card-img">
+          <img
+            src={primaryImage}
+            alt={car.name}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            onError={(e) => {
+              e.target.src = 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=600&q=80';
+            }}
+          />
+        </div>
 
-          {/* Right Car Image Container */}
-          <div className="car-card-img-box" style={{
-            width: 110,
-            height: 72,
-            flexShrink: 0,
-            borderRadius: 10,
-            overflow: 'hidden',
-            background: '#F8FAFC',
-            border: '1px solid #F1F5F9',
+        {/* Card Body */}
+        <div style={{ padding: '14px 16px 0' }}>
+          {/* Model year + name */}
+          <span style={{ fontSize: 11, color: '#94A3B8', fontWeight: 600, display: 'block', marginBottom: 2 }}>
+            {car.modelYear || `${car.name.split(' ').slice(-1)[0]} 2025-26`}
+          </span>
+          <h3 style={{ fontSize: 17, fontWeight: 800, color: '#0F172A', margin: '0 0 1px', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {car.brand || car.name.split(' ')[0]}
+          </h3>
+          <p style={{ fontSize: 12, color: '#475569', margin: '0 0 12px', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {car.name.replace(car.brand || '', '').trim()}
+          </p>
+
+          {/* Specs bar */}
+          <div style={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
+            gap: 10,
+            fontSize: 11,
+            color: '#64748B',
+            paddingTop: 8,
+            paddingBottom: 12,
+            borderTop: '1px solid #F1F5F9',
+            flexWrap: 'wrap',
           }}>
-            <img
-              src={primaryImage}
-              alt={car.name}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              onError={(e) => {
-                e.target.src = 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=600&q=80';
+            <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+              <BsCarFront size={11} style={{ color: '#EF4444' }} />
+              <span>{categoryName}</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+              <FiSettings size={11} style={{ color: '#EF4444' }} />
+              <span style={{ textTransform: 'capitalize' }}>{car.transmission || 'Manual'}</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+              <FiUsers size={11} style={{ color: '#EF4444' }} />
+              <span>{car.seats || 5} seats</span>
+            </div>
+          </div>
+
+          {/* Price + CTA */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6, paddingBottom: 16 }}>
+            <div>
+              <span style={{ fontSize: 18, fontWeight: 800, color: '#0F172A', display: 'block', lineHeight: 1 }}>
+                {formatCurrency(car.pricePerDay || 3480)}
+              </span>
+              <span style={{ fontSize: 10, color: '#94A3B8', fontWeight: 500 }}>per day</span>
+            </div>
+
+            <button
+              onClick={handleInquireClick}
+              className="btn btn-primary btn-sm"
+              style={{
+                padding: '7px 16px',
+                fontSize: 12,
+                fontWeight: 700,
+                borderRadius: 'var(--radius-full)',
+                whiteSpace: 'nowrap',
+                flexShrink: 0,
               }}
-            />
+            >
+              Inquire <FiArrowRight size={11} />
+            </button>
           </div>
-        </div>
-
-        {/* Middle Specs Bar */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 12,
-          fontSize: 11,
-          color: '#64748B',
-          marginBottom: 14,
-          paddingTop: 8,
-          borderTop: '1px solid #F1F5F9',
-          flexWrap: 'wrap',
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <BsCarFront size={12} style={{ color: 'var(--color-accent)' }} />
-            <span>{categoryName}</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <FiSettings size={12} style={{ color: 'var(--color-accent)' }} />
-            <span style={{ textTransform: 'capitalize' }}>{car.transmission || 'Manual'}</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <FiUsers size={12} style={{ color: 'var(--color-accent)' }} />
-            <span>{car.seats || 5} seats</span>
-          </div>
-        </div>
-
-        {/* Bottom Pricing & Inquire CTA */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-          <div>
-            <span className="car-card-price" style={{ fontSize: 18, fontWeight: 800, color: '#0F172A', display: 'block', lineHeight: 1 }}>
-              {formatCurrency(car.pricePerDay || 3480)}
-            </span>
-            <span style={{ fontSize: 10, color: '#64748B', fontWeight: 500 }}>
-              per day
-            </span>
-          </div>
-
-          {/* Glossy Inquire Button */}
-          <button
-            onClick={handleInquireClick}
-            className="btn btn-primary btn-sm"
-            style={{
-              padding: '6px 14px',
-              fontSize: 12,
-              fontWeight: 700,
-              borderRadius: 'var(--radius-full)',
-              boxShadow: 'var(--shadow-accent)',
-              whiteSpace: 'nowrap',
-              flexShrink: 0,
-            }}
-          >
-            Inquire <FiArrowRight size={12} />
-          </button>
         </div>
       </motion.div>
 
@@ -133,30 +112,32 @@ export default function RevvCarCard({ car, onEnquire }) {
         .revv-car-card {
           background: #FFFFFF;
           border-radius: 16px;
-          padding: 18px 20px;
+          overflow: hidden;
           box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
           border: 1px solid #E2E8F0;
           display: flex;
           flex-direction: column;
-          justify-content: space-between;
-          height: 100%;
-          position: relative;
           cursor: pointer;
+          transition: box-shadow 0.2s ease;
         }
-
-        @media (max-width: 480px) {
-          .revv-car-card {
-            padding: 14px 14px !important;
+        .revv-car-card:hover {
+          box-shadow: 0 8px 28px rgba(15, 23, 42, 0.12);
+        }
+        .revv-card-img {
+          width: 100%;
+          height: 160px;
+          overflow: hidden;
+          background: #F1F5F9;
+          flex-shrink: 0;
+        }
+        @media (max-width: 640px) {
+          .revv-card-img {
+            height: 140px;
           }
-          .car-card-img-box {
-            width: 90px !important;
-            height: 60px !important;
-          }
-          .car-card-title {
-            font-size: 16px !important;
-          }
-          .car-card-price {
-            font-size: 16px !important;
+        }
+        @media (max-width: 400px) {
+          .revv-card-img {
+            height: 120px;
           }
         }
       `}</style>
