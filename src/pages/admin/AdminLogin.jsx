@@ -1,0 +1,244 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { FiLock, FiMail, FiLogIn, FiUserCheck, FiAlertCircle, FiEye, FiEyeOff } from 'react-icons/fi';
+import { BsCarFront } from 'react-icons/bs';
+import toast from 'react-hot-toast';
+import { useAuth } from '../../contexts/AuthContext';
+
+export default function AdminLogin() {
+  const [email, setEmail] = useState('admin@nextrent.com');
+  const [password, setPassword] = useState('shubham@1234');
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+  const { signIn, createAdmin } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setErrorMsg('');
+
+    if (!email.trim()) {
+      setErrorMsg('Please enter your admin email address.');
+      return;
+    }
+    if (!password || password.length < 6) {
+      setErrorMsg('Password must be at least 6 characters long.');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await signIn(email, password);
+      navigate('/admin');
+    } catch (err) {
+      setErrorMsg('Invalid password or email. Access denied.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCreateDemoAdmin = async () => {
+    setErrorMsg('');
+    setLoading(true);
+    try {
+      await createAdmin('admin@nextrent.com', 'shubham@1234');
+      toast.success('Admin account created! Signing in...');
+      await signIn('admin@nextrent.com', 'shubham@1234');
+      navigate('/admin');
+    } catch (err) {
+      if (err.code === 'auth/email-already-in-use') {
+        try {
+          await signIn('admin@nextrent.com', 'shubham@1234');
+          navigate('/admin');
+        } catch (loginErr) {
+          setErrorMsg('Failed to log in with admin account.');
+        }
+      } else {
+        toast.error(err.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: 'var(--color-bg-alt)',
+      padding: 20,
+    }}>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="glass-card"
+        style={{
+          width: '100%',
+          maxWidth: 420,
+          padding: 32,
+          background: '#FFFFFF',
+          boxShadow: 'var(--shadow-xl)',
+        }}
+      >
+        {/* Header Logo */}
+        <div style={{ textAlign: 'center', marginBottom: 24 }}>
+          <div style={{
+            width: 48,
+            height: 48,
+            background: 'var(--color-accent)',
+            borderRadius: 'var(--radius-md)',
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: 24,
+            marginBottom: 12,
+            boxShadow: 'var(--shadow-accent)',
+          }}>
+            <BsCarFront color="#FFFFFF" />
+          </div>
+          <h2 style={{ fontSize: 22, margin: '0 0 4px', color: 'var(--color-text)' }}>NextRent Admin Portal</h2>
+          <p style={{ fontSize: 12, color: 'var(--color-text-3)', margin: 0 }}>
+            Firestore Role-Verified Admin Access
+          </p>
+        </div>
+
+        {/* Error Alert */}
+        {errorMsg && (
+          <div style={{
+            padding: '10px 14px',
+            borderRadius: 'var(--radius-md)',
+            background: 'var(--color-error-bg)',
+            border: '1px solid rgba(239,68,68,0.2)',
+            color: 'var(--color-error)',
+            fontSize: 12,
+            fontWeight: 600,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            marginBottom: 16,
+          }}>
+            <FiAlertCircle size={16} style={{ flexShrink: 0 }} />
+            <span>{errorMsg}</span>
+          </div>
+        )}
+
+        {/* Form */}
+        <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div className="form-group">
+            <label className="form-label">Admin Email</label>
+            <div style={{ position: 'relative' }}>
+              <FiMail style={{
+                position: 'absolute',
+                left: 12,
+                top: '50%',
+                transform: 'translateY(-50%)',
+                color: 'var(--color-text-3)',
+                fontSize: 15,
+              }} />
+              <input
+                type="email"
+                required
+                className="form-input"
+                style={{ paddingLeft: 38 }}
+                value={email}
+                onChange={e => {
+                  setEmail(e.target.value);
+                  setErrorMsg('');
+                }}
+                placeholder="admin@nextrent.com"
+              />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Password</label>
+            <div style={{ position: 'relative' }}>
+              <FiLock style={{
+                position: 'absolute',
+                left: 12,
+                top: '50%',
+                transform: 'translateY(-50%)',
+                color: 'var(--color-text-3)',
+                fontSize: 15,
+              }} />
+              <input
+                type={showPassword ? 'text' : 'password'}
+                required
+                minLength={6}
+                className="form-input"
+                style={{ paddingLeft: 38, paddingRight: 38 }}
+                value={password}
+                onChange={e => {
+                  setPassword(e.target.value);
+                  setErrorMsg('');
+                }}
+                placeholder="shubham@1234"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(prev => !prev)}
+                style={{
+                  position: 'absolute',
+                  right: 10,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--color-text-3)',
+                  cursor: 'pointer',
+                  padding: 4,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                title={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? <FiEyeOff size={16} /> : <FiEye size={16} />}
+              </button>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn btn-primary btn-lg w-full"
+            style={{ marginTop: 4 }}
+          >
+            {loading ? 'Authenticating Role...' : 'Sign In to CRM'} <FiLogIn />
+          </button>
+        </form>
+
+        <hr className="divider" style={{ margin: '20px 0' }} />
+
+        {/* Demo login card */}
+        <div style={{ textAlign: 'center' }}>
+          <div style={{
+            padding: '8px 12px',
+            borderRadius: 'var(--radius-md)',
+            background: 'var(--color-bg-alt)',
+            border: '1px solid var(--color-border)',
+            marginBottom: 12,
+            fontSize: 12,
+            color: 'var(--color-text-2)',
+          }}>
+            🔑 Admin Credentials: <br />
+            Email: <strong style={{ color: 'var(--color-text)' }}>admin@nextrent.com</strong> <br />
+            Password: <strong style={{ color: 'var(--color-accent)' }}>shubham@1234</strong>
+          </div>
+          <button
+            onClick={handleCreateDemoAdmin}
+            disabled={loading}
+            className="btn btn-secondary btn-sm w-full"
+            style={{ justifyContent: 'center' }}
+          >
+            <FiUserCheck /> Auto-Login with shubham@1234
+          </button>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
