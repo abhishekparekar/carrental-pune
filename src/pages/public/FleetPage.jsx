@@ -128,8 +128,8 @@ export default function FleetPage() {
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#F8FAFC' }}>
       <Navbar />
 
-      <main style={{ paddingTop: 76, paddingBottom: 32, flex: 1 }}>
-        <div style={{ width: '100%', maxWidth: 1600, margin: '0 auto', padding: '0 28px' }}>
+      <main style={{ paddingTop: 72, paddingBottom: 24, flex: 1 }}>
+        <div style={{ width: '100%', maxWidth: '100%', padding: '0 16px' }}>
 
           {/* Top Integrated Search & Filter Console Card */}
           <div style={{
@@ -420,25 +420,31 @@ export default function FleetPage() {
           <style>{`
             .grid-fleet-catalog {
               display: grid;
-              grid-template-columns: repeat(3, 1fr);
-              gap: 20px;
+              grid-template-columns: repeat(4, 1fr);
+              gap: 16px;
             }
-            @media (min-width: 1380px) {
+            @media (min-width: 1600px) {
               .grid-fleet-catalog {
-                grid-template-columns: repeat(4, 1fr);
-                gap: 22px;
+                grid-template-columns: repeat(5, 1fr);
+                gap: 18px;
               }
             }
-            @media (max-width: 1024px) {
+            @media (max-width: 1200px) {
+              .grid-fleet-catalog {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 16px;
+              }
+            }
+            @media (max-width: 820px) {
               .grid-fleet-catalog {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 16px;
+                gap: 12px;
               }
             }
-            @media (max-width: 640px) {
+            @media (max-width: 520px) {
               .grid-fleet-catalog {
                 grid-template-columns: 1fr;
-                gap: 16px;
+                gap: 12px;
               }
             }
           `}</style>
