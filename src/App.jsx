@@ -27,11 +27,14 @@ import AdminCars from './pages/admin/AdminCars';
 import AdminInquiries from './pages/admin/AdminInquiries';
 import AdminCustomers from './pages/admin/AdminCustomers';
 
-// Auto Scroll To Top on Route Change
+// Auto Scroll To Top Hero section on Route Change & Page Refresh
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
-    window.scrollTo(0, 0);
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }, [pathname]);
   return null;
 }

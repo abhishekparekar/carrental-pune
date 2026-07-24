@@ -63,6 +63,17 @@ export default function Navbar() {
     if (hidden) setHidden(false);
   };
 
+  const handleLogoClick = (e) => {
+    setMenuOpen(false);
+    if (window.location.pathname === '/') {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      navigate('/');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
     <>
       <header style={{
@@ -88,7 +99,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link
             to="/"
-            onClick={() => setMenuOpen(false)}
+            onClick={handleLogoClick}
             style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}
           >
             <div style={{
