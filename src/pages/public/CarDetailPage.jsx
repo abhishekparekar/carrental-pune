@@ -90,7 +90,7 @@ export default function CarDetailPage() {
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--color-bg)' }}>
       <Navbar />
 
-      <main style={{ paddingTop: 76, paddingBottom: 40, flex: 1 }}>
+      <main style={{ paddingTop: 70, paddingBottom: 28, flex: 1 }}>
         <div className="container">
           {/* Back button */}
           <Link
@@ -103,25 +103,25 @@ export default function CarDetailPage() {
               fontWeight: 600,
               color: 'var(--color-text-2)',
               textDecoration: 'none',
-              marginBottom: 20,
+              marginBottom: 12,
             }}
           >
             <FiArrowLeft /> Back to Fleet
           </Link>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: 28 }} className="car-detail-layout">
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: 24 }} className="car-detail-layout">
             {/* Left Column */}
             <div>
               {/* Gallery */}
-              <div className="glass-card" style={{ padding: 10, overflow: 'hidden', marginBottom: 24, background: '#FFFFFF' }}>
+              <div className="glass-card" style={{ padding: 8, overflow: 'hidden', marginBottom: 20, background: '#FFFFFF' }}>
                 <div style={{
                   position: 'relative',
                   width: '100%',
-                  height: 360,
+                  height: 310,
                   borderRadius: 'var(--radius-md)',
                   overflow: 'hidden',
                   background: '#F1F5F9',
-                  marginBottom: 10,
+                  marginBottom: 8,
                 }}>
                   <img
                     src={images[selectedImageIndex]}

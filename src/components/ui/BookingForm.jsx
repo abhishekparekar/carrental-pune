@@ -104,13 +104,23 @@ export default function BookingForm({ car, onSuccess }) {
         <p style={{ fontSize: 13, color: 'var(--color-text-2)', maxWidth: 320, margin: 0 }}>
           Thank you, <strong>{formData.customerName}</strong>. Our team will contact you at <strong>{formData.phone}</strong> shortly to confirm doorstep delivery.
         </p>
-        <button
-          onClick={() => { setSubmitted(false); }}
-          className="btn btn-secondary btn-sm"
-          style={{ marginTop: 6 }}
-        >
-          Submit Another Request
-        </button>
+        <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+          <a
+            href="/my-inquiries"
+            className="btn btn-primary btn-sm"
+            style={{ padding: '8px 16px', fontSize: 13 }}
+          >
+            View My Booking Status ➔
+          </a>
+          <button
+            type="button"
+            onClick={() => { setSubmitted(false); }}
+            className="btn btn-secondary btn-sm"
+            style={{ padding: '8px 14px', fontSize: 13 }}
+          >
+            New Request
+          </button>
+        </div>
       </motion.div>
     );
   }
