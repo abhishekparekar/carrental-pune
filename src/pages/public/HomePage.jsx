@@ -219,13 +219,13 @@ export default function HomePage() {
       </section>
 
       {/* 2. TOP SELLING CARS SECTION (DIRECTLY AFTER HERO) */}
-      <section style={{ padding: '40px 0 24px', background: '#F8FAFC' }}>
+      <section style={{ padding: '32px 0 24px', background: '#F8FAFC' }}>
         <div className="container">
           {/* Section Header with Left Title + Right Carousel Controls */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, flexWrap: 'wrap', gap: 10 }}>
             <div>
               <span className="section-label">Most Popular</span>
-              <h2 style={{ fontSize: 24, fontWeight: 800, color: '#0F172A', margin: 0 }}>
+              <h2 style={{ fontSize: 'clamp(18px, 4vw, 24px)', fontWeight: 800, color: '#0F172A', margin: 0 }}>
                 Top Selling Cars in <span style={{ color: 'var(--color-accent)' }}>{city}</span>
               </h2>
             </div>

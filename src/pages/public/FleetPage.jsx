@@ -144,17 +144,17 @@ export default function FleetPage() {
             gap: 12,
           }}>
             {/* Top Row: Search Input & City / Sort Dropdowns */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
               {/* Search Bar */}
-              <div style={{ position: 'relative', flex: 1, minWidth: 260 }}>
+              <div style={{ position: 'relative', flex: 1, minWidth: 180 }}>
                 <FiSearch style={{ position: 'absolute', left: 12, top: 12, color: '#94A3B8' }} size={16} />
                 <input
                   type="text"
-                  placeholder="Search by brand or car model (e.g. Creta, Thar, BMW)..."
+                  placeholder="Search car model..."
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
                   className="form-input"
-                  style={{ paddingLeft: 36, height: 40, fontSize: 13, borderRadius: 10, border: '1px solid #E2E8F0' }}
+                  style={{ paddingLeft: 36, height: 40, fontSize: 13, borderRadius: 10, border: '1px solid #E2E8F0', width: '100%' }}
                 />
               </div>
 
@@ -163,7 +163,7 @@ export default function FleetPage() {
                 className="form-select"
                 value={selectedCity}
                 onChange={e => setSelectedCity(e.target.value)}
-                style={{ height: 40, fontSize: 13, width: 150, borderRadius: 10, border: '1px solid #E2E8F0' }}
+                style={{ height: 40, fontSize: 13, width: 140, minWidth: 100, borderRadius: 10, border: '1px solid #E2E8F0' }}
               >
                 {CITIES.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
@@ -173,11 +173,11 @@ export default function FleetPage() {
                 className="form-select"
                 value={sortBy}
                 onChange={e => setSortBy(e.target.value)}
-                style={{ height: 40, fontSize: 13, width: 160, borderRadius: 10, border: '1px solid #E2E8F0' }}
+                style={{ height: 40, fontSize: 13, width: 150, minWidth: 110, borderRadius: 10, border: '1px solid #E2E8F0' }}
               >
-                <option value="popular">Sort: Most Popular</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
+                <option value="popular">Most Popular</option>
+                <option value="price-low">Price: Low→High</option>
+                <option value="price-high">Price: High→Low</option>
                 <option value="rating">Highest Rated</option>
               </select>
 

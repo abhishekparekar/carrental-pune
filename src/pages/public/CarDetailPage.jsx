@@ -128,15 +128,17 @@ export default function CarDetailPage() {
                 border: '1px solid #E2E8F0',
                 boxShadow: '0 4px 20px rgba(15, 23, 42, 0.05)',
               }}>
-                <div style={{
-                  position: 'relative',
-                  width: '100%',
-                  height: 320,
-                  borderRadius: 12,
-                  overflow: 'hidden',
-                  background: '#F1F5F9',
-                  marginBottom: 8,
-                }}>
+                <div
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    borderRadius: 12,
+                    overflow: 'hidden',
+                    background: '#F1F5F9',
+                    marginBottom: 8,
+                  }}
+                  className="car-gallery-main"
+                >
                   <img
                     src={images[selectedImageIndex]}
                     alt={car.name}
@@ -364,8 +366,18 @@ export default function CarDetailPage() {
       <Footer />
 
       <style>{`
+        .car-gallery-main {
+          height: 320px;
+        }
         @media (max-width: 960px) {
           .car-detail-layout { grid-template-columns: 1fr !important; }
+          .car-gallery-main { height: 260px; }
+        }
+        @media (max-width: 640px) {
+          .car-gallery-main { height: 200px; }
+        }
+        @media (max-width: 400px) {
+          .car-gallery-main { height: 170px; }
         }
       `}</style>
     </div>
