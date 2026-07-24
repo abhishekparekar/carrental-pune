@@ -124,58 +124,32 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
+              className="hero-main-title"
               style={{
-                fontSize: 'clamp(2.2rem, 4.8vw, 3.8rem)',
                 color: '#FFFFFF',
-                marginBottom: 20,
                 fontWeight: 900,
-                lineHeight: 1.18,
+                lineHeight: 1.15,
                 textShadow: '0 4px 20px rgba(0,0,0,0.6)',
               }}
             >
-              Drive the Freedom. <br />
-              <span>Rent Self-Drive Cars in </span>
+              <span>Drive the Freedom.<br />Rent Self-Drive Cars in </span>
               <span style={{ color: 'var(--color-accent)' }}>Minutes.</span>
             </motion.h1>
-
-    
 
             {/* Floating Trust Metrics Badge */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4, delay: 0.25 }}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 20,
-                marginBottom: 32,
-                flexWrap: 'wrap',
-              }}
+              className="hero-trust-badges"
             >
               {[
-                { icon: <FiCheckCircle color="#10B981" />, text: '100,000+ Happy Renters' },
-                { icon: <BsCarFront color="#FF7043" />, text: '2,500+ Sanitized Fleet' },
-                { icon: <FiStar color="#F59E0B" />, text: '4.9/5 Rating' },
+                { icon: <FiCheckCircle color="#10B981" size={13} />, text: '100,000+ Happy Renters' },
+                { icon: <BsCarFront color="#FF7043" size={13} />, text: '2,500+ Sanitized Fleet' },
+                { icon: <FiStar color="#F59E0B" size={13} />, text: '4.9/5 Rating' },
               ].map((item, idx) => (
-                <div
-                  key={idx}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 6,
-                    color: '#FFFFFF',
-                    fontSize: 13,
-                    fontWeight: 600,
-                    background: 'rgba(15, 23, 42, 0.5)',
-                    padding: '4px 12px',
-                    borderRadius: 'var(--radius-full)',
-                    backdropFilter: 'blur(6px)',
-                    border: '1px solid rgba(255, 255, 255, 0.15)',
-                  }}
-                >
-                  {item.icon} {item.text}
+                <div key={idx} className="hero-trust-pill">
+                  {item.icon} <span>{item.text}</span>
                 </div>
               ))}
             </motion.div>
@@ -186,38 +160,27 @@ export default function HomePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
               onSubmit={handleSearch}
-              style={{
-                padding: 20,
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-                gap: 14,
-                alignItems: 'end',
-                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.25)',
-                textAlign: 'left',
-                borderRadius: 'var(--radius-xl)',
-                background: '#FFFFFF',
-                border: '1px solid #E2E8F0',
-              }}
+              className="hero-search-card"
             >
               {/* City */}
-              <div className="form-group">
-                <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#0F172A' }}>
-                  <FiMapPin style={{ color: 'var(--color-accent)' }} /> City Location
+              <div className="form-group" style={{ margin: 0 }}>
+                <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#0F172A', fontSize: 12, fontWeight: 700, marginBottom: 6 }}>
+                  <FiMapPin style={{ color: 'var(--color-accent)' }} /> CITY LOCATION
                 </label>
                 <select
                   className="form-select"
                   value={city}
                   onChange={e => setCity(e.target.value)}
-                  style={{ height: 44, fontWeight: 600 }}
+                  style={{ height: 42, fontWeight: 600, fontSize: 13 }}
                 >
                   {CITIES.map(c => <option key={c} value={c}>📍 {c}</option>)}
                 </select>
               </div>
 
               {/* Pickup Date */}
-              <div className="form-group">
-                <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#0F172A' }}>
-                  <FiCalendar style={{ color: 'var(--color-accent)' }} /> Pickup Date
+              <div className="form-group" style={{ margin: 0 }}>
+                <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#0F172A', fontSize: 12, fontWeight: 700, marginBottom: 6 }}>
+                  <FiCalendar style={{ color: 'var(--color-accent)' }} /> PICKUP DATE
                 </label>
                 <DatePicker
                   selected={pickupDate}
@@ -229,9 +192,9 @@ export default function HomePage() {
               </div>
 
               {/* Return Date */}
-              <div className="form-group">
-                <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#0F172A' }}>
-                  <FiCalendar style={{ color: 'var(--color-accent)' }} /> Return Date
+              <div className="form-group" style={{ margin: 0 }}>
+                <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#0F172A', fontSize: 12, fontWeight: 700, marginBottom: 6 }}>
+                  <FiCalendar style={{ color: 'var(--color-accent)' }} /> RETURN DATE
                 </label>
                 <DatePicker
                   selected={returnDate}
@@ -246,7 +209,7 @@ export default function HomePage() {
               <button
                 type="submit"
                 className="btn btn-primary btn-lg"
-                style={{ height: 44, justifyContent: 'center', fontSize: 15 }}
+                style={{ height: 44, justifyContent: 'center', fontSize: 14, fontWeight: 800, width: '100%' }}
               >
                 Find Available Cars <FiSearch />
               </button>
