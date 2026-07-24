@@ -117,31 +117,7 @@ export default function HomePage() {
 
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
           <div style={{ maxWidth: 880, margin: '0 auto', textAlign: 'center' }}>
-            {/* Top Animated Pill */}
-            <motion.div
-              initial={{ opacity: 0, y: -15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 8,
-                padding: '6px 16px',
-                borderRadius: 'var(--radius-full)',
-                background: 'rgba(255, 255, 255, 0.15)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.25)',
-                color: '#FFFFFF',
-                fontSize: 13,
-                fontWeight: 700,
-                letterSpacing: '0.5px',
-                marginBottom: 18,
-                boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
-              }}
-            >
-              <FiZap style={{ color: '#FF7043' }} /> ⚡ Doorstep Delivery in 30 Mins • Unlimited Km
-            </motion.div>
+         
 
             {/* Main Animated Title */}
             <motion.h1
