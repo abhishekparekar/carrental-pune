@@ -56,8 +56,6 @@ const fadeUp = {
   show: (i) => ({ opacity: 1, y: 0, transition: { delay: i * 0.07, duration: 0.35 } }),
 };
 
-
-
 export default function ContactPage() {
   const { tenantId } = useTenant();
   const { user } = useAuth();
