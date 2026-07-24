@@ -348,19 +348,16 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 4. CATEGORIES - INFINITE RIGHT-SIDE SCROLL MARQUEE */}
+      {/* 4. CATEGORIES */}
       <section className="section-sm" style={{ background: 'linear-gradient(180deg, #FFF5F5 0%, #FFFFFF 100%)', borderTop: '1px solid #FEE2E2', borderBottom: '1px solid #FEE2E2' }}>
         <div className="container">
           <div className="section-header text-center" style={{ marginBottom: 28 }}>
             <span className="section-label-red">Browse Fleet</span>
             <h2 className="section-title">Explore by <span style={{ color: '#EF4444' }}>Category</span></h2>
           </div>
-        </div>
 
-        {/* Right-Side Marquee Track */}
-        <div className="marquee-container">
-          <div className="category-marquee-track">
-            {[...CATEGORIES, ...CATEGORIES, ...CATEGORIES, ...CATEGORIES].map((cat, idx) => (
+          <div className="grid-4" style={{ gap: 16 }}>
+            {CATEGORIES.map((cat, idx) => (
               <Link
                 key={idx}
                 to={`/fleet?category=${cat.id}`}
@@ -368,9 +365,7 @@ export default function HomePage() {
               >
                 <div
                   style={{
-                    width: 260,
-                    flexShrink: 0,
-                    padding: 22,
+                    padding: 20,
                     textAlign: 'center',
                     background: '#FFFFFF',
                     cursor: 'pointer',
@@ -378,6 +373,7 @@ export default function HomePage() {
                     border: '1px solid rgba(239, 68, 68, 0.18)',
                     boxShadow: '0 4px 20px rgba(15, 23, 42, 0.04)',
                     transition: 'all 0.2s ease',
+                    height: '100%',
                   }}
                 >
                   <div style={{
@@ -403,25 +399,20 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 5. WHY CHOOSE US - INFINITE RUNNING MARQUEE */}
+      {/* 5. WHY CHOOSE US */}
       <section className="section-sm" style={{ background: '#FFFFFF' }}>
         <div className="container">
           <div className="section-header text-center" style={{ marginBottom: 28 }}>
             <span className="section-label">Why Choose NextRent</span>
             <h2 className="section-title">The Ultimate <span>Self-Drive</span> Experience</h2>
           </div>
-        </div>
 
-        {/* Marquee Track */}
-        <div className="marquee-container">
-          <div className="marquee-track">
-            {[...FEATURES, ...FEATURES].map((feat, idx) => (
+          <div className="grid-4" style={{ gap: 16 }}>
+            {FEATURES.map((feat, idx) => (
               <div
                 key={idx}
                 style={{
-                  width: 290,
-                  flexShrink: 0,
-                  padding: 22,
+                  padding: 20,
                   background: '#FFFFFF',
                   borderRadius: 16,
                   border: '1px solid #E2E8F0',
@@ -452,24 +443,19 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 6. TESTIMONIALS - INFINITE RUNNING REVIEWS MARQUEE */}
+      {/* 6. TESTIMONIALS */}
       <section className="section-sm" style={{ background: '#F8FAFC', borderTop: '1px solid #E2E8F0', paddingBottom: 48 }}>
         <div className="container">
           <div className="section-header text-center" style={{ marginBottom: 28 }}>
             <span className="section-label-red">Reviews</span>
             <h2 className="section-title">Loved by <span style={{ color: '#EF4444' }}>Drivers</span></h2>
           </div>
-        </div>
 
-        {/* Marquee Track */}
-        <div className="marquee-container">
-          <div className="review-marquee-track">
-            {[...TESTIMONIALS, ...TESTIMONIALS].map((t, idx) => (
+          <div className="grid-3" style={{ gap: 16 }}>
+            {TESTIMONIALS.map((t, idx) => (
               <div
                 key={idx}
                 style={{
-                  width: 320,
-                  flexShrink: 0,
                   padding: 22,
                   background: '#FFFFFF',
                   borderRadius: 16,
