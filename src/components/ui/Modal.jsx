@@ -44,15 +44,15 @@ export default function Modal({ isOpen, onClose, title, children, maxWidth = 540
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 15 }}
             transition={{ duration: 0.2 }}
-            className="glass-card"
+            className="glass-card modal-container-box"
             style={{
               position: 'relative',
               width: '100%',
               maxWidth: maxWidth,
-              maxHeight: '90vh',
+              maxHeight: '94vh',
               overflowY: 'auto',
               zIndex: 1,
-              padding: 20,
+              padding: '16px 18px',
               background: '#FFFFFF',
               boxShadow: 'var(--shadow-xl)',
             }}

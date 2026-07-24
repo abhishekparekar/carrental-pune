@@ -48,17 +48,17 @@ export default function MyInquiriesPage() {
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--color-bg)' }}>
       <Navbar />
 
-      <main style={{ paddingTop: 100, paddingBottom: 60, flex: 1 }}>
+      <main style={{ paddingTop: 76, paddingBottom: 36, flex: 1 }}>
         <div className="container" style={{ maxWidth: 760 }}>
-          <div className="section-header text-center" style={{ marginBottom: 28 }}>
-            <span className="section-label">Track Your Request</span>
+          <div className="section-header text-center" style={{ marginBottom: 24 }}>
+            <span className="section-label-red">Track Your Request</span>
             <h1 className="section-title">My Rental <span>Inquiries</span></h1>
             <p className="section-desc">
               Enter the phone number or email address used during your inquiry to view status updates.
             </p>
           </div>
 
-          <form onSubmit={handleSearch} className="glass-card" style={{ padding: 16, display: 'flex', gap: 10, marginBottom: 32, background: '#FFFFFF' }}>
+          <form onSubmit={handleSearch} className="glass-card" style={{ padding: 14, display: 'flex', gap: 10, marginBottom: 24, background: '#FFFFFF', flexWrap: 'wrap' }}>
             <input
               type="text"
               required
@@ -66,9 +66,9 @@ export default function MyInquiriesPage() {
               placeholder="Enter Email or Mobile Number (+91...)"
               value={emailOrPhone}
               onChange={e => setEmailOrPhone(e.target.value)}
-              style={{ fontSize: 15 }}
+              style={{ fontSize: 14, flex: 1, minWidth: 200 }}
             />
-            <button type="submit" className="btn btn-primary" style={{ whiteSpace: 'nowrap' }}>
+            <button type="submit" className="btn btn-primary" style={{ whiteSpace: 'nowrap', width: '100%', maxWidth: 'max-content' }}>
               Search Status <FiSearch />
             </button>
           </form>
