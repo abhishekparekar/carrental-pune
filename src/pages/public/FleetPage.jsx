@@ -126,16 +126,16 @@ export default function FleetPage() {
 
   const FilterPanel = () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <h3 style={{ fontSize: 16, margin: 0, display: 'flex', alignItems: 'center', gap: 6, color: '#0F172A', fontWeight: 800 }}>
-          <FiSliders color="var(--color-accent)" /> Filter Fleet
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: 12, borderBottom: '1px solid #F1F5F9' }}>
+        <h3 style={{ fontSize: 16, margin: 0, display: 'flex', alignItems: 'center', gap: 8, color: '#0F172A', fontWeight: 800, whiteSpace: 'nowrap' }}>
+          <FiSliders color="var(--color-accent)" size={17} /> Filter Fleet
         </h3>
         <button
           onClick={handleReset}
           style={{
             background: 'none',
             border: 'none',
-            color: 'var(--color-accent)',
+            color: '#EF4444',
             fontSize: 12,
             fontWeight: 700,
             cursor: 'pointer',
@@ -144,7 +144,7 @@ export default function FleetPage() {
             gap: 4,
           }}
         >
-          <FiRefreshCw size={12} /> Reset All
+          <FiRefreshCw size={12} /> Reset
         </button>
       </div>
 
@@ -354,7 +354,7 @@ export default function FleetPage() {
           </div>
 
           {/* Main Fleet Layout (Desktop Sidebar + Car Cards Grid) */}
-          <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: 24 }} className="fleet-layout">
+          <div style={{ display: 'grid', gridTemplateColumns: '270px 1fr', gap: 28 }} className="fleet-layout">
             <aside className="desktop-only" style={{
               padding: 22,
               alignSelf: 'start',
