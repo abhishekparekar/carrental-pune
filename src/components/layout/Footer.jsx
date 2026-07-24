@@ -11,14 +11,12 @@ const footerLinks = {
   Services: [
     { label: 'Daily Rental', to: '/fleet' },
     { label: 'Weekly Rental', to: '/fleet' },
-    { label: 'Monthly Subscriptions', to: '/fleet' },
-    { label: 'Doorstep Delivery', to: '/fleet' },
+    { label: 'Subscriptions', to: '/fleet' },
   ],
   Support: [
     { label: 'FAQ & Help', to: '/contact' },
     { label: 'Privacy Policy', to: '#' },
     { label: 'Terms of Service', to: '#' },
-    { label: 'Cancellation Policy', to: '#' },
   ],
 };
 
@@ -31,28 +29,23 @@ const socials = [
 
 export default function Footer() {
   return (
-    <footer style={{
+    <footer className="footer-root" style={{
       background: 'linear-gradient(180deg, #0F172A 0%, #090D16 100%)',
       borderTop: '1px solid #1E293B',
-      padding: '52px 0 24px',
+      padding: '44px 0 24px',
       marginTop: 'auto',
       color: '#FFFFFF',
     }}>
       <div className="container">
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-          gap: 36,
-          marginBottom: 36,
-        }}>
+        <div className="footer-grid">
           {/* Brand Column */}
-          <div>
+          <div className="footer-brand-col">
             <Link to="/" style={{
-              display: 'flex',
+              display: 'inline-flex',
               alignItems: 'center',
               gap: 10,
               textDecoration: 'none',
-              marginBottom: 16,
+              marginBottom: 12,
             }}>
               <div style={{
                 width: 36,
@@ -77,8 +70,8 @@ export default function Footer() {
                 Next<span style={{ color: 'var(--color-accent)' }}>Rent</span>
               </span>
             </Link>
-            <p style={{ fontSize: 13, color: '#94A3B8', lineHeight: 1.6, marginBottom: 16, maxWidth: 220 }}>
-              Premium self-drive car rental service with doorstep delivery & unlimited kilometers across India.
+            <p style={{ fontSize: 13, color: '#94A3B8', lineHeight: 1.5, marginBottom: 14, maxWidth: 280 }}>
+              Premium self-drive car rental service with doorstep delivery & unlimited kilometers.
             </p>
             {/* Social icons */}
             <div style={{ display: 'flex', gap: 8 }}>
@@ -116,9 +109,9 @@ export default function Footer() {
                 color: '#FFFFFF',
                 letterSpacing: '0.8px',
                 textTransform: 'uppercase',
-                marginBottom: 16,
+                marginBottom: 12,
               }}>{group}</h4>
-              <ul style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <ul style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {links.map(link => (
                   <li key={link.label}>
                     <Link
@@ -146,9 +139,9 @@ export default function Footer() {
               color: '#FFFFFF',
               letterSpacing: '0.8px',
               textTransform: 'uppercase',
-              marginBottom: 16,
+              marginBottom: 12,
             }}>Contact</h4>
-            <ul style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <ul style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {[
                 { icon: <FiPhone />, text: '+91 8485877633', href: 'https://wa.me/918485877633' },
                 { icon: <FiMail />, text: 'hello@nextrent.com', href: 'mailto:hello@nextrent.com' },
@@ -175,7 +168,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div style={{ height: 1, background: '#1E293B', border: 'none', margin: '0 0 20px' }} />
+        <div style={{ height: 1, background: '#1E293B', border: 'none', margin: '24px 0 16px' }} />
 
         <div style={{
           display: 'flex',
@@ -184,7 +177,7 @@ export default function Footer() {
           flexWrap: 'wrap',
           gap: 10,
         }}>
-          <p style={{ fontSize: 12, color: '#64748B' }}>
+          <p style={{ fontSize: 12, color: '#64748B', margin: 0 }}>
             © {new Date().getFullYear()} NextRent Self-Drive Rentals. All rights reserved.
           </p>
           <Link
@@ -200,6 +193,38 @@ export default function Footer() {
           </Link>
         </div>
       </div>
+
+      <style>{`
+        .footer-grid {
+          display: grid;
+          grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+          gap: 28px;
+        }
+
+        @media (max-width: 900px) {
+          .footer-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+          }
+          .footer-brand-col {
+            grid-column: span 2;
+          }
+        }
+
+        @media (max-width: 600px) {
+          .footer-root {
+            padding: 32px 0 20px !important;
+          }
+          .footer-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+          }
+          .footer-brand-col {
+            grid-column: span 2;
+            margin-bottom: 8px;
+          }
+        }
+      `}</style>
     </footer>
   );
 }
