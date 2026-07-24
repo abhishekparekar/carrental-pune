@@ -294,26 +294,33 @@ ul, ol { list-style: none; }
 
 @media (max-width: 580px) {
   .hero-bg-section {
-    padding-top: 82px !important;
-    padding-bottom: 24px !important;
+    padding-top: 76px !important;
+    padding-bottom: 20px !important;
   }
   .hero-main-title {
-    font-size: 1.5rem !important;
-    margin-bottom: 12px !important;
+    font-size: 1.25rem !important;
+    margin-bottom: 10px !important;
+    line-height: 1.25 !important;
+    word-break: break-word !important;
   }
   .hero-trust-badges {
-    gap: 6px !important;
-    margin-bottom: 16px !important;
+    gap: 4px !important;
+    margin-bottom: 12px !important;
   }
   .hero-trust-pill {
-    font-size: 10px !important;
-    padding: 3px 8px !important;
+    font-size: 9.5px !important;
+    padding: 3px 6px !important;
   }
   .hero-search-card {
     grid-template-columns: 1fr !important;
-    gap: 10px !important;
-    padding: 14px 14px !important;
-    border-radius: 14px !important;
+    gap: 8px !important;
+    padding: 12px 12px !important;
+    border-radius: 12px !important;
+  }
+  .hero-search-card input,
+  .hero-search-card select {
+    font-size: 12px !important;
+    height: 38px !important;
   }
 }
 
