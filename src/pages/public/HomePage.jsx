@@ -18,12 +18,14 @@ import RevvCarCard from '../../components/ui/RevvCarCard';
 import CarSkeleton from '../../components/ui/CarSkeleton';
 import Modal from '../../components/ui/Modal';
 import BookingForm from '../../components/ui/BookingForm';
+import TermsAndConditions from '../../components/ui/TermsAndConditions';
 
 import { useTenant } from '../../contexts/TenantContext';
-import { subscribeToCars } from '../../firebase/firestore';
-import { seedInitialCars } from '../../firebase/seedData';
+import { subscribeToCars, subscribeToReviews } from '../../firebase/firestore';
+import { seedInitialCars, SAMPLE_REVIEWS } from '../../firebase/seedData';
 
 import heroBgImg from '../../assets/herobg1.jpeg';
+import logoImg from '../../assets/logo1.jpeg';
 
 const CITIES = ['Pune', 'Mumbai', 'Delhi NCR', 'Bangalore', 'Hyderabad', 'Chennai', 'Kolkata'];
 
@@ -59,6 +61,7 @@ export default function HomePage() {
   const navigate = useNavigate();
 
   const [cars, setCars] = useState([]);
+  const [reviews, setReviews] = useState(SAMPLE_REVIEWS);
   const [loading, setLoading] = useState(true);
   const [selectedCar, setSelectedCar] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -74,11 +77,21 @@ export default function HomePage() {
 
   useEffect(() => {
     seedInitialCars(tenantId).catch(console.error);
-    const unsub = subscribeToCars(tenantId, (data) => {
+    const unsubCars = subscribeToCars(tenantId, (data) => {
       setCars(data);
       setLoading(false);
     });
-    return () => unsub();
+    const unsubReviews = subscribeToReviews(tenantId, (data) => {
+      if (data && data.length > 0) {
+        setReviews(data);
+      } else {
+        setReviews(SAMPLE_REVIEWS);
+      }
+    });
+    return () => {
+      unsubCars();
+      unsubReviews();
+    };
   }, [tenantId]);
 
   const handleSearch = (e) => {
@@ -92,26 +105,38 @@ export default function HomePage() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#F8FAFC' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#F7F7F8' }}>
       <Navbar />
 
       {/* 1. CINEMATIC ANIMATED HERO SECTION */}
       <section
         className="hero-bg-section"
         style={{
-          backgroundImage: `linear-gradient(135deg, rgba(15, 23, 42, 0.72) 0%, rgba(15, 23, 42, 0.55) 60%, rgba(255, 87, 34, 0.35) 100%), url("${heroBgImg}")`,
+          backgroundImage: `linear-gradient(135deg, rgba(0,0,0,0.88) 0%, rgba(8,8,8,0.75) 55%, rgba(180,0,0,0.28) 100%), url("${heroBgImg}")`,
         }}
       >
-        {/* Animated Background Shimmer Glow */}
+        {/* Red Crimson Glow — top right */}
         <div style={{
           position: 'absolute',
-          top: '-20%',
-          right: '-10%',
-          width: 500,
-          height: 500,
+          top: '-15%',
+          right: '-8%',
+          width: 520,
+          height: 520,
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(255,87,34,0.35) 0%, rgba(255,87,34,0) 70%)',
-          filter: 'blur(60px)',
+          background: 'radial-gradient(circle, rgba(204,0,0,0.30) 0%, rgba(204,0,0,0) 70%)',
+          filter: 'blur(70px)',
+          pointerEvents: 'none',
+        }} />
+        {/* Silver shimmer — bottom left */}
+        <div style={{
+          position: 'absolute',
+          bottom: '0%',
+          left: '-5%',
+          width: 400,
+          height: 300,
+          borderRadius: '50%',
+          background: 'radial-gradient(ellipse, rgba(180,180,180,0.06) 0%, transparent 70%)',
+          filter: 'blur(50px)',
           pointerEvents: 'none',
         }} />
 
@@ -119,34 +144,64 @@ export default function HomePage() {
           <div style={{ maxWidth: 880, margin: '0 auto', textAlign: 'center' }}>
 
 
+            {/* Business Name Badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.05 }}
+              style={{ marginBottom: 16 }}
+            >
+              <span style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '6px 20px',
+                borderRadius: '9999px',
+                background: 'rgba(200, 0, 10, 0.22)',
+                border: '1px solid rgba(229, 0, 16, 0.45)',
+                color: '#FFFFFF',
+                fontSize: 'clamp(12px, 2.2vw, 15px)',
+                fontWeight: 900,
+                letterSpacing: '2px',
+                textTransform: 'uppercase',
+                boxShadow: '0 4px 24px rgba(200, 0, 10, 0.40)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+              }}>
+                <BsCarFront color="#E50010" size={16} /> S A SELF DRIVE CAR RENT
+              </span>
+            </motion.div>
+
             {/* Main Animated Title */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              transition={{ duration: 0.5, delay: 0.15 }}
               className="hero-main-title"
               style={{
                 color: '#FFFFFF',
                 fontWeight: 900,
                 lineHeight: 1.15,
-                textShadow: '0 4px 20px rgba(0,0,0,0.6)',
+                textShadow: '0 4px 24px rgba(0,0,0,0.8)',
               }}
             >
-              <span>Drive the Freedom.<br />Rent Self-Drive Cars in </span>
-              <span style={{ color: 'var(--color-accent)' }}>Minutes.</span>
+              <span>Drive the Freedom with</span><br />
+              <span style={{ color: '#E50010', textShadow: '0 0 35px rgba(229,0,16,0.75)' }}>
+                S A SELF DRIVE CAR RENT
+              </span>
             </motion.h1>
 
-            {/* Floating Trust Metrics Badge */}
+            {/* Floating Trust Metrics Badges */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4, delay: 0.25 }}
+              transition={{ duration: 0.4, delay: 0.3 }}
               className="hero-trust-badges"
             >
               {[
-                { icon: <FiCheckCircle color="#10B981" size={13} />, text: '100,000+ Happy Renters' },
-                { icon: <BsCarFront color="#FF7043" size={13} />, text: '2,500+ Sanitized Fleet' },
-                { icon: <FiStar color="#F59E0B" size={13} />, text: '4.9/5 Rating' },
+                { icon: <FiCheckCircle color="#22C55E" size={13} />, text: '10,000+ Happy Renters' },
+                { icon: <BsCarFront color="#CC0000" size={13} />, text: 'Premium Fleet' },
+                { icon: <FiStar color="#F59E0B" size={13} />, text: '4.9★ Rating' },
               ].map((item, idx) => (
                 <div key={idx} className="hero-trust-pill">
                   {item.icon} <span>{item.text}</span>
@@ -154,79 +209,56 @@ export default function HomePage() {
               ))}
             </motion.div>
 
-            {/* High-Converting Glass Search Bar */}
-            <motion.form
-              initial={{ opacity: 0, y: 30 }}
+            {/* Hero Action Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              onSubmit={handleSearch}
-              className="hero-search-card"
+              transition={{ duration: 0.5, delay: 0.35 }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 14,
+                marginTop: 24,
+                flexWrap: 'wrap',
+              }}
             >
-              {/* City */}
-              <div className="form-group" style={{ margin: 0 }}>
-                <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#0F172A', fontSize: 12, fontWeight: 700, marginBottom: 6 }}>
-                  <FiMapPin style={{ color: 'var(--color-accent)' }} /> CITY LOCATION
-                </label>
-                <select
-                  className="form-select"
-                  value={city}
-                  onChange={e => setCity(e.target.value)}
-                  style={{ height: 42, fontWeight: 600, fontSize: 13 }}
-                >
-                  {CITIES.map(c => <option key={c} value={c}>📍 {c}</option>)}
-                </select>
-              </div>
-
-              {/* Pickup Date */}
-              <div className="form-group" style={{ margin: 0 }}>
-                <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#0F172A', fontSize: 12, fontWeight: 700, marginBottom: 6 }}>
-                  <FiCalendar style={{ color: 'var(--color-accent)' }} /> PICKUP DATE
-                </label>
-                <DatePicker
-                  selected={pickupDate}
-                  onChange={date => setPickupDate(date)}
-                  showTimeSelect
-                  dateFormat="MMM d, h:mm aa"
-                  minDate={new Date()}
-                />
-              </div>
-
-              {/* Return Date */}
-              <div className="form-group" style={{ margin: 0 }}>
-                <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#0F172A', fontSize: 12, fontWeight: 700, marginBottom: 6 }}>
-                  <FiCalendar style={{ color: 'var(--color-accent)' }} /> RETURN DATE
-                </label>
-                <DatePicker
-                  selected={returnDate}
-                  onChange={date => setReturnDate(date)}
-                  showTimeSelect
-                  dateFormat="MMM d, h:mm aa"
-                  minDate={pickupDate}
-                />
-              </div>
-
-              {/* Search CTA */}
-              <button
-                type="submit"
+              <Link
+                to="/fleet"
                 className="btn btn-primary btn-lg"
-                style={{ height: 44, justifyContent: 'center', fontSize: 14, fontWeight: 800, width: '100%' }}
+                style={{ padding: '14px 32px', fontSize: 15, fontWeight: 800 }}
               >
-                Find Available Cars <FiSearch />
-              </button>
-            </motion.form>
+                <BsCarFront size={18} /> Explore Our Fleet
+              </Link>
+              <a
+                href="https://wa.me/919270762176?text=Hi%20SA%20Self%20Drive%20Cars,%20I%20want%20to%20inquire%20about%20booking%20a%20car."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-secondary btn-lg"
+                style={{
+                  padding: '14px 28px',
+                  fontSize: 15,
+                  fontWeight: 700,
+                  background: 'rgba(255, 255, 255, 0.95)',
+                  border: '1px solid rgba(255, 255, 255, 0.3)',
+                }}
+              >
+                WhatsApp Inquiry (+91 9270762176)
+              </a>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* 2. TOP SELLING CARS SECTION (DIRECTLY AFTER HERO) */}
-      <section style={{ padding: '32px 0 24px', background: '#F8FAFC' }}>
+      {/* 2. TOP SELLING CARS SECTION */}
+      <section style={{ padding: '32px 0 24px', background: '#FFFFFF' }}>
         <div className="container">
           {/* Section Header with Left Title + Right Carousel Controls */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, flexWrap: 'wrap', gap: 10 }}>
             <div>
               <span className="section-label">Most Popular</span>
-              <h2 style={{ fontSize: 'clamp(18px, 4vw, 24px)', fontWeight: 800, color: '#0F172A', margin: 0 }}>
-                Top Selling Cars in <span style={{ color: 'var(--color-accent)' }}>{city}</span>
+              <h2 style={{ fontSize: 'clamp(18px, 4vw, 24px)', fontWeight: 800, color: '#111318', margin: 0 }}>
+                Top Cars in <span style={{ color: '#C8000A' }}>{city}</span>
               </h2>
             </div>
 
@@ -235,19 +267,7 @@ export default function HomePage() {
               <button
                 ref={prevRef}
                 className="btn-icon"
-                style={{
-                  width: 36,
-                  height: 36,
-                  borderRadius: '50%',
-                  background: '#FFFFFF',
-                  border: '1px solid #CBD5E1',
-                  color: '#0F172A',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  boxShadow: 'var(--shadow-sm)',
-                }}
+                style={{ width: 36, height: 36, borderRadius: '50%' }}
                 aria-label="Previous cars"
               >
                 <FiChevronLeft size={18} />
@@ -255,19 +275,7 @@ export default function HomePage() {
               <button
                 ref={nextRef}
                 className="btn-icon"
-                style={{
-                  width: 36,
-                  height: 36,
-                  borderRadius: '50%',
-                  background: '#FFFFFF',
-                  border: '1px solid #CBD5E1',
-                  color: '#0F172A',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  boxShadow: 'var(--shadow-sm)',
-                }}
+                style={{ width: 36, height: 36, borderRadius: '50%' }}
                 aria-label="Next cars"
               >
                 <FiChevronRight size={18} />
@@ -313,7 +321,7 @@ export default function HomePage() {
       </section>
 
       {/* 3. FULL FLEET SECTION */}
-      <section className="section-sm" style={{ background: '#FFFFFF', borderTop: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0' }}>
+      <section className="section-sm" style={{ background: '#F7F7F8', borderTop: '1px solid #E4E6EA', borderBottom: '1px solid #E4E6EA' }}>
         <div className="container">
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
             <div>
@@ -348,16 +356,15 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 4. CATEGORIES - INFINITE RIGHT-SIDE SCROLL MARQUEE */}
-      <section className="section-sm" style={{ background: 'linear-gradient(180deg, #FFF5F5 0%, #FFFFFF 100%)', borderTop: '1px solid #FEE2E2', borderBottom: '1px solid #FEE2E2' }}>
+      {/* 4. CATEGORIES - INFINITE MARQUEE */}
+      <section className="section-sm" style={{ background: '#FBF4F4', borderTop: '1px solid rgba(200,0,10,0.10)', borderBottom: '1px solid rgba(200,0,10,0.10)' }}>
         <div className="container">
           <div className="section-header text-center" style={{ marginBottom: 28 }}>
             <span className="section-label-red">Browse Fleet</span>
-            <h2 className="section-title">Explore by <span style={{ color: '#EF4444' }}>Category</span></h2>
+            <h2 className="section-title">Explore by <span>Category</span></h2>
           </div>
         </div>
 
-        {/* Right-Side Marquee Track */}
         <div className="marquee-container">
           <div className="category-marquee-track">
             {[...CATEGORIES, ...CATEGORIES, ...CATEGORIES, ...CATEGORIES].map((cat, idx) => (
@@ -375,27 +382,24 @@ export default function HomePage() {
                     background: '#FFFFFF',
                     cursor: 'pointer',
                     borderRadius: 16,
-                    border: '1px solid rgba(239, 68, 68, 0.18)',
-                    boxShadow: '0 4px 20px rgba(15, 23, 42, 0.04)',
+                    border: '1px solid rgba(200,0,10,0.12)',
+                    boxShadow: '0 4px 20px rgba(17,19,24,0.05)',
                     transition: 'all 0.2s ease',
                   }}
                 >
                   <div style={{
-                    width: 52,
-                    height: 52,
+                    width: 52, height: 52,
                     borderRadius: 14,
-                    background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.12) 0%, rgba(255, 87, 34, 0.08) 100%)',
-                    border: '1px solid rgba(239, 68, 68, 0.25)',
-                    color: '#EF4444',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    background: 'linear-gradient(135deg, rgba(200,0,10,0.09) 0%, rgba(200,0,10,0.05) 100%)',
+                    border: '1px solid rgba(200,0,10,0.18)',
+                    color: '#C8000A',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
                     margin: '0 auto 12px',
                   }}>
                     {cat.icon}
                   </div>
-                  <h3 style={{ fontSize: 17, marginBottom: 4, color: '#0F172A', fontWeight: 800 }}>{cat.name}</h3>
-                  <p style={{ fontSize: 12, color: '#475569', margin: 0, lineHeight: 1.5 }}>{cat.desc}</p>
+                  <h3 style={{ fontSize: 17, marginBottom: 4, color: '#111318', fontWeight: 800 }}>{cat.name}</h3>
+                  <p style={{ fontSize: 12, color: '#6B7080', margin: 0, lineHeight: 1.5 }}>{cat.desc}</p>
                 </div>
               </Link>
             ))}
@@ -403,16 +407,15 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 5. WHY CHOOSE US - INFINITE RUNNING MARQUEE */}
+      {/* 5. WHY CHOOSE US */}
       <section className="section-sm" style={{ background: '#FFFFFF' }}>
         <div className="container">
           <div className="section-header text-center" style={{ marginBottom: 28 }}>
-            <span className="section-label">Why Choose NextRent</span>
+            <span className="section-label">Why Choose SA Self Drive</span>
             <h2 className="section-title">The Ultimate <span>Self-Drive</span> Experience</h2>
           </div>
         </div>
 
-        {/* Marquee Track */}
         <div className="marquee-container">
           <div className="marquee-track">
             {[...FEATURES, ...FEATURES].map((feat, idx) => (
@@ -424,52 +427,56 @@ export default function HomePage() {
                   padding: 22,
                   background: '#FFFFFF',
                   borderRadius: 16,
-                  border: '1px solid #E2E8F0',
-                  boxShadow: '0 4px 18px rgba(15, 23, 42, 0.05)',
+                  border: '1px solid #E4E6EA',
+                  boxShadow: '0 4px 18px rgba(17,19,24,0.06)',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: 8,
                 }}
               >
                 <div style={{
-                  width: 44,
-                  height: 44,
+                  width: 44, height: 44,
                   borderRadius: 12,
-                  background: 'var(--color-accent-bg)',
-                  border: '1px solid rgba(255,87,34,0.2)',
-                  color: 'var(--color-accent)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  background: 'rgba(200,0,10,0.07)',
+                  border: '1px solid rgba(200,0,10,0.16)',
+                  color: '#C8000A',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
                   {feat.icon}
                 </div>
-                <h3 style={{ fontSize: 16, color: '#0F172A', fontWeight: 800, margin: 0 }}>{feat.title}</h3>
-                <p style={{ fontSize: 13, color: '#475569', margin: 0, lineHeight: 1.5 }}>{feat.desc}</p>
+                <h3 style={{ fontSize: 16, color: '#111318', fontWeight: 800, margin: 0 }}>{feat.title}</h3>
+                <p style={{ fontSize: 13, color: '#5A5F6E', margin: 0, lineHeight: 1.5 }}>{feat.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
+      {/* 5.5 TERMS & CONDITIONS SECTION */}
+      <section className="section-sm" style={{ background: '#FFFFFF', borderTop: '1px solid #E4E6EA' }}>
+        <div className="container">
+          <TermsAndConditions expandable={true} defaultOpen={true} />
+        </div>
+      </section>
+
       {/* 6. TESTIMONIALS */}
-      <section className="section-sm" style={{ background: '#F8FAFC', borderTop: '1px solid #E2E8F0', paddingBottom: 48 }}>
+      <section className="section-sm" style={{ background: '#F7F7F8', borderTop: '1px solid #E4E6EA', paddingBottom: 48 }}>
         <div className="container">
           <div className="section-header text-center" style={{ marginBottom: 28 }}>
             <span className="section-label-red">Reviews</span>
-            <h2 className="section-title">Loved by <span style={{ color: '#EF4444' }}>Drivers</span></h2>
+            <h2 className="section-title">Loved by <span>Drivers</span></h2>
           </div>
 
           <div className="reviews-grid">
-            {TESTIMONIALS.map((t, idx) => (
+            {reviews.map((rev, idx) => (
               <div
-                key={idx}
+                key={rev.id || idx}
                 style={{
                   padding: 22,
                   background: '#FFFFFF',
                   borderRadius: 16,
-                  border: '1px solid #E2E8F0',
-                  boxShadow: '0 4px 20px rgba(15, 23, 42, 0.05)',
+                  border: '1px solid #E4E6EA',
+                  boxShadow: '0 4px 20px rgba(17,19,24,0.05)',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-between',
@@ -479,37 +486,31 @@ export default function HomePage() {
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
                     <div style={{ display: 'flex', gap: 3, color: '#F59E0B' }}>
-                      {[...Array(t.rating)].map((_, i) => <BsStarFill key={i} size={14} />)}
+                      {[...Array(rev.rating || 5)].map((_, i) => <BsStarFill key={i} size={14} />)}
                     </div>
-                    <span style={{ fontSize: 11, background: 'rgba(16, 185, 129, 0.1)', color: '#10B981', fontWeight: 700, padding: '2px 8px', borderRadius: 99, border: '1px solid rgba(16, 185, 129, 0.2)' }}>
-                      Verified Renter ✓
+                    <span style={{ fontSize: 11, background: 'rgba(22,163,74,0.08)', color: '#16A34A', fontWeight: 700, padding: '2px 8px', borderRadius: 99, border: '1px solid rgba(22,163,74,0.2)' }}>
+                      Verified ✓
                     </span>
                   </div>
-
-                  <p style={{ fontSize: 13, fontStyle: 'italic', color: '#475569', margin: 0, lineHeight: 1.6 }}>
-                    "{t.comment}"
+                  <p style={{ fontSize: 13, fontStyle: 'italic', color: '#5A5F6E', margin: 0, lineHeight: 1.6 }}>
+                    "{rev.comment}"
                   </p>
                 </div>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 10, borderTop: '1px solid #F1F5F9' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 10, borderTop: '1px solid #F0F1F3' }}>
                   <div style={{
-                    width: 38,
-                    height: 38,
+                    width: 38, height: 38,
                     borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #FF7043 0%, #FF5722 100%)',
+                    background: 'linear-gradient(135deg, #C8000A 0%, #900007 100%)',
                     color: '#FFFFFF',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: 13,
-                    fontWeight: 800,
-                    boxShadow: '0 2px 8px rgba(255, 87, 34, 0.3)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 13, fontWeight: 800,
+                    boxShadow: '0 2px 10px rgba(200,0,10,0.30)',
                   }}>
-                    {t.initials}
+                    {rev.name?.charAt(0) || 'R'}
                   </div>
                   <div>
-                    <strong style={{ display: 'block', fontSize: 14, color: '#0F172A', lineHeight: 1.2 }}>{t.name}</strong>
-                    <span style={{ fontSize: 11, color: '#64748B' }}>{t.role} • {t.city}</span>
+                    <strong style={{ display: 'block', fontSize: 14, color: '#111318', lineHeight: 1.2 }}>{rev.name}</strong>
+                    <span style={{ fontSize: 11, color: '#8C909A' }}>{rev.location || 'Pune'} • {rev.carName || 'Self Drive'}</span>
                   </div>
                 </div>
               </div>

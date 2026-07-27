@@ -18,8 +18,8 @@ const CONTACT_ITEMS = [
   {
     icon: <FiPhone size={20} />,
     label: 'Call / WhatsApp (24/7)',
-    value: '+91 8485877633',
-    href: 'https://wa.me/918485877633',
+    value: '+91 9270762176',
+    href: 'https://wa.me/919270762176',
     color: '#EF4444',
     bg: 'rgba(239,68,68,0.1)',
   },
@@ -208,7 +208,7 @@ export default function ContactPage() {
                   </p>
                   <div style={{ display: 'flex', gap: 8 }}>
                     <a
-                      href="https://wa.me/918485877633"
+                      href="https://wa.me/919270762176"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="btn btn-primary btn-sm"
@@ -333,7 +333,7 @@ export default function ContactPage() {
                   Get instant replies from our team on WhatsApp. Average response time under 5 minutes.
                 </p>
                 <a
-                  href="https://wa.me/918485877633?text=Hi%20NextRent!%20I%20need%20help%20with%20a%20car%20rental."
+                  href="https://wa.me/919270762176?text=Hi%20SA%20Self%20Drive%20Cars!%20I%20need%20help%20with%20a%20car%20rental."
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{

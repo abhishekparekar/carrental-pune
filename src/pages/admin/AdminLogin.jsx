@@ -5,6 +5,7 @@ import { FiLock, FiMail, FiLogIn, FiUserCheck, FiAlertCircle, FiEye, FiEyeOff } 
 import { BsCarFront } from 'react-icons/bs';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../contexts/AuthContext';
+import logoImg from '../../assets/logo1.jpeg';
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('admin@nextrent.com');
@@ -86,22 +87,19 @@ export default function AdminLogin() {
       >
         {/* Header Logo */}
         <div style={{ textAlign: 'center', marginBottom: 24 }}>
-          <div style={{
-            width: 48,
-            height: 48,
-            background: 'var(--color-accent)',
-            borderRadius: 'var(--radius-md)',
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: 24,
-            marginBottom: 12,
-            boxShadow: 'var(--shadow-accent)',
-          }}>
-            <BsCarFront color="#FFFFFF" />
-          </div>
-          <h2 style={{ fontSize: 22, margin: '0 0 4px', color: 'var(--color-text)' }}>NextRent Admin Portal</h2>
-          <p style={{ fontSize: 12, color: 'var(--color-text-3)', margin: 0 }}>
+          <img
+            src={logoImg}
+            alt="SA Self Drive Cars"
+            style={{
+              height: 64,
+              width: 'auto',
+              margin: '0 auto 12px',
+              display: 'block',
+              filter: 'drop-shadow(0 4px 14px rgba(200,0,10,0.35))',
+            }}
+          />
+          <h2 style={{ fontSize: 20, fontWeight: 800, margin: '0 0 4px', color: '#111318' }}>SA Self Drive Admin Portal</h2>
+          <p style={{ fontSize: 12, color: '#6B7080', margin: 0 }}>
             Firestore Role-Verified Admin Access
           </p>
         </div>

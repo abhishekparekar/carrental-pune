@@ -7,6 +7,7 @@ import {
   FiUsers,
   FiDollarSign,
   FiEye,
+  FiSettings,
 } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 
@@ -80,9 +81,12 @@ export default function AdminDashboard() {
               Multi-Tenant Scope: <strong style={{ color: 'var(--color-accent)' }}>{tenantId}</strong>
             </p>
           </div>
-          <div style={{ display: 'flex', gap: 8 }}>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             <Link to="/admin/cars" className="btn btn-secondary btn-sm">
               <FiTruck /> Fleet
+            </Link>
+            <Link to="/admin/settings" className="btn btn-secondary btn-sm">
+              <FiSettings /> Footer & Settings
             </Link>
             <Link to="/admin/inquiries" className="btn btn-primary btn-sm">
               <FiMessageSquare /> All Inquiries ({inquiries.length})

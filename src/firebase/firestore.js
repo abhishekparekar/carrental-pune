@@ -235,6 +235,42 @@ export async function deleteInquiry(tenantId, inquiryId) {
   return deleteDoc(tenantDoc(tenantId, 'inquiries', inquiryId));
 }
 
+// ─── Customer Reviews ───────────────────────────────────────────────────────────
+export async function getReviews(tenantId) {
+  try {
+    const ref = query(tenantCollection(tenantId, 'reviews'), orderBy('createdAt', 'desc'));
+    const snap = await getDocs(ref);
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  } catch (err) {
+    console.error('Error fetching reviews:', err);
+    return [];
+  }
+}
+
+export async function addReview(tenantId, reviewData, adminUid = null) {
+  const ref = tenantCollection(tenantId, 'reviews');
+  return addDoc(ref, {
+    tenantId,
+    ...reviewData,
+    createdBy: adminUid || 'admin',
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  });
+}
+
+export async function deleteReview(tenantId, reviewId) {
+  return deleteDoc(tenantDoc(tenantId, 'reviews', reviewId));
+}
+
+export function subscribeToReviews(tenantId, callback) {
+  const ref = query(tenantCollection(tenantId, 'reviews'), orderBy('createdAt', 'desc'));
+  return onSnapshot(ref, snap => {
+    callback(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+  }, err => {
+    console.error('Error in reviews subscription:', err);
+  });
+}
+
 // ─── Stats ─────────────────────────────────────────────────────────────────────
 export async function getDashboardStats(tenantId) {
   const [cars, bookings, customers, inquiries] = await Promise.all([
@@ -299,6 +335,68 @@ export async function registerAdminUser(tenantId, uid, { email, name, role = 'ad
   }
 }
 
+// ─── Tenant Settings & Dynamic Footer Configuration ───────────────────────────
+export const DEFAULT_TENANT_SETTINGS = {
+  businessName: 'SA Self Drive Cars',
+  tagline: 'Premium self-drive car rentals with 300 km daily limit, doorstep delivery & verified fleet in Pune.',
+  phone: '+91 9270762176',
+  email: 'info@saselfdrivecars.com',
+  address: 'Pune, Maharashtra',
+  whatsapp: '919270762176',
+  facebook: 'https://facebook.com',
+  instagram: 'https://instagram.com',
+  twitter: 'https://twitter.com',
+  youtube: 'https://youtube.com',
+  accentColor: '#C8000A',
+  // About Page Dynamic Settings
+  aboutTitle: 'Reinventing Self-Drive Rental in Pune',
+  aboutSubtitle: 'Driven by 100% transparency, verified cars, 300 km daily limit, and 30-minute doorstep delivery in Pune.',
+  aboutMissionHeading: 'Empowering Renters with Complete Self-Drive Freedom',
+  aboutMissionText: 'We believe having a car for weekend family trips, business meetings, or hill-station drives should be simple — accessible on demand without ownership hassle.',
+  aboutStoryText: 'Every vehicle in our fleet is deep-sanitized, digitally verified, and handed over with complete document verification.',
+  statsRenters: '500+',
+  statsFleet: '50+',
+  statsDelivery: '30 Mins',
+  statsRating: '4.9/5',
+};
+
+export async function getTenantSettings(tenantId) {
+  try {
+    const snap = await getDoc(tenantDoc(tenantId, 'settings', 'config'));
+    if (!snap.exists()) {
+      return DEFAULT_TENANT_SETTINGS;
+    }
+    return { ...DEFAULT_TENANT_SETTINGS, ...snap.data() };
+  } catch (err) {
+    console.error('Error fetching tenant settings:', err);
+    return DEFAULT_TENANT_SETTINGS;
+  }
+}
+
+export async function updateTenantSettings(tenantId, settingsData, adminUid = null) {
+  const ref = tenantDoc(tenantId, 'settings', 'config');
+  return setDoc(ref, {
+    tenantId,
+    ...settingsData,
+    updatedBy: adminUid || 'admin',
+    updatedAt: serverTimestamp(),
+  }, { merge: true });
+}
+
+export function subscribeToTenantSettings(tenantId, callback) {
+  const ref = tenantDoc(tenantId, 'settings', 'config');
+  return onSnapshot(ref, snap => {
+    if (snap.exists()) {
+      callback({ ...DEFAULT_TENANT_SETTINGS, ...snap.data() });
+    } else {
+      callback(DEFAULT_TENANT_SETTINGS);
+    }
+  }, err => {
+    console.error('Error in tenant settings subscription:', err);
+    callback(DEFAULT_TENANT_SETTINGS);
+  });
+}
+
 export function formatTimestamp(ts) {
   if (!ts) return '—';
   const date = ts.toDate ? ts.toDate() : new Date(ts);
@@ -308,4 +406,5 @@ export function formatTimestamp(ts) {
 }
 
 export { serverTimestamp, Timestamp };
+
 

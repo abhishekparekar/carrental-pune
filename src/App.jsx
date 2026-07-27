@@ -26,6 +26,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminCars from './pages/admin/AdminCars';
 import AdminInquiries from './pages/admin/AdminInquiries';
 import AdminCustomers from './pages/admin/AdminCustomers';
+import AdminSettings from './pages/admin/AdminSettings';
 
 // Auto Scroll To Top Hero section on Route Change & Page Refresh
 function ScrollToTop() {
@@ -119,6 +120,15 @@ export default function App() {
                 element={
                   <ProtectedRoute>
                     <AdminCustomers />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/admin/settings"
+                element={
+                  <ProtectedRoute>
+                    <AdminSettings />
                   </ProtectedRoute>
                 }
               />

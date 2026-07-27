@@ -8,11 +8,13 @@ import { addInquiry } from '../../firebase/firestore';
 import { useTenant } from '../../contexts/TenantContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { formatCurrency } from '../../utils/formatCurrency';
+import TermsAndConditions from './TermsAndConditions';
 
 export default function BookingForm({ car, onSuccess }) {
   const { tenantId } = useTenant();
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   const [formData, setFormData] = useState({
     customerName: '',
@@ -44,6 +46,11 @@ export default function BookingForm({ car, onSuccess }) {
 
     if (!formData.customerName.trim() || !formData.phone.trim() || !formData.email.trim()) {
       toast.error('Please fill in all required contact details');
+      return;
+    }
+
+    if (!agreedToTerms) {
+      toast.error('Please read and agree to the Terms & Conditions');
       return;
     }
 
@@ -175,7 +182,7 @@ export default function BookingForm({ car, onSuccess }) {
             type="tel"
             required
             className="form-input"
-            placeholder="+91 98765 43210"
+            placeholder="+91 92707 62176"
             value={formData.phone}
             onChange={e => setFormData({ ...formData, phone: e.target.value })}
           />
@@ -267,17 +274,46 @@ export default function BookingForm({ car, onSuccess }) {
         />
       </div>
 
+      {/* Terms & Conditions Section */}
+      <TermsAndConditions compact={true} expandable={true} defaultOpen={false} />
+
+      {/* Mandatory Terms Checkbox */}
+      <label style={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: 10,
+        fontSize: 12,
+        fontWeight: 600,
+        color: '#111318',
+        cursor: 'pointer',
+        background: agreedToTerms ? 'rgba(200,0,10,0.06)' : '#F9FAFB',
+        border: agreedToTerms ? '1px solid rgba(200,0,10,0.25)' : '1px solid #E5E7EB',
+        padding: '10px 12px',
+        borderRadius: 10,
+        transition: 'all 0.15s ease',
+      }}>
+        <input
+          type="checkbox"
+          checked={agreedToTerms}
+          onChange={e => setAgreedToTerms(e.target.checked)}
+          style={{ width: 18, height: 18, accentColor: '#C8000A', marginTop: 1, cursor: 'pointer' }}
+        />
+        <span>
+          I agree to all <strong>SA Self Drive Terms & Conditions</strong> and carry the <strong>5 Required Documents</strong> (Aadhaar, Driving Licence, PAN Card, Rent Agreement & Job ID).
+        </span>
+      </label>
+
       <button
         type="submit"
-        disabled={submitting}
+        disabled={submitting || !agreedToTerms}
         className="btn btn-primary btn-lg w-full"
-        style={{ marginTop: 4 }}
+        style={{ marginTop: 4, opacity: agreedToTerms ? 1 : 0.65 }}
       >
         {submitting ? 'Submitting...' : 'Submit Rental Inquiry'} <FiSend />
       </button>
 
       <p style={{ fontSize: 11, color: 'var(--color-text-3)', textAlign: 'center', margin: 0 }}>
-        🔒 Free cancellation. Zero payment required right now.
+        🔒 Carry 5 Required Documents (Aadhaar, DL, PAN, Rent Agreement & Job ID) at pickup.
       </p>
     </form>
   );

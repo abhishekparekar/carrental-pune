@@ -12,15 +12,18 @@ import {
   FiX,
   FiBell,
   FiChevronDown,
+  FiSettings,
 } from 'react-icons/fi';
 import { BsCarFront } from 'react-icons/bs';
 import { useAuth } from '../../contexts/AuthContext';
+import logoImg from '../../assets/logo1.jpeg';
 
 const navItems = [
   { icon: <FiGrid />, label: 'Dashboard', to: '/admin' },
   { icon: <FiTruck />, label: 'Cars Fleet', to: '/admin/cars' },
   { icon: <FiCalendar />, label: 'Inquiries & Bookings', to: '/admin/inquiries' },
   { icon: <FiUsers />, label: 'Customers', to: '/admin/customers' },
+  { icon: <FiSettings />, label: 'About & Page Settings', to: '/admin/settings' },
 ];
 
 export default function AdminLayout({ children }) {
@@ -44,43 +47,23 @@ export default function AdminLayout({ children }) {
     }}>
       {/* Logo */}
       <div style={{
-        padding: '0 16px 20px',
+        padding: sidebarOpen ? '10px 14px 12px' : '10px 8px 12px',
         borderBottom: '1px solid var(--color-border)',
         display: 'flex',
         alignItems: 'center',
-        gap: 10,
+        justifyContent: 'center',
       }}>
-        <div style={{
-          width: 34,
-          height: 34,
-          background: 'var(--color-accent)',
-          borderRadius: 'var(--radius-md)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: 16,
-          flexShrink: 0,
-        }}>
-          <BsCarFront color="#FFFFFF" />
-        </div>
-        {sidebarOpen && (
-          <span style={{
-            fontFamily: 'var(--font-heading)',
-            fontWeight: 800,
-            fontSize: 17,
-            color: 'var(--color-text)',
-          }}>
-            Next<span style={{ color: 'var(--color-accent)' }}>Rent</span>
-            <span style={{
-              display: 'block',
-              fontSize: 10,
-              color: 'var(--color-text-3)',
-              fontWeight: 600,
-              letterSpacing: 0.8,
-              textTransform: 'uppercase',
-            }}>Admin CRM</span>
-          </span>
-        )}
+        <img
+          src={logoImg}
+          alt="SA Self Drive Cars"
+          style={{
+            height: sidebarOpen ? 50 : 34,
+            maxWidth: '100%',
+            objectFit: 'contain',
+            display: 'block',
+            transition: 'height 0.2s ease',
+          }}
+        />
       </div>
 
       {/* Nav Items */}

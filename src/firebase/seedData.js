@@ -141,11 +141,43 @@ export const SAMPLE_CARS = [
   },
 ];
 
+export const SAMPLE_REVIEWS = [
+  {
+    name: 'Rahul Deshmukh',
+    location: 'Pune (Kothrud)',
+    carName: 'Mahindra Thar 4x4',
+    rating: 5,
+    date: '2 days ago',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
+    comment: 'Booked Thar 4x4 for a weekend trip to Mahabaleshwar. 300 km daily limit was more than enough! Delivery within 35 mins at my doorstep.',
+    verified: true,
+  },
+  {
+    name: 'Priya Sharma',
+    location: 'Pune (Viman Nagar)',
+    carName: 'Maruti Swift ZXi',
+    rating: 5,
+    date: '1 week ago',
+    avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80',
+    comment: 'Best self-drive car service in Pune! Transparent pricing, deposit was returned promptly upon car handover. Highly recommended!',
+    verified: true,
+  },
+  {
+    name: 'Amitabh Joshi',
+    location: 'Pune (Baner)',
+    carName: 'Toyota Innova Hycross',
+    rating: 5,
+    date: '2 weeks ago',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80',
+    comment: 'Rented Hycross for an outstation wedding. Smooth automatic transmission, immaculate condition, and very polite support team on WhatsApp.',
+    verified: true,
+  },
+];
+
 export async function seedInitialCars(tenantId = 'nextrent-demo') {
   try {
     const existing = await getCars(tenantId);
     if (existing && existing.length > 0) {
-      console.log('Cars already exist in tenant:', tenantId);
       return { success: true, count: existing.length, seeded: false };
     }
 
@@ -160,3 +192,4 @@ export async function seedInitialCars(tenantId = 'nextrent-demo') {
     throw err;
   }
 }
+

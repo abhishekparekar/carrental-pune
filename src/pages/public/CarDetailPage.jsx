@@ -20,6 +20,7 @@ import toast from 'react-hot-toast';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
 import BookingForm from '../../components/ui/BookingForm';
+import TermsAndConditions from '../../components/ui/TermsAndConditions';
 import RevvCarCard from '../../components/ui/RevvCarCard';
 import CarSkeleton from '../../components/ui/CarSkeleton';
 import Modal from '../../components/ui/Modal';
@@ -96,7 +97,7 @@ export default function CarDetailPage() {
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#F8FAFC' }}>
       <Navbar />
 
-      <main style={{ paddingTop: 70, paddingBottom: 36, flex: 1 }}>
+      <main style={{ paddingTop: 76, paddingBottom: 36, flex: 1 }}>
         <div className="container">
           {/* Back button */}
           <Link
@@ -106,19 +107,23 @@ export default function CarDetailPage() {
               alignItems: 'center',
               gap: 6,
               fontSize: 13,
-              fontWeight: 600,
-              color: '#64748B',
+              fontWeight: 700,
+              color: '#C8000A',
               textDecoration: 'none',
-              marginBottom: 12,
+              marginBottom: 16,
+              background: 'rgba(200, 0, 10, 0.06)',
+              padding: '6px 14px',
+              borderRadius: 99,
+              border: '1px solid rgba(200, 0, 10, 0.15)',
             }}
           >
             <FiArrowLeft /> Back to Fleet
           </Link>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: 24 }} className="car-detail-layout">
-            {/* Left Column */}
-            <div>
-              {/* Gallery */}
+          <div className="car-detail-layout">
+            {/* Left Column: Gallery & Vehicle Specs */}
+            <div style={{ minWidth: 0 }}>
+              {/* Photo Gallery Card */}
               <div style={{
                 padding: 8,
                 overflow: 'hidden',
@@ -157,9 +162,9 @@ export default function CarDetailPage() {
                   </button>
                 </div>
 
-                {/* Thumbnails */}
+                {/* Gallery Thumbnails */}
                 {images.length > 1 && (
-                  <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 2 }}>
+                  <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 4, scrollbarWidth: 'none' }}>
                     {images.map((img, idx) => (
                       <button
                         key={idx}
@@ -169,7 +174,7 @@ export default function CarDetailPage() {
                           height: 52,
                           borderRadius: 8,
                           overflow: 'hidden',
-                          border: selectedImageIndex === idx ? '2px solid #EF4444' : '2px solid transparent',
+                          border: selectedImageIndex === idx ? '2px solid #C8000A' : '2px solid transparent',
                           cursor: 'pointer',
                           padding: 0,
                           flexShrink: 0,
@@ -182,118 +187,130 @@ export default function CarDetailPage() {
                 )}
               </div>
 
-              {/* Title & Category Badge */}
+              {/* Title & Status Badges */}
               <div style={{ marginBottom: 20 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6, flexWrap: 'wrap' }}>
-                  <span className="badge badge-accent">{car.category ? car.category.toUpperCase() : 'CAR'}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, flexWrap: 'wrap' }}>
+                  <span className="badge badge-accent" style={{ background: '#C8000A', color: '#FFFFFF', fontWeight: 800 }}>
+                    {car.category ? car.category.toUpperCase() : 'CAR'}
+                  </span>
                   {car.rating && (
-                    <span style={{ display: 'flex', alignItems: 'center', gap: 4, color: '#F59E0B', fontSize: 13, fontWeight: 700 }}>
-                      <BsStarFill size={13} /> {car.rating} Rating
+                    <span style={{ display: 'flex', alignItems: 'center', gap: 4, color: '#D97706', fontSize: 12.5, fontWeight: 800, background: '#FEF3C7', padding: '2px 8px', borderRadius: 99 }}>
+                      <BsStarFill size={12} /> {car.rating} Rating
                     </span>
                   )}
-                  <span style={{ fontSize: 12, color: '#10B981', display: 'flex', alignItems: 'center', gap: 4, fontWeight: 700 }}>
-                    <FiCheckCircle size={13} /> Available Now
+                  <span style={{ fontSize: 12, color: '#16A34A', display: 'flex', alignItems: 'center', gap: 4, fontWeight: 800, background: '#DCFCE7', padding: '2px 8px', borderRadius: 99 }}>
+                    <FiCheckCircle size={12} /> Available Now
                   </span>
                 </div>
-                <h1 style={{ fontSize: 30, margin: '0 0 6px', color: '#0F172A', fontWeight: 800 }}>{car.name}</h1>
-                <p style={{ fontSize: 14, color: '#475569', margin: 0, lineHeight: 1.5 }}>
-                  {car.description || 'Sanitized self-drive rental vehicle with unlimited kilometers & doorstep delivery.'}
+                
+                <h1 style={{ fontSize: 'clamp(22px, 3.5vw, 32px)', margin: '0 0 6px', color: '#111318', fontWeight: 900, lineHeight: 1.2 }}>
+                  {car.name}
+                </h1>
+                <p style={{ fontSize: 14, color: '#64748B', margin: 0, lineHeight: 1.55 }}>
+                  {car.description || 'Sanitized self-drive rental vehicle with 300 km daily limit & doorstep delivery.'}
                 </p>
               </div>
 
-              {/* Specs Grid */}
+              {/* Specifications Card */}
               <div style={{
-                padding: 20,
+                padding: '18px 20px',
                 marginBottom: 20,
                 background: '#FFFFFF',
                 borderRadius: 16,
                 border: '1px solid #E2E8F0',
-                boxShadow: '0 4px 20px rgba(15, 23, 42, 0.04)',
+                boxShadow: '0 4px 16px rgba(15, 23, 42, 0.04)',
               }}>
-                <h3 style={{ fontSize: 16, marginBottom: 14, color: '#0F172A', fontWeight: 800 }}>Vehicle Specifications</h3>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: 16 }}>
+                <h3 style={{ fontSize: 15, marginBottom: 14, color: '#111318', fontWeight: 800 }}>
+                  Vehicle Specifications
+                </h3>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 14 }}>
                   <div>
-                    <span style={{ fontSize: 11, color: '#64748B', textTransform: 'uppercase', fontWeight: 700 }}>Transmission</span>
-                    <strong style={{ fontSize: 14, color: '#0F172A', textTransform: 'capitalize', display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
-                      <FiSettings style={{ color: '#EF4444' }} /> {car.transmission || 'Manual'}
+                    <span style={{ fontSize: 10.5, color: '#64748B', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '0.5px' }}>Transmission</span>
+                    <strong style={{ fontSize: 13.5, color: '#111318', textTransform: 'capitalize', display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
+                      <FiSettings style={{ color: '#C8000A', flexShrink: 0 }} /> {car.transmission || 'Manual'}
                     </strong>
                   </div>
 
                   <div>
-                    <span style={{ fontSize: 11, color: '#64748B', textTransform: 'uppercase', fontWeight: 700 }}>Fuel Type</span>
-                    <strong style={{ fontSize: 14, color: '#0F172A', textTransform: 'capitalize', display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
-                      <BsFuelPump style={{ color: '#EF4444' }} /> {car.fuelType || 'Petrol'}
+                    <span style={{ fontSize: 10.5, color: '#64748B', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '0.5px' }}>Fuel Type</span>
+                    <strong style={{ fontSize: 13.5, color: '#111318', textTransform: 'capitalize', display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
+                      <BsFuelPump style={{ color: '#C8000A', flexShrink: 0 }} /> {car.fuelType || 'Petrol'}
                     </strong>
                   </div>
 
                   <div>
-                    <span style={{ fontSize: 11, color: '#64748B', textTransform: 'uppercase', fontWeight: 700 }}>Seating</span>
-                    <strong style={{ fontSize: 14, color: '#0F172A', display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
-                      <FiUsers style={{ color: '#EF4444' }} /> {car.seats || 5} Seats
+                    <span style={{ fontSize: 10.5, color: '#64748B', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '0.5px' }}>Seating</span>
+                    <strong style={{ fontSize: 13.5, color: '#111318', display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
+                      <FiUsers style={{ color: '#C8000A', flexShrink: 0 }} /> {car.seats || 5} Seats
                     </strong>
                   </div>
 
                   <div>
-                    <span style={{ fontSize: 11, color: '#64748B', textTransform: 'uppercase', fontWeight: 700 }}>Mileage</span>
-                    <strong style={{ fontSize: 14, color: '#0F172A', display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
-                      <FiZap style={{ color: '#EF4444' }} /> {car.mileage || '18 kmpl'}
+                    <span style={{ fontSize: 10.5, color: '#64748B', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '0.5px' }}>Mileage</span>
+                    <strong style={{ fontSize: 13.5, color: '#111318', display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
+                      <FiZap style={{ color: '#C8000A', flexShrink: 0 }} /> {car.mileage || '18 kmpl'}
                     </strong>
                   </div>
 
                   <div>
-                    <span style={{ fontSize: 11, color: '#64748B', textTransform: 'uppercase', fontWeight: 700 }}>Luggage</span>
-                    <strong style={{ fontSize: 14, color: '#0F172A', display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
-                      <BsLuggage style={{ color: '#EF4444' }} /> {car.luggageCapacity || '2 Bags'}
+                    <span style={{ fontSize: 10.5, color: '#64748B', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '0.5px' }}>Luggage</span>
+                    <strong style={{ fontSize: 13.5, color: '#111318', display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
+                      <BsLuggage style={{ color: '#C8000A', flexShrink: 0 }} /> {car.luggageCapacity || '2 Bags'}
                     </strong>
                   </div>
                 </div>
               </div>
 
-              {/* Tariff Table */}
+              {/* Pricing Tariff Card */}
               <div style={{
-                padding: 20,
+                padding: '18px 20px',
                 marginBottom: 20,
                 background: '#FFFFFF',
                 borderRadius: 16,
                 border: '1px solid #E2E8F0',
-                boxShadow: '0 4px 20px rgba(15, 23, 42, 0.04)',
+                boxShadow: '0 4px 16px rgba(15, 23, 42, 0.04)',
               }}>
-                <h3 style={{ fontSize: 16, marginBottom: 14, color: '#0F172A', fontWeight: 800 }}>Pricing Tariff</h3>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 12 }}>
-                  <div style={{ padding: 14, borderRadius: 12, background: '#F8FAFC', border: '1px solid #E2E8F0' }}>
-                    <span style={{ fontSize: 11, color: '#64748B', fontWeight: 600 }}>Hourly Package</span>
-                    <h4 style={{ fontSize: 18, margin: '4px 0 0', color: '#0F172A', fontWeight: 800 }}>{formatCurrency(car.pricePerHour || 99)} / hr</h4>
+                <h3 style={{ fontSize: 15, marginBottom: 14, color: '#111318', fontWeight: 800 }}>Pricing Tariff</h3>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 12 }}>
+                  <div style={{ padding: 12, borderRadius: 12, background: '#F8FAFC', border: '1px solid #E2E8F0' }}>
+                    <span style={{ fontSize: 11, color: '#64748B', fontWeight: 700 }}>Hourly Package</span>
+                    <h4 style={{ fontSize: 17, margin: '4px 0 0', color: '#111318', fontWeight: 800 }}>{formatCurrency(car.pricePerHour || 99)} / hr</h4>
                   </div>
-                  <div style={{ padding: 14, borderRadius: 12, background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, #FFFFFF 100%)', border: '1px solid rgba(239, 68, 68, 0.25)' }}>
-                    <span style={{ fontSize: 11, color: '#EF4444', fontWeight: 700 }}>Daily Package</span>
-                    <h4 style={{ fontSize: 20, margin: '4px 0 0', color: '#EF4444', fontWeight: 800 }}>{formatCurrency(car.pricePerDay || 2599)} / day</h4>
+                  <div style={{ padding: 12, borderRadius: 12, background: 'linear-gradient(135deg, rgba(200, 0, 10, 0.08) 0%, #FFFFFF 100%)', border: '1px solid rgba(200, 0, 10, 0.25)' }}>
+                    <span style={{ fontSize: 11, color: '#C8000A', fontWeight: 800 }}>Daily Package</span>
+                    <h4 style={{ fontSize: 19, margin: '4px 0 0', color: '#C8000A', fontWeight: 800 }}>{formatCurrency(car.pricePerDay || 2599)} / day</h4>
                   </div>
-                  <div style={{ padding: 14, borderRadius: 12, background: '#F8FAFC', border: '1px solid #E2E8F0' }}>
-                    <span style={{ fontSize: 11, color: '#64748B', fontWeight: 600 }}>Refundable Deposit</span>
-                    <h4 style={{ fontSize: 18, margin: '4px 0 0', color: '#0F172A', fontWeight: 800 }}>{formatCurrency(car.securityDeposit || 2000)}</h4>
+                  <div style={{ padding: 12, borderRadius: 12, background: '#F8FAFC', border: '1px solid #E2E8F0' }}>
+                    <span style={{ fontSize: 11, color: '#64748B', fontWeight: 700 }}>Refundable Deposit</span>
+                    <h4 style={{ fontSize: 17, margin: '4px 0 0', color: '#111318', fontWeight: 800 }}>{formatCurrency(car.securityDeposit || 2000)}</h4>
                   </div>
                 </div>
+              </div>
+
+              {/* Rental Terms & Conditions */}
+              <div style={{ marginBottom: 20 }}>
+                <TermsAndConditions expandable={true} defaultOpen={true} />
               </div>
             </div>
 
-            {/* Right Column: Sleek Booking CTA Card */}
-            <aside style={{ alignSelf: 'start', position: 'sticky', top: 84 }}>
+            {/* Right Column: Sticky Booking Card */}
+            <aside className="car-detail-sidebar">
               <div style={{
-                padding: 22,
+                padding: 20,
                 background: '#FFFFFF',
                 borderRadius: 16,
                 border: '1px solid #E2E8F0',
-                boxShadow: '0 8px 30px rgba(15, 23, 42, 0.08)',
+                boxShadow: '0 6px 24px rgba(15, 23, 42, 0.06)',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 16,
               }}>
                 <div>
-                  <span style={{ fontSize: 11, color: '#64748B', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  <span style={{ fontSize: 11, color: '#64748B', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.8px' }}>
                     Daily Rate
                   </span>
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginTop: 2 }}>
-                    <span style={{ fontSize: 28, fontWeight: 800, color: '#0F172A', lineHeight: 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginTop: 4 }}>
+                    <span style={{ fontSize: 28, fontWeight: 900, color: '#C8000A', lineHeight: 1 }}>
                       {formatCurrency(car.pricePerDay || 2599)}
                     </span>
                     <span style={{ fontSize: 12, color: '#64748B', fontWeight: 600 }}>/ day</span>
@@ -301,19 +318,30 @@ export default function CarDetailPage() {
                 </div>
 
                 {/* Key Benefits List */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, padding: '12px 14px', background: '#F8FAFC', borderRadius: 12, border: '1px solid #F1F5F9' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: '#475569', fontWeight: 600 }}>
-                    <FiTruck style={{ color: '#EF4444' }} size={14} /> Doorstep Delivery in 30 Mins
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 10,
+                  padding: '12px 14px',
+                  background: '#F8FAFC',
+                  borderRadius: 12,
+                  border: '1px solid #E2E8F0',
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: '#334155', fontWeight: 700 }}>
+                    <FiTruck style={{ color: '#C8000A', flexShrink: 0 }} size={15} />
+                    <span>Doorstep Delivery in 30 Mins</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: '#475569', fontWeight: 600 }}>
-                    <FiKey style={{ color: '#EF4444' }} size={14} /> Unlimited Kilometers Included
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: '#334155', fontWeight: 700 }}>
+                    <FiKey style={{ color: '#C8000A', flexShrink: 0 }} size={15} />
+                    <span>300 KM Daily Limit Included</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: '#475569', fontWeight: 600 }}>
-                    <FiShield style={{ color: '#EF4444' }} size={14} /> Comprehensive Insurance Covered
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: '#334155', fontWeight: 700 }}>
+                    <FiShield style={{ color: '#C8000A', flexShrink: 0 }} size={15} />
+                    <span>Full Insurance Coverage</span>
                   </div>
                 </div>
 
-                {/* Glossy Book / Inquire CTA Button */}
+                {/* Book / Inquire Button */}
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(true)}
@@ -321,10 +349,10 @@ export default function CarDetailPage() {
                   style={{
                     width: '100%',
                     padding: '12px',
-                    fontSize: 15,
+                    fontSize: 14.5,
                     fontWeight: 800,
                     borderRadius: 'var(--radius-full)',
-                    boxShadow: '0 4px 18px rgba(239, 68, 68, 0.25)',
+                    boxShadow: '0 4px 18px rgba(200, 0, 10, 0.30)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -337,10 +365,10 @@ export default function CarDetailPage() {
             </aside>
           </div>
 
-          {/* Similar Vehicles */}
+          {/* Similar Vehicles Grid */}
           {similarCars.length > 0 && (
             <div style={{ marginTop: 36 }}>
-              <h2 style={{ fontSize: 22, marginBottom: 18, color: '#0F172A', fontWeight: 800 }}>Similar Vehicles</h2>
+              <h2 style={{ fontSize: 20, marginBottom: 16, color: '#111318', fontWeight: 800 }}>Similar Vehicles</h2>
               <div className="grid-3">
                 {similarCars.map((sCar) => (
                   <RevvCarCard key={sCar.id} car={sCar} onEnquire={(c) => navigate(`/cars/${c.id}`)} />
@@ -366,18 +394,46 @@ export default function CarDetailPage() {
       <Footer />
 
       <style>{`
-        .car-gallery-main {
-          height: 320px;
+        .car-detail-layout {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) 320px;
+          gap: 20px;
         }
-        @media (max-width: 960px) {
-          .car-detail-layout { grid-template-columns: 1fr !important; }
-          .car-gallery-main { height: 260px; }
+        .car-detail-sidebar {
+          align-self: start;
+          position: sticky;
+          top: 84px;
+        }
+        .car-gallery-main {
+          height: 380px;
+        }
+        @media (max-width: 1100px) {
+          .car-detail-layout {
+            grid-template-columns: minmax(0, 1fr) 300px;
+            gap: 16px;
+          }
+        }
+        @media (max-width: 900px) {
+          .car-detail-layout {
+            grid-template-columns: 1fr !important;
+            gap: 20px;
+          }
+          .car-detail-sidebar {
+            position: static !important;
+          }
+          .car-gallery-main {
+            height: 260px;
+          }
         }
         @media (max-width: 640px) {
-          .car-gallery-main { height: 200px; }
+          .car-gallery-main {
+            height: 210px;
+          }
         }
         @media (max-width: 400px) {
-          .car-gallery-main { height: 170px; }
+          .car-gallery-main {
+            height: 180px;
+          }
         }
       `}</style>
     </div>

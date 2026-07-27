@@ -2,8 +2,8 @@ import { motion } from 'framer-motion';
 import { BsWhatsapp } from 'react-icons/bs';
 
 export default function WhatsAppButton() {
-  const phoneNumber = '918485877633';
-  const defaultMessage = encodeURIComponent('Hi NextRent, I want to inquire about renting a self-drive car.');
+  const phoneNumber = '919270762176';
+  const defaultMessage = encodeURIComponent('Hi SA Self Drive Cars, I want to inquire about renting a self-drive car.');
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${defaultMessage}`;
 
   return (
@@ -33,7 +33,7 @@ export default function WhatsAppButton() {
         cursor: 'pointer',
         textDecoration: 'none',
       }}
-      title="Chat with NextRent on WhatsApp (+91 8485877633)"
+      title="Chat with SA Self Drive Cars on WhatsApp (+91 9270762176)"
       aria-label="Chat on WhatsApp"
     >
       <BsWhatsapp />
