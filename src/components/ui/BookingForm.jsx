@@ -2,7 +2,8 @@ import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { motion } from 'framer-motion';
-import { FiSend, FiCheckCircle } from 'react-icons/fi';
+import { FiSend, FiCheckCircle, FiMapPin, FiTruck, FiKey } from 'react-icons/fi';
+import { BsCarFront } from 'react-icons/bs';
 import toast from 'react-hot-toast';
 import { addInquiry } from '../../firebase/firestore';
 import { useTenant } from '../../contexts/TenantContext';
@@ -15,19 +16,20 @@ export default function BookingForm({ car, onSuccess }) {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [selectedCarName, setSelectedCarName] = useState('Maruti Suzuki Swift');
 
   const [formData, setFormData] = useState({
     customerName: '',
     phone: '',
     email: '',
-    city: car?.citiesAvailable?.[0] || 'Mumbai',
+    city: car?.citiesAvailable?.[0] || 'Pune',
     pickupDate: new Date(Date.now() + 86400000),
     returnDate: new Date(Date.now() + 86400000 * 3),
     pickupType: 'delivery',
     message: '',
   });
 
-  const cities = ['Mumbai', 'Delhi NCR', 'Bangalore', 'Hyderabad', 'Pune', 'Chennai', 'Kolkata', 'Ahmedabad'];
+  const cities = ['Pune', 'Mumbai', 'Pimpri-Chinchwad', 'Lonavala', 'Outstation'];
 
   const calculateDays = () => {
     if (!formData.pickupDate || !formData.returnDate) return 1;
@@ -37,20 +39,20 @@ export default function BookingForm({ car, onSuccess }) {
   };
 
   const daysCount = calculateDays();
-  const estimatedPrice = car ? (car.pricePerDay || 1499) * daysCount : 0;
+  const estimatedPrice = car ? (car.pricePerDay || 2300) * daysCount : 0;
 
   const { user } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.customerName.trim() || !formData.phone.trim() || !formData.email.trim()) {
-      toast.error('Please fill in all required contact details');
+    if (!formData.customerName.trim() || !formData.phone.trim()) {
+      toast.error('Please fill in required contact details');
       return;
     }
 
     if (!agreedToTerms) {
-      toast.error('Please read and agree to the Terms & Conditions');
+      toast.error('Please check the Terms & Conditions box to proceed');
       return;
     }
 
@@ -58,10 +60,10 @@ export default function BookingForm({ car, onSuccess }) {
     try {
       await addInquiry(tenantId, {
         carId: car?.id || null,
-        carName: car?.name || 'General Inquiry',
+        carName: car?.name || selectedCarName || 'General Inquiry',
         customerName: formData.customerName,
         phone: formData.phone,
-        email: formData.email,
+        email: formData.email || 'N/A',
         city: formData.city,
         pickupDate: formData.pickupDate.toISOString(),
         returnDate: formData.returnDate.toISOString(),
@@ -75,8 +77,8 @@ export default function BookingForm({ car, onSuccess }) {
       toast.success('Rental Inquiry submitted successfully!');
       if (onSuccess) onSuccess();
     } catch (err) {
-      console.error('Error submitting inquiry:', err);
-      toast.error('Failed to submit inquiry. Please try again.');
+      console.error(err);
+      toast.error('Failed to submit inquiry');
     } finally {
       setSubmitting(false);
     }
@@ -89,44 +91,44 @@ export default function BookingForm({ car, onSuccess }) {
         animate={{ opacity: 1, scale: 1 }}
         style={{
           textAlign: 'center',
-          padding: '24px 12px',
+          padding: '20px 12px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: 12,
+          gap: 10,
         }}
       >
         <div style={{
-          width: 52,
-          height: 52,
+          width: 48,
+          height: 48,
           borderRadius: '50%',
-          background: 'var(--color-success-bg)',
-          border: '1px solid rgba(16,185,129,0.3)',
-          color: 'var(--color-success)',
+          background: 'rgba(22,163,74,0.1)',
+          color: '#16A34A',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: 26,
         }}>
-          <FiCheckCircle />
+          <FiCheckCircle size={24} />
         </div>
-        <h3 style={{ fontSize: 20, margin: 0, color: 'var(--color-text)' }}>Inquiry Received!</h3>
-        <p style={{ fontSize: 13, color: 'var(--color-text-2)', maxWidth: 320, margin: 0 }}>
-          Thank you, <strong>{formData.customerName}</strong>. Our team will contact you at <strong>{formData.phone}</strong> shortly to confirm doorstep delivery.
+
+        <h3 style={{ fontSize: 18, margin: 0, color: '#0F172A', fontWeight: 900 }}>Inquiry Received!</h3>
+        <p style={{ fontSize: 12.5, color: '#64748B', maxWidth: 360, margin: 0, lineHeight: 1.5 }}>
+          Thank you! Our representative will confirm vehicle availability and doorstep delivery within 15 minutes.
         </p>
-        <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+
+        <div style={{ display: 'flex', gap: 8, marginTop: 4 }}>
           <a
             href="/my-inquiries"
             className="btn btn-primary btn-sm"
-            style={{ padding: '8px 16px', fontSize: 13 }}
+            style={{ padding: '6px 14px', fontSize: 12, background: '#C8000A', borderColor: '#C8000A', fontWeight: 800 }}
           >
-            View My Booking Status ➔
+            Track Status ➔
           </a>
           <button
             type="button"
-            onClick={() => { setSubmitted(false); }}
+            onClick={() => setSubmitted(false)}
             className="btn btn-secondary btn-sm"
-            style={{ padding: '8px 14px', fontSize: 13 }}
+            style={{ padding: '6px 12px', fontSize: 12 }}
           >
             New Request
           </button>
@@ -136,185 +138,205 @@ export default function BookingForm({ car, onSuccess }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-      {car && (
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      {/* Selected Vehicle Banner / Selector */}
+      {!car ? (
+        <div className="form-group" style={{ margin: 0 }}>
+          <label className="form-label" style={{ fontSize: 11, marginBottom: 2 }}>Select Vehicle Model *</label>
+          <select
+            className="form-select"
+            value={selectedCarName}
+            onChange={e => setSelectedCarName(e.target.value)}
+            style={{ fontWeight: 800, height: 38, fontSize: 13 }}
+          >
+            <option value="Maruti Suzuki Swift">Maruti Suzuki Swift — ₹2,300/day</option>
+            <option value="Mahindra Thar 4x4">Mahindra Thar 4x4 — ₹5,000/day</option>
+            <option value="Maruti Suzuki Ertiga 7-Seater">Maruti Suzuki Ertiga 7-Seater — ₹2,500/day</option>
+            <option value="Hyundai i20">Hyundai i20 — ₹2,300/day</option>
+            <option value="Maruti Suzuki Dzire CNG">Maruti Suzuki Dzire CNG — ₹2,500/day</option>
+            <option value="Tata Punch SUV">Tata Punch SUV — ₹2,500/day</option>
+            <option value="Hyundai Venue">Hyundai Venue — ₹3,000/day</option>
+            <option value="Maruti Suzuki Baleno">Maruti Suzuki Baleno — ₹2,300/day</option>
+          </select>
+        </div>
+      ) : (
         <div style={{
-          padding: '10px 14px',
-          borderRadius: 'var(--radius-md)',
-          background: 'var(--color-accent-bg)',
-          border: '1px solid rgba(255,87,34,0.2)',
+          padding: '8px 12px',
+          borderRadius: 10,
+          background: 'rgba(200, 0, 10, 0.05)',
+          border: '1px solid rgba(200, 0, 10, 0.18)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
         }}>
           <div>
-            <span style={{ fontSize: 10, color: 'var(--color-accent)', fontWeight: 700, textTransform: 'uppercase' }}>
-              Selected Vehicle
+            <span style={{ fontSize: 10, color: '#C8000A', fontWeight: 800, textTransform: 'uppercase' }}>
+              Selected Car
             </span>
-            <h4 style={{ fontSize: 14, margin: 0, color: 'var(--color-text)' }}>{car.name}</h4>
+            <h4 style={{ fontSize: 14, margin: 0, color: '#0F172A', fontWeight: 800 }}>{car.name}</h4>
           </div>
           <div style={{ textAlign: 'right' }}>
-            <span style={{ fontSize: 10, color: 'var(--color-text-3)', display: 'block' }}>Est. Total ({daysCount}d)</span>
-            <span style={{ fontSize: 15, fontWeight: 800, color: 'var(--color-accent)' }}>
+            <span style={{ fontSize: 10, color: '#64748B', display: 'block' }}>Est. Total ({daysCount}d)</span>
+            <span style={{ fontSize: 15, fontWeight: 900, color: '#C8000A' }}>
               {formatCurrency(estimatedPrice)}
             </span>
           </div>
         </div>
       )}
 
-      {/* Contact info */}
-      <div className="grid-2" style={{ gap: 10 }}>
-        <div className="form-group">
-          <label className="form-label">Full Name *</label>
+      {/* Row 1: Contact Details */}
+      <div className="grid-3" style={{ gap: 10 }}>
+        <div className="form-group" style={{ margin: 0 }}>
+          <label className="form-label" style={{ fontSize: 11, marginBottom: 2 }}>Full Name *</label>
           <input
             type="text"
             required
             className="form-input"
-            placeholder="John Doe"
+            placeholder="e.g. Amit Patil"
             value={formData.customerName}
             onChange={e => setFormData({ ...formData, customerName: e.target.value })}
+            style={{ height: 36, fontSize: 12.5 }}
           />
         </div>
 
-        <div className="form-group">
-          <label className="form-label">Phone *</label>
+        <div className="form-group" style={{ margin: 0 }}>
+          <label className="form-label" style={{ fontSize: 11, marginBottom: 2 }}>Mobile Number (+91) *</label>
           <input
             type="tel"
             required
             className="form-input"
-            placeholder="+91 92707 62176"
+            placeholder="+91 98765 43210"
             value={formData.phone}
             onChange={e => setFormData({ ...formData, phone: e.target.value })}
-          />
-        </div>
-      </div>
-
-      <div className="grid-2" style={{ gap: 10 }}>
-        <div className="form-group">
-          <label className="form-label">Email *</label>
-          <input
-            type="email"
-            required
-            className="form-input"
-            placeholder="john@example.com"
-            value={formData.email}
-            onChange={e => setFormData({ ...formData, email: e.target.value })}
+            style={{ height: 36, fontSize: 12.5 }}
           />
         </div>
 
-        <div className="form-group">
-          <label className="form-label">City *</label>
+        <div className="form-group" style={{ margin: 0 }}>
+          <label className="form-label" style={{ fontSize: 11, marginBottom: 2 }}>City / Location</label>
           <select
             className="form-select"
             value={formData.city}
             onChange={e => setFormData({ ...formData, city: e.target.value })}
+            style={{ height: 36, fontSize: 12.5 }}
           >
             {cities.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
         </div>
       </div>
 
-      {/* Dates */}
-      <div className="grid-2" style={{ gap: 10 }}>
-        <div className="form-group">
-          <label className="form-label">Pickup Date & Time</label>
+      {/* Row 2: Trip Dates & Delivery Option */}
+      <div className="grid-3" style={{ gap: 10 }}>
+        <div className="form-group" style={{ margin: 0 }}>
+          <label className="form-label" style={{ fontSize: 11, marginBottom: 2 }}>Pickup Date & Time</label>
           <DatePicker
             selected={formData.pickupDate}
             onChange={date => setFormData({ ...formData, pickupDate: date })}
             showTimeSelect
             dateFormat="MMM d, h:mm aa"
             minDate={new Date()}
+            className="form-input"
+            style={{ height: 36, fontSize: 12.5 }}
           />
         </div>
 
-        <div className="form-group">
-          <label className="form-label">Return Date & Time</label>
+        <div className="form-group" style={{ margin: 0 }}>
+          <label className="form-label" style={{ fontSize: 11, marginBottom: 2 }}>Return Date & Time</label>
           <DatePicker
             selected={formData.returnDate}
             onChange={date => setFormData({ ...formData, returnDate: date })}
             showTimeSelect
             dateFormat="MMM d, h:mm aa"
             minDate={formData.pickupDate || new Date()}
+            className="form-input"
+            style={{ height: 36, fontSize: 12.5 }}
           />
         </div>
-      </div>
 
-      {/* Pickup Type */}
-      <div className="form-group">
-        <label className="form-label">Delivery Option</label>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-          <button
-            type="button"
-            className={`btn ${formData.pickupType === 'delivery' ? 'btn-primary' : 'btn-secondary'} btn-sm`}
-            onClick={() => setFormData({ ...formData, pickupType: 'delivery' })}
-            style={{ justifyContent: 'center' }}
-          >
-            🚗 Doorstep Delivery
-          </button>
-          <button
-            type="button"
-            className={`btn ${formData.pickupType === 'self-pickup' ? 'btn-primary' : 'btn-secondary'} btn-sm`}
-            onClick={() => setFormData({ ...formData, pickupType: 'self-pickup' })}
-            style={{ justifyContent: 'center' }}
-          >
-            🏢 Hub Self-Pickup
-          </button>
+        <div className="form-group" style={{ margin: 0 }}>
+          <label className="form-label" style={{ fontSize: 11, marginBottom: 2 }}>Delivery Preference</label>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, height: 36 }}>
+            <button
+              type="button"
+              className={`btn ${formData.pickupType === 'delivery' ? 'btn-primary' : 'btn-secondary'} btn-sm`}
+              onClick={() => setFormData({ ...formData, pickupType: 'delivery' })}
+              style={{
+                fontSize: 11.5,
+                fontWeight: 700,
+                padding: '0 6px',
+                justifyContent: 'center',
+                background: formData.pickupType === 'delivery' ? '#C8000A' : '#FFFFFF',
+                borderColor: formData.pickupType === 'delivery' ? '#C8000A' : '#CBD5E1',
+              }}
+            >
+              <FiTruck size={12} /> Doorstep
+            </button>
+            <button
+              type="button"
+              className={`btn ${formData.pickupType === 'self-pickup' ? 'btn-primary' : 'btn-secondary'} btn-sm`}
+              onClick={() => setFormData({ ...formData, pickupType: 'self-pickup' })}
+              style={{
+                fontSize: 11.5,
+                fontWeight: 700,
+                padding: '0 6px',
+                justifyContent: 'center',
+                background: formData.pickupType === 'self-pickup' ? '#C8000A' : '#FFFFFF',
+                borderColor: formData.pickupType === 'self-pickup' ? '#C8000A' : '#CBD5E1',
+              }}
+            >
+              <BsCarFront size={12} /> Hub Pickup
+            </button>
+          </div>
         </div>
       </div>
-
-      {/* Message */}
-      <div className="form-group">
-        <label className="form-label">Special Requests (Optional)</label>
-        <textarea
-          rows={2}
-          className="form-textarea"
-          placeholder="Any specific delivery instructions..."
-          value={formData.message}
-          onChange={e => setFormData({ ...formData, message: e.target.value })}
-        />
-      </div>
-
-      {/* Terms & Conditions Section */}
-      <TermsAndConditions compact={true} expandable={true} defaultOpen={false} />
 
       {/* Mandatory Terms Checkbox */}
       <label style={{
         display: 'flex',
-        alignItems: 'flex-start',
-        gap: 10,
-        fontSize: 12,
+        alignItems: 'center',
+        gap: 8,
+        fontSize: 11.5,
         fontWeight: 600,
-        color: '#111318',
+        color: '#1E293B',
         cursor: 'pointer',
-        background: agreedToTerms ? 'rgba(200,0,10,0.06)' : '#F9FAFB',
-        border: agreedToTerms ? '1px solid rgba(200,0,10,0.25)' : '1px solid #E5E7EB',
-        padding: '10px 12px',
-        borderRadius: 10,
-        transition: 'all 0.15s ease',
+        background: agreedToTerms ? 'rgba(200,0,10,0.05)' : '#F8FAFC',
+        border: agreedToTerms ? '1px solid rgba(200,0,10,0.25)' : '1px solid #E2E8F0',
+        padding: '8px 10px',
+        borderRadius: 8,
+        marginTop: 2,
       }}>
         <input
           type="checkbox"
           checked={agreedToTerms}
           onChange={e => setAgreedToTerms(e.target.checked)}
-          style={{ width: 18, height: 18, accentColor: '#C8000A', marginTop: 1, cursor: 'pointer' }}
+          style={{ width: 16, height: 16, accentColor: '#C8000A', cursor: 'pointer' }}
         />
         <span>
-          I agree to all <strong>SA Self Drive Terms & Conditions</strong> and carry the <strong>5 Required Documents</strong> (Aadhaar, Driving Licence, PAN Card, Rent Agreement & Job ID).
+          I agree to <strong>Terms & Conditions</strong> & carry <strong>5 Required Documents</strong> (Aadhaar, DL, PAN, Rent Agreement & Job ID).
         </span>
       </label>
 
+      {/* Submit Button */}
       <button
         type="submit"
         disabled={submitting || !agreedToTerms}
         className="btn btn-primary btn-lg w-full"
-        style={{ marginTop: 4, opacity: agreedToTerms ? 1 : 0.65 }}
+        style={{
+          background: '#C8000A',
+          borderColor: '#C8000A',
+          fontSize: 13.5,
+          fontWeight: 800,
+          padding: '9px',
+          opacity: agreedToTerms ? 1 : 0.65,
+          marginTop: 2,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 6,
+        }}
       >
-        {submitting ? 'Submitting...' : 'Submit Rental Inquiry'} <FiSend />
+        {submitting ? 'Submitting...' : <><FiSend size={14} /> Submit Rental Inquiry</>}
       </button>
-
-      <p style={{ fontSize: 11, color: 'var(--color-text-3)', textAlign: 'center', margin: 0 }}>
-        🔒 Carry 5 Required Documents (Aadhaar, DL, PAN, Rent Agreement & Job ID) at pickup.
-      </p>
     </form>
   );
 }

@@ -1,14 +1,19 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import {
   FiTruck,
   FiMessageSquare,
   FiUsers,
   FiDollarSign,
   FiEye,
-  FiSettings,
+  FiPhone,
+  FiPlus,
+  FiGlobe,
+  FiDownload,
+  FiMapPin,
+  FiZap,
 } from 'react-icons/fi';
+import { BsWhatsapp } from 'react-icons/bs';
 import toast from 'react-hot-toast';
 
 import AdminLayout from '../../components/layout/AdminLayout';
@@ -53,49 +58,110 @@ export default function AdminDashboard() {
 
   const newInquiries = inquiries.filter(i => i.status === 'new');
   const confirmedInquiries = inquiries.filter(i => i.status === 'confirmed');
-  const estimatedRevenue = confirmedInquiries.reduce((sum, i) => sum + (i.estimatedPrice || 1499), 0);
+  const estimatedRevenue = confirmedInquiries.reduce((sum, i) => sum + (i.estimatedPrice || 2300), 0);
 
   const categoryCounts = cars.reduce((acc, c) => {
-    acc[c.category] = (acc[c.category] || 0) + 1;
+    const cat = c.category || 'hatchback';
+    acc[cat] = (acc[cat] || 0) + 1;
     return acc;
   }, {});
 
   const handleStatusUpdate = async (id, status) => {
     try {
       await updateInquiryStatus(tenantId, id, status);
-      toast.success(`Status updated to ${status}`);
+      toast.success(`Inquiry status updated to ${status}`);
     } catch (err) {
       console.error(err);
       toast.error('Failed to update status');
     }
   };
 
+  const handleExportCSV = () => {
+    if (inquiries.length === 0) return toast.info('No inquiries to export');
+    const headers = 'ID,Customer,Phone,Email,Car,City,PickupDate,ReturnDate,Status,Price\n';
+    const rows = inquiries.map(i =>
+      `"${i.id}","${i.customerName}","${i.phone}","${i.email}","${i.carName}","${i.city}","${i.pickupDate}","${i.returnDate}","${i.status}","${i.estimatedPrice || 0}"`
+    ).join('\n');
+
+    const blob = new Blob([headers + rows], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `inquiries-${tenantId}-${Date.now()}.csv`;
+    a.click();
+    toast.success('Exported inquiries to CSV');
+  };
+
   return (
     <AdminLayout>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-        {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+        
+        {/* Header & Tenant Scope */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10 }}>
           <div>
-            <h1 style={{ fontSize: 24, margin: 0, color: 'var(--color-text)' }}>CRM Dashboard</h1>
-            <p style={{ fontSize: 13, color: 'var(--color-text-2)', marginTop: 2 }}>
-              Multi-Tenant Scope: <strong style={{ color: 'var(--color-accent)' }}>{tenantId}</strong>
+            <h1 style={{ fontSize: 22, margin: 0, color: '#0F172A', fontWeight: 900 }}>CRM Executive Control Panel</h1>
+            <p style={{ fontSize: 12, color: '#64748B', marginTop: 2 }}>
+              Scope: <strong style={{ color: '#C8000A' }}>{tenantId}</strong> • Real-Time Firestore Sync
             </p>
           </div>
+
+          <a
+            href="/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-secondary btn-sm"
+            style={{ fontSize: 12, padding: '6px 12px', gap: 6, fontWeight: 700 }}
+          >
+            <FiGlobe color="#2563EB" /> Live Website Preview ↗
+          </a>
+        </div>
+
+        {/* 🚀 QUICK ACTION SHORTCUT BUTTONS BAR */}
+        <div className="glass-card" style={{ padding: '12px 14px', background: '#FFFFFF' }}>
+          <span style={{ fontSize: 10.5, color: '#64748B', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', display: 'flex', alignItems: 'center', gap: 4, marginBottom: 8 }}>
+            <FiZap style={{ color: '#C8000A' }} /> Quick Action Shortcuts:
+          </span>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <Link to="/admin/cars" className="btn btn-secondary btn-sm">
-              <FiTruck /> Fleet
+            <Link
+              to="/admin/cars"
+              className="btn btn-primary btn-sm"
+              style={{ background: '#C8000A', borderColor: '#C8000A', fontSize: 12, fontWeight: 800, padding: '6px 12px', gap: 4 }}
+            >
+              <FiPlus size={14} /> Add Vehicle
             </Link>
-            <Link to="/admin/settings" className="btn btn-secondary btn-sm">
-              <FiSettings /> Footer & Settings
+            <Link
+              to="/admin/inquiries"
+              className="btn btn-secondary btn-sm"
+              style={{ fontSize: 12, fontWeight: 700, padding: '6px 12px', gap: 4 }}
+            >
+              <FiMessageSquare size={13} color="#2563EB" /> Inquiries ({inquiries.length})
             </Link>
-            <Link to="/admin/inquiries" className="btn btn-primary btn-sm">
-              <FiMessageSquare /> All Inquiries ({inquiries.length})
+            <Link
+              to="/admin/customers"
+              className="btn btn-secondary btn-sm"
+              style={{ fontSize: 12, fontWeight: 700, padding: '6px 12px', gap: 4 }}
+            >
+              <FiUsers size={13} color="#16A34A" /> Customer Roster ({customers.length})
             </Link>
+            <Link
+              to="/admin/settings"
+              className="btn btn-secondary btn-sm"
+              style={{ fontSize: 12, fontWeight: 700, padding: '6px 12px', gap: 4 }}
+            >
+              <FiPhone size={13} color="#D97706" /> Web & Contact Settings
+            </Link>
+            <button
+              onClick={handleExportCSV}
+              className="btn btn-secondary btn-sm"
+              style={{ fontSize: 12, fontWeight: 700, padding: '6px 12px', gap: 4 }}
+            >
+              <FiDownload size={13} color="#475569" /> Export CSV
+            </button>
           </div>
         </div>
 
-        {/* Metric Cards Grid */}
-        <div className="grid-4">
+        {/* Compact Stat Cards Grid */}
+        <div className="grid-4" style={{ gap: 10 }}>
           <StatCard
             title="Total Cars Fleet"
             value={cars.length}
@@ -117,7 +183,7 @@ export default function AdminDashboard() {
             value={customers.length}
             icon={<FiUsers />}
             color="warning"
-            subtitle="Unique verified customers"
+            subtitle="KYC Verified Renters"
           />
 
           <StatCard
@@ -130,98 +196,140 @@ export default function AdminDashboard() {
         </div>
 
         {/* Dashboard Main Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: 20 }} className="dashboard-grid">
-          {/* Table */}
-          <div className="glass-card" style={{ padding: 20, background: '#FFFFFF' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-              <h3 style={{ fontSize: 16, margin: 0, color: 'var(--color-text)' }}>Recent Rental Inquiries</h3>
-              <Link to="/admin/inquiries" style={{ fontSize: 12, color: 'var(--color-accent)', textDecoration: 'none', fontWeight: 700 }}>
-                View All →
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: 14 }} className="dashboard-grid">
+          
+          {/* Recent Inquiries Table */}
+          <div className="glass-card" style={{ padding: 16, background: '#FFFFFF' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+              <h3 style={{ fontSize: 15, margin: 0, color: '#0F172A', fontWeight: 800 }}>Recent Rental Inquiries</h3>
+              <Link to="/admin/inquiries" style={{ fontSize: 12, color: '#C8000A', textDecoration: 'none', fontWeight: 800 }}>
+                View All Inquiries →
               </Link>
             </div>
 
             {loading ? (
-              <p style={{ color: 'var(--color-text-2)', fontSize: 13 }}>Loading inquiries...</p>
+              <p style={{ color: '#64748B', fontSize: 12.5 }}>Loading inquiries...</p>
             ) : inquiries.length === 0 ? (
-              <div className="empty-state">
-                <div className="empty-state-icon">📬</div>
-                <div className="empty-state-title">No inquiries received yet</div>
+              <div className="empty-state" style={{ padding: '20px 0' }}>
+                <div className="empty-state-icon">
+                  <FiMessageSquare size={36} color="#C8000A" />
+                </div>
+                <div className="empty-state-title" style={{ marginTop: 6 }}>No inquiries received yet</div>
               </div>
             ) : (
               <div className="table-wrapper">
                 <table className="table">
                   <thead>
                     <tr>
-                      <th>Customer</th>
+                      <th>Customer Name</th>
                       <th>Car Requested</th>
-                      <th>City</th>
+                      <th>City / Type</th>
                       <th>Dates</th>
                       <th>Status</th>
-                      <th>Action</th>
+                      <th>Contact / Actions</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {inquiries.slice(0, 6).map((item) => (
-                      <tr key={item.id}>
-                        <td>
-                          <strong style={{ color: 'var(--color-text)', display: 'block' }}>{item.customerName}</strong>
-                          <span style={{ fontSize: 11, color: 'var(--color-text-3)' }}>{item.phone}</span>
-                        </td>
-                        <td>{item.carName || 'General'}</td>
-                        <td>📍 {item.city || 'Mumbai'}</td>
-                        <td>{formatTimestamp(item.pickupDate)}</td>
-                        <td>
-                          <select
-                            className="form-select"
-                            value={item.status || 'new'}
-                            onChange={(e) => handleStatusUpdate(item.id, e.target.value)}
-                            style={{ padding: '2px 6px', fontSize: 11, height: 28, width: 110 }}
-                          >
-                            <option value="new">🟡 New</option>
-                            <option value="contacted">🔵 Contacted</option>
-                            <option value="confirmed">🟢 Confirmed</option>
-                            <option value="closed">🔴 Closed</option>
-                          </select>
-                        </td>
-                        <td>
-                          <button
-                            className="btn-icon"
-                            onClick={() => {
-                              setSelectedInquiry(item);
-                              setIsDetailOpen(true);
-                            }}
-                          >
-                            <FiEye size={14} />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
+                    {inquiries.slice(0, 6).map((item) => {
+                      const cleanPhone = (item.phone || '').replace(/\D/g, '');
+                      const waNum = cleanPhone.startsWith('91') ? cleanPhone : `91${cleanPhone}`;
+                      return (
+                        <tr key={item.id}>
+                          <td>
+                            <div>
+                              <strong style={{ color: '#0F172A', display: 'block', fontSize: 12.5 }}>{item.customerName}</strong>
+                              <span style={{ fontSize: 11, color: '#64748B' }}>{item.phone}</span>
+                            </div>
+                          </td>
+                          <td>
+                            <strong style={{ color: '#C8000A', fontSize: 12.5 }}>{item.carName || 'General'}</strong>
+                          </td>
+                          <td>
+                            <span style={{ fontSize: 12, color: '#334155' }}>
+                              {item.city || 'Pune'} ({item.pickupType || 'delivery'})
+                            </span>
+                          </td>
+                          <td>
+                            <span style={{ fontSize: 11.5, color: '#64748B' }}>
+                              {formatTimestamp(item.pickupDate)}
+                            </span>
+                          </td>
+                          <td>
+                            <select
+                              className="form-select"
+                              value={item.status || 'new'}
+                              onChange={(e) => handleStatusUpdate(item.id, e.target.value)}
+                              style={{ padding: '2px 6px', fontSize: 11, height: 26, width: 105, fontWeight: 700 }}
+                            >
+                              <option value="new">🟡 New</option>
+                              <option value="contacted">🔵 Contacted</option>
+                              <option value="confirmed">🟢 Confirmed</option>
+                              <option value="closed">🔴 Closed</option>
+                            </select>
+                          </td>
+                          <td>
+                            <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+                              <a
+                                href={`https://wa.me/${waNum}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn btn-secondary btn-sm"
+                                style={{
+                                  padding: '3px 7px',
+                                  background: '#25D366',
+                                  borderColor: '#25D366',
+                                  color: '#FFFFFF',
+                                  fontSize: 10.5,
+                                  fontWeight: 800,
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: 3,
+                                }}
+                                title="Chat on WhatsApp"
+                              >
+                                <BsWhatsapp size={11} /> WhatsApp
+                              </a>
+                              <button
+                                className="btn-icon"
+                                onClick={() => {
+                                  setSelectedInquiry(item);
+                                  setIsDetailOpen(true);
+                                }}
+                                title="View Full Details"
+                              >
+                                <FiEye size={13} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
             )}
           </div>
 
-          {/* Category Breakdown */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            <div className="glass-card" style={{ padding: 20, background: '#FFFFFF' }}>
-              <h3 style={{ fontSize: 16, marginBottom: 16, color: 'var(--color-text)' }}>Fleet by Category</h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          {/* Fleet Breakdown & Quick Links */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            <div className="glass-card" style={{ padding: 16, background: '#FFFFFF' }}>
+              <h3 style={{ fontSize: 14, marginBottom: 12, color: '#0F172A', fontWeight: 800 }}>Fleet by Category</h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {[
-                  { id: 'hatchback', label: 'Hatchback', color: 'var(--color-accent)' },
-                  { id: 'sedan', label: 'Sedan', color: 'var(--color-blue)' },
-                  { id: 'suv', label: 'SUV & 4x4', color: 'var(--color-warning)' },
-                  { id: 'premium', label: 'Luxury', color: 'var(--color-success)' },
+                  { id: 'hatchback', label: 'Hatchback', color: '#C8000A' },
+                  { id: 'sedan', label: 'Sedan', color: '#2563EB' },
+                  { id: 'suv', label: 'SUV & 4x4', color: '#D97706' },
+                  { id: 'muv', label: 'MUV 7-Seater', color: '#16A34A' },
                 ].map(cat => {
                   const count = categoryCounts[cat.id] || 0;
                   const pct = cars.length > 0 ? Math.round((count / cars.length) * 100) : 0;
                   return (
                     <div key={cat.id}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, marginBottom: 4 }}>
-                        <span style={{ color: 'var(--color-text)', fontWeight: 600 }}>{cat.label}</span>
-                        <span style={{ color: 'var(--color-text-3)' }}>{count} ({pct}%)</span>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11.5, marginBottom: 3 }}>
+                        <span style={{ color: '#0F172A', fontWeight: 700 }}>{cat.label}</span>
+                        <span style={{ color: '#64748B' }}>{count} ({pct}%)</span>
                       </div>
-                      <div style={{ width: '100%', height: 6, borderRadius: 3, background: 'var(--color-bg-alt)', overflow: 'hidden' }}>
+                      <div style={{ width: '100%', height: 6, borderRadius: 3, background: '#F1F5F9', overflow: 'hidden' }}>
                         <div style={{ width: `${pct}%`, height: '100%', background: cat.color, borderRadius: 3 }} />
                       </div>
                     </div>
@@ -230,66 +338,72 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <div className="glass-card" style={{ padding: 20, background: '#FFFFFF' }}>
-              <h3 style={{ fontSize: 16, marginBottom: 12, color: 'var(--color-text)' }}>Quick Actions</h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <Link to="/admin/cars" className="btn btn-secondary btn-sm" style={{ justifyContent: 'flex-start' }}>
-                  ➕ Add New Car Listing
+            <div className="glass-card" style={{ padding: 16, background: '#FFFFFF' }}>
+              <h3 style={{ fontSize: 14, marginBottom: 10, color: '#0F172A', fontWeight: 800 }}>Quick Navigation</h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                <Link to="/admin/cars" className="btn btn-secondary btn-sm" style={{ justifyContent: 'flex-start', fontSize: 12, padding: '7px 10px' }}>
+                  <FiTruck size={14} color="#C8000A" /> Manage Fleet Vehicles
                 </Link>
-                <Link to="/admin/inquiries" className="btn btn-secondary btn-sm" style={{ justifyContent: 'flex-start' }}>
-                  📩 Export Inquiries
+                <Link to="/admin/inquiries" className="btn btn-secondary btn-sm" style={{ justifyContent: 'flex-start', fontSize: 12, padding: '7px 10px' }}>
+                  <FiMessageSquare size={14} color="#2563EB" /> Manage Rental Inquiries
                 </Link>
-                <Link to="/admin/customers" className="btn btn-secondary btn-sm" style={{ justifyContent: 'flex-start' }}>
-                  👥 View Customer Roster
+                <Link to="/admin/customers" className="btn btn-secondary btn-sm" style={{ justifyContent: 'flex-start', fontSize: 12, padding: '7px 10px' }}>
+                  <FiUsers size={14} color="#16A34A" /> View Customer Roster
+                </Link>
+                <Link to="/admin/settings" className="btn btn-secondary btn-sm" style={{ justifyContent: 'flex-start', fontSize: 12, padding: '7px 10px' }}>
+                  <FiPhone size={14} color="#D97706" /> Web & Contact Settings
                 </Link>
               </div>
             </div>
           </div>
+
         </div>
       </div>
 
+      {/* Inquiry Detail Modal */}
       <Modal
         isOpen={isDetailOpen}
         onClose={() => setIsDetailOpen(false)}
         title="Inquiry Detail & Follow-up"
+        maxWidth={580}
       >
         {selectedInquiry && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-            <div style={{ padding: 14, borderRadius: 'var(--radius-md)', background: 'var(--color-bg-alt)', border: '1px solid var(--color-border)' }}>
-              <strong style={{ fontSize: 16, color: 'var(--color-text)', display: 'block' }}>{selectedInquiry.customerName}</strong>
-              <span style={{ fontSize: 13, color: 'var(--color-text-2)' }}>
-                📞 {selectedInquiry.phone} • ✉️ {selectedInquiry.email}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <div style={{ padding: 12, borderRadius: 10, background: '#F8FAFC', border: '1px solid #E2E8F0' }}>
+              <strong style={{ fontSize: 16, color: '#0F172A', display: 'block' }}>{selectedInquiry.customerName}</strong>
+              <span style={{ fontSize: 12.5, color: '#475569' }}>
+                📞 {selectedInquiry.phone} • ✉️ {selectedInquiry.email || 'N/A'}
               </span>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, fontSize: 13 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, fontSize: 12.5 }}>
               <div>
-                <span style={{ fontSize: 11, color: 'var(--color-text-3)', display: 'block' }}>Vehicle Requested</span>
-                <strong style={{ color: 'var(--color-accent)' }}>{selectedInquiry.carName || 'General'}</strong>
+                <span style={{ fontSize: 10.5, color: '#64748B', display: 'block', fontWeight: 700, textTransform: 'uppercase' }}>Vehicle Requested</span>
+                <strong style={{ color: '#C8000A' }}>{selectedInquiry.carName || 'General'}</strong>
               </div>
               <div>
-                <span style={{ fontSize: 11, color: 'var(--color-text-3)', display: 'block' }}>Location & Type</span>
-                <strong style={{ color: 'var(--color-text)' }}>📍 {selectedInquiry.city} ({selectedInquiry.pickupType})</strong>
+                <span style={{ fontSize: 10.5, color: '#64748B', display: 'block', fontWeight: 700, textTransform: 'uppercase' }}>Location & Type</span>
+                <strong style={{ color: '#0F172A' }}>📍 {selectedInquiry.city} ({selectedInquiry.pickupType})</strong>
               </div>
               <div>
-                <span style={{ fontSize: 11, color: 'var(--color-text-3)', display: 'block' }}>Pickup Date</span>
-                <strong style={{ color: 'var(--color-text)' }}>{formatTimestamp(selectedInquiry.pickupDate)}</strong>
+                <span style={{ fontSize: 10.5, color: '#64748B', display: 'block', fontWeight: 700, textTransform: 'uppercase' }}>Pickup Date</span>
+                <strong style={{ color: '#0F172A' }}>{formatTimestamp(selectedInquiry.pickupDate)}</strong>
               </div>
               <div>
-                <span style={{ fontSize: 11, color: 'var(--color-text-3)', display: 'block' }}>Return Date</span>
-                <strong style={{ color: 'var(--color-text)' }}>{formatTimestamp(selectedInquiry.returnDate)}</strong>
+                <span style={{ fontSize: 10.5, color: '#64748B', display: 'block', fontWeight: 700, textTransform: 'uppercase' }}>Return Date</span>
+                <strong style={{ color: '#0F172A' }}>{formatTimestamp(selectedInquiry.returnDate)}</strong>
               </div>
             </div>
 
             {selectedInquiry.message && (
-              <div style={{ padding: 10, borderRadius: 'var(--radius-md)', background: 'var(--color-bg-alt)' }}>
-                <span style={{ fontSize: 11, color: 'var(--color-text-3)', display: 'block' }}>Message:</span>
-                <p style={{ fontSize: 13, color: 'var(--color-text-2)', margin: '2px 0 0' }}>{selectedInquiry.message}</p>
+              <div style={{ padding: 10, borderRadius: 8, background: '#F8FAFC', border: '1px solid #E2E8F0' }}>
+                <span style={{ fontSize: 10.5, color: '#64748B', fontWeight: 700, textTransform: 'uppercase', display: 'block' }}>Message:</span>
+                <p style={{ fontSize: 12.5, color: '#334155', margin: '2px 0 0', lineHeight: 1.5 }}>{selectedInquiry.message}</p>
               </div>
             )}
 
-            <div className="form-group">
-              <label className="form-label">Update Status</label>
+            <div className="form-group" style={{ margin: 0 }}>
+              <label className="form-label" style={{ fontSize: 11, marginBottom: 2 }}>Update Status</label>
               <select
                 className="form-select"
                 value={selectedInquiry.status || 'new'}
@@ -297,12 +411,25 @@ export default function AdminDashboard() {
                   handleStatusUpdate(selectedInquiry.id, e.target.value);
                   setSelectedInquiry({ ...selectedInquiry, status: e.target.value });
                 }}
+                style={{ height: 36, fontSize: 12.5, fontWeight: 700 }}
               >
                 <option value="new">🟡 New</option>
                 <option value="contacted">🔵 Contacted</option>
                 <option value="confirmed">🟢 Confirmed</option>
                 <option value="closed">🔴 Closed</option>
               </select>
+            </div>
+
+            <div style={{ display: 'flex', gap: 8, marginTop: 4 }}>
+              <a
+                href={`https://wa.me/${(selectedInquiry.phone || '').replace(/\D/g, '').startsWith('91') ? (selectedInquiry.phone || '').replace(/\D/g, '') : `91${(selectedInquiry.phone || '').replace(/\D/g, '')}`}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary btn-sm w-full"
+                style={{ background: '#25D366', borderColor: '#25D366', color: '#FFFFFF', fontWeight: 800, padding: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}
+              >
+                <BsWhatsapp size={15} /> Chat on WhatsApp
+              </a>
             </div>
           </div>
         )}

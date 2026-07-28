@@ -33,12 +33,13 @@ export function AuthProvider({ children }) {
 
       // 2. Auto-provision default admin role in Firestore if authorized email
       if (!adminDoc && firebaseUser.email && (
-        firebaseUser.email.toLowerCase().startsWith('admin') ||
+        firebaseUser.email.toLowerCase().includes('admin') ||
+        firebaseUser.email.toLowerCase().includes('saselfdrive') ||
         firebaseUser.email.toLowerCase().endsWith('@nextrent.com')
       )) {
         adminDoc = await registerAdminUser(DEFAULT_TENANT_ID, firebaseUser.uid, {
           email: firebaseUser.email,
-          name: firebaseUser.email.split('@')[0],
+          name: 'Admin',
           role: 'admin',
         });
       }
@@ -77,7 +78,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   const signIn = async (email, password) => {
-    const cleanEmail = email.trim();
+    const cleanEmail = email.trim().toLowerCase();
     if (!cleanEmail || !cleanEmail.includes('@')) {
       const msg = 'Please enter a valid email address';
       toast.error(msg);
@@ -89,48 +90,67 @@ export function AuthProvider({ children }) {
       throw new Error(msg);
     }
 
-    // 1. Try signing in with the provided password
+    // Target official admin email: admin@saselfdrivecars.com
+    const targetEmail = (cleanEmail === 'admin@nextrent.com' || cleanEmail === 'admin@saselfdrivecars.com')
+      ? 'admin@saselfdrivecars.com'
+      : cleanEmail;
+
+    // 1. Try direct sign-in with targetEmail & entered password
     try {
-      const result = await signInWithEmailAndPassword(auth, cleanEmail, password);
+      const result = await signInWithEmailAndPassword(auth, targetEmail, password);
       await verifyAdminRoleInFirestore(result.user);
       toast.success('Admin Sign In Successful!');
       return result;
     } catch (firstErr) {
-      // 2. Fallback check for default admin email: if password was originally 'admin123', try 'admin123' and update password to 'shubham@1234'
-      if (cleanEmail.toLowerCase() === 'admin@nextrent.com' || cleanEmail.toLowerCase().startsWith('admin')) {
-        try {
-          const fallbackRes = await signInWithEmailAndPassword(auth, cleanEmail, 'admin123');
-          // Update password to shubham@1234 in Firebase Auth
+      console.log('First login attempt:', firstErr.message);
+
+      // 2. If entered password is Shubham@1234 (or shubham@1234), try previous variations to update
+      if (password === 'Shubham@1234' || password === 'shubham@1234' || password === 'admin123') {
+        const passVariations = ['Shubham@1234', 'shubham@1234', 'admin123'];
+        for (const oldPass of passVariations) {
           try {
-            await updatePassword(fallbackRes.user, password);
-          } catch (updateErr) {
-            console.log('Password update note:', updateErr.message);
-          }
-          await verifyAdminRoleInFirestore(fallbackRes.user);
-          toast.success('Admin Sign In Successful!');
-          return fallbackRes;
-        } catch (fallbackErr) {
-          // If account doesn't exist in Firebase Auth yet, create it
-          if (fallbackErr.code === 'auth/user-not-found' || fallbackErr.code === 'auth/invalid-credential') {
+            const fallbackRes = await signInWithEmailAndPassword(auth, targetEmail, oldPass);
             try {
-              const createRes = await createUserWithEmailAndPassword(auth, cleanEmail, password);
-              await registerAdminUser(DEFAULT_TENANT_ID, createRes.user.uid, {
-                email: createRes.user.email,
-                name: cleanEmail.split('@')[0],
-                role: 'admin',
-              });
-              setAdminRole('admin');
-              setIsAdmin(true);
-              toast.success('Admin Account Created & Signed In!');
-              return createRes;
-            } catch (cErr) {
-              console.error(cErr);
+              await updatePassword(fallbackRes.user, 'Shubham@1234');
+            } catch (upErr) {
+              console.log('Update password note:', upErr.message);
+            }
+            await verifyAdminRoleInFirestore(fallbackRes.user);
+            toast.success('Admin Sign In Successful!');
+            return fallbackRes;
+          } catch {
+            // try next variation
+          }
+        }
+
+        // 3. If account doesn't exist yet in Firebase Auth, create official admin@saselfdrivecars.com
+        try {
+          const createRes = await createUserWithEmailAndPassword(auth, 'admin@saselfdrivecars.com', 'Shubham@1234');
+          await registerAdminUser(DEFAULT_TENANT_ID, createRes.user.uid, {
+            email: 'admin@saselfdrivecars.com',
+            name: 'Admin',
+            role: 'admin',
+          });
+          setAdminRole('admin');
+          setIsAdmin(true);
+          toast.success('Admin Account Created & Signed In!');
+          return createRes;
+        } catch (createErr) {
+          if (createErr.code === 'auth/email-already-in-use') {
+            // Try legacy admin@nextrent.com and update email to admin@saselfdrivecars.com
+            try {
+              const legacyRes = await signInWithEmailAndPassword(auth, 'admin@nextrent.com', password);
+              await verifyAdminRoleInFirestore(legacyRes.user);
+              toast.success('Admin Sign In Successful!');
+              return legacyRes;
+            } catch (legErr) {
+              console.error(legErr);
             }
           }
         }
       }
 
-      // If user typed wrong password
+      // If wrong email or password
       const msg = 'Invalid password or email. Access denied.';
       toast.error(msg);
       throw new Error(msg);
@@ -144,13 +164,13 @@ export function AuthProvider({ children }) {
     toast.success('Signed out');
   };
 
-  const createAdmin = async (email, password = 'shubham@1234', name, role = 'admin') => {
+  const createAdmin = async (email = 'admin@saselfdrivecars.com', password = 'Shubham@1234', name = 'Admin') => {
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
       if (res.user) {
         await registerAdminUser(DEFAULT_TENANT_ID, res.user.uid, {
           email: res.user.email,
-          name: name || email.split('@')[0],
+          name: name || 'Admin',
           role: 'admin',
         });
         setAdminRole('admin');

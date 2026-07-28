@@ -11,7 +11,8 @@ import TermsAndConditions from '../../components/ui/TermsAndConditions';
 
 import { useTenant } from '../../contexts/TenantContext';
 import { subscribeToReviews } from '../../firebase/firestore';
-import { SAMPLE_REVIEWS } from '../../firebase/seedData';
+
+
 
 const PROMISES = [
   {
@@ -60,15 +61,11 @@ const fadeUp = {
 
 export default function AboutPage() {
   const { tenantId, settings } = useTenant();
-  const [reviews, setReviews] = useState(SAMPLE_REVIEWS);
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     const unsub = subscribeToReviews(tenantId, (data) => {
-      if (data && data.length > 0) {
-        setReviews(data);
-      } else {
-        setReviews(SAMPLE_REVIEWS);
-      }
+      setReviews(data || []);
     });
     return () => unsub();
   }, [tenantId]);
@@ -279,57 +276,63 @@ export default function AboutPage() {
               </span>
             </div>
 
-            <div className="about-cards-grid">
-              {reviews.map((rev, idx) => (
-                <div
-                  key={rev.id || idx}
-                  style={{
-                    background: '#FFFFFF',
-                    borderRadius: 16,
-                    padding: '20px 18px',
-                    border: '1px solid #E2E8F0',
-                    boxShadow: '0 4px 16px rgba(15, 23, 42, 0.04)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    gap: 14,
-                  }}
-                >
-                  <div>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
-                      <div style={{ display: 'flex', color: '#F59E0B', gap: 2 }}>
-                        {Array.from({ length: rev.rating || 5 }).map((_, rIdx) => (
-                          <BsStarFill key={rIdx} size={14} />
-                        ))}
-                      </div>
-                      <span style={{ fontSize: 11, color: '#94A3B8', fontWeight: 600 }}>{rev.date || 'Verified'}</span>
-                    </div>
-
-                    <p style={{ fontSize: 13, color: '#334155', lineHeight: 1.6, margin: 0, fontStyle: 'italic' }}>
-                      "{rev.comment}"
-                    </p>
-                  </div>
-
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingTop: 10, borderTop: '1px solid #F1F5F9' }}>
-                    <div style={{
-                      width: 36, height: 36,
-                      borderRadius: '50%',
-                      background: 'rgba(200,0,10,0.08)',
-                      color: '#C8000A',
-                      fontWeight: 800,
-                      fontSize: 14,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    }}>
-                      {rev.name?.charAt(0) || 'R'}
-                    </div>
+            {reviews.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '24px 0', color: '#64748B', fontSize: 13 }}>
+                No customer reviews published yet. Admin can add live reviews in Admin Panel Settings.
+              </div>
+            ) : (
+              <div className="about-cards-grid">
+                {reviews.map((rev, idx) => (
+                  <div
+                    key={rev.id || idx}
+                    style={{
+                      background: '#FFFFFF',
+                      borderRadius: 16,
+                      padding: '20px 18px',
+                      border: '1px solid #E2E8F0',
+                      boxShadow: '0 4px 16px rgba(15, 23, 42, 0.04)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      gap: 14,
+                    }}
+                  >
                     <div>
-                      <strong style={{ fontSize: 13, color: '#111318', display: 'block', lineHeight: 1.2 }}>{rev.name}</strong>
-                      <span style={{ fontSize: 11, color: '#64748B' }}>{rev.location} • {rev.carName || 'Self Drive'}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+                        <div style={{ display: 'flex', color: '#F59E0B', gap: 2 }}>
+                          {Array.from({ length: rev.rating || 5 }).map((_, rIdx) => (
+                            <BsStarFill key={rIdx} size={14} />
+                          ))}
+                        </div>
+                        <span style={{ fontSize: 11, color: '#94A3B8', fontWeight: 600 }}>{rev.date || 'Verified'}</span>
+                      </div>
+
+                      <p style={{ fontSize: 13, color: '#334155', lineHeight: 1.6, margin: 0, fontStyle: 'italic' }}>
+                        "{rev.comment}"
+                      </p>
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingTop: 10, borderTop: '1px solid #F1F5F9' }}>
+                      <div style={{
+                        width: 36, height: 36,
+                        borderRadius: '50%',
+                        background: 'rgba(200,0,10,0.08)',
+                        color: '#C8000A',
+                        fontWeight: 800,
+                        fontSize: 14,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      }}>
+                        {rev.name?.charAt(0) || 'R'}
+                      </div>
+                      <div>
+                        <strong style={{ fontSize: 13, color: '#111318', display: 'block', lineHeight: 1.2 }}>{rev.name}</strong>
+                        <span style={{ fontSize: 11, color: '#64748B' }}>{rev.location || 'Pune'} • {rev.carName || 'Self Drive'}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
 
         </div>

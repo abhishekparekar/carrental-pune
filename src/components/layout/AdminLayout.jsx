@@ -13,6 +13,7 @@ import {
   FiBell,
   FiChevronDown,
   FiSettings,
+  FiPhone,
 } from 'react-icons/fi';
 import { BsCarFront } from 'react-icons/bs';
 import { useAuth } from '../../contexts/AuthContext';
@@ -22,8 +23,8 @@ const navItems = [
   { icon: <FiGrid />, label: 'Dashboard', to: '/admin' },
   { icon: <FiTruck />, label: 'Cars Fleet', to: '/admin/cars' },
   { icon: <FiCalendar />, label: 'Inquiries & Bookings', to: '/admin/inquiries' },
-  { icon: <FiUsers />, label: 'Customers', to: '/admin/customers' },
-  { icon: <FiSettings />, label: 'About & Page Settings', to: '/admin/settings' },
+  { icon: <FiUsers />, label: 'Customers Roster', to: '/admin/customers' },
+  { icon: <FiPhone />, label: 'Contact & Page Settings', to: '/admin/settings' },
 ];
 
 export default function AdminLayout({ children }) {

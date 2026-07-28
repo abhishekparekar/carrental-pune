@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiFilter, FiX, FiRefreshCw, FiSearch, FiSliders, FiCheck } from 'react-icons/fi';
-import { BsCarFront } from 'react-icons/bs';
+import { FiFilter, FiX, FiRefreshCw, FiSearch, FiSliders, FiCheck, FiZap, FiTruck } from 'react-icons/fi';
+import { BsCarFront, BsCarFrontFill } from 'react-icons/bs';
 
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
@@ -13,14 +13,14 @@ import BookingForm from '../../components/ui/BookingForm';
 
 import { useTenant } from '../../contexts/TenantContext';
 import { subscribeToCars } from '../../firebase/firestore';
-import { seedInitialCars } from '../../firebase/seedData';
 
 const CATEGORY_TABS = [
-  { id: 'all', label: 'All Fleet', icon: '🚗' },
-  { id: 'hatchback', label: 'Hatchback', icon: '🚙' },
-  { id: 'sedan', label: 'Sedan', icon: '🚘' },
-  { id: 'suv', label: 'SUV & 4x4', icon: '🛻' },
-  { id: 'premium', label: 'Luxury', icon: '🏎️' },
+  { id: 'all', label: 'All Fleet', icon: <BsCarFront size={15} /> },
+  { id: 'popular', label: 'Popular Choice', icon: <FiZap size={15} style={{ color: '#C8000A' }} /> },
+  { id: 'hatchback', label: 'Hatchback (Swift, i20, Baleno)', icon: <BsCarFront size={15} /> },
+  { id: 'sedan', label: 'Sedan & CNG (Dzire)', icon: <BsCarFrontFill size={15} /> },
+  { id: 'suv', label: 'SUV & 4x4 (Thar, Punch, Venue)', icon: <FiTruck size={15} /> },
+  { id: 'muv', label: '7-Seater MUV (Ertiga)', icon: <BsCarFront size={15} /> },
 ];
 
 export default function FleetPage() {
@@ -36,7 +36,6 @@ export default function FleetPage() {
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'all');
 
   useEffect(() => {
-    seedInitialCars(tenantId).catch(console.error);
     const unsub = subscribeToCars(tenantId, (data) => {
       setCars(data);
       setLoading(false);
@@ -52,6 +51,7 @@ export default function FleetPage() {
 
   const filteredCars = useMemo(() => {
     return cars.filter(car => {
+      if (selectedCategory === 'popular') return car.isPopular !== false;
       if (selectedCategory !== 'all' && car.category !== selectedCategory) return false;
       return true;
     });

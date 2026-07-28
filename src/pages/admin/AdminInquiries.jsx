@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FiSearch, FiEye, FiTrash2, FiDownload } from 'react-icons/fi';
+import { BsWhatsapp } from 'react-icons/bs';
 import toast from 'react-hot-toast';
 
 import AdminLayout from '../../components/layout/AdminLayout';
@@ -185,17 +186,38 @@ export default function AdminInquiries() {
                         </select>
                       </td>
                       <td>
-                        <div style={{ display: 'flex', gap: 6 }}>
+                        <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                          <a
+                            href={`https://wa.me/${(item.phone || '').replace(/\D/g, '').startsWith('91') ? (item.phone || '').replace(/\D/g, '') : `91${(item.phone || '').replace(/\D/g, '')}`}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn btn-secondary btn-sm"
+                            style={{
+                              padding: '3px 7px',
+                              background: '#25D366',
+                              borderColor: '#25D366',
+                              color: '#FFFFFF',
+                              fontSize: 10.5,
+                              fontWeight: 800,
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: 3,
+                            }}
+                            title="Chat on WhatsApp"
+                          >
+                            <BsWhatsapp size={11} /> WhatsApp
+                          </a>
                           <button
                             className="btn-icon"
                             onClick={() => {
                               setSelectedInquiry(item);
                               setIsDetailOpen(true);
                             }}
+                            title="View Full Details"
                           >
                             <FiEye size={13} />
                           </button>
-                          <button className="btn-icon" onClick={() => handleDelete(item.id)} style={{ color: 'var(--color-error)' }}>
+                          <button className="btn-icon" onClick={() => handleDelete(item.id)} style={{ color: 'var(--color-error)' }} title="Delete Record">
                             <FiTrash2 size={13} />
                           </button>
                         </div>

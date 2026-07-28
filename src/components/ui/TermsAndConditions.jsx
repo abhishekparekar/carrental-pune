@@ -14,9 +14,9 @@ export const CATEGORIZED_TERMS = [
     category: 'Km & Overtime Rates',
     icon: '⚡',
     items: [
-      { highlight: '300 km Limit', text: '300 km limit per 24 hours.' },
-      { highlight: 'Extra KM Rates', text: '₹5/km (5 Seater) • ₹7/km (7 Seater) • ₹10/km (SUV).' },
-      { highlight: 'Overtime Fees', text: '₹200/hr (5 Seater) • ₹250/hr (7 Seater). Exceeding 7 hrs = Full Day charge.' },
+      { highlight: '300 km Limit', text: '300 km limit per 24 hours package.' },
+      { highlight: 'Extra KM Rates', text: '₹6/km (5 Seater) • ₹7/km (7 Seater / SUV).' },
+      { highlight: 'Overtime Fees', text: '₹200/hr (Swift, Ertiga, i20, Dzire, Punch, Venue, Baleno) • ₹300/hr (Thar 4x4).' },
     ],
   },
   {

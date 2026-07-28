@@ -1,19 +1,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FiLock, FiMail, FiLogIn, FiUserCheck, FiAlertCircle, FiEye, FiEyeOff } from 'react-icons/fi';
-import { BsCarFront } from 'react-icons/bs';
-import toast from 'react-hot-toast';
+import { FiLock, FiMail, FiLogIn, FiAlertCircle, FiEye, FiEyeOff } from 'react-icons/fi';
 import { useAuth } from '../../contexts/AuthContext';
 import logoImg from '../../assets/logo1.jpeg';
 
 export default function AdminLogin() {
-  const [email, setEmail] = useState('admin@nextrent.com');
-  const [password, setPassword] = useState('shubham@1234');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
-  const { signIn, createAdmin } = useAuth();
+  const { signIn } = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -35,30 +33,6 @@ export default function AdminLogin() {
       navigate('/admin');
     } catch (err) {
       setErrorMsg('Invalid password or email. Access denied.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleCreateDemoAdmin = async () => {
-    setErrorMsg('');
-    setLoading(true);
-    try {
-      await createAdmin('admin@nextrent.com', 'shubham@1234');
-      toast.success('Admin account created! Signing in...');
-      await signIn('admin@nextrent.com', 'shubham@1234');
-      navigate('/admin');
-    } catch (err) {
-      if (err.code === 'auth/email-already-in-use') {
-        try {
-          await signIn('admin@nextrent.com', 'shubham@1234');
-          navigate('/admin');
-        } catch (loginErr) {
-          setErrorMsg('Failed to log in with admin account.');
-        }
-      } else {
-        toast.error(err.message);
-      }
     } finally {
       setLoading(false);
     }
@@ -147,7 +121,7 @@ export default function AdminLogin() {
                   setEmail(e.target.value);
                   setErrorMsg('');
                 }}
-                placeholder="admin@nextrent.com"
+                placeholder="admin@saselfdrivecars.com"
               />
             </div>
           </div>
@@ -174,7 +148,7 @@ export default function AdminLogin() {
                   setPassword(e.target.value);
                   setErrorMsg('');
                 }}
-                placeholder="shubham@1234"
+                placeholder="••••••••"
               />
               <button
                 type="button"
@@ -204,38 +178,11 @@ export default function AdminLogin() {
             type="submit"
             disabled={loading}
             className="btn btn-primary btn-lg w-full"
-            style={{ marginTop: 4 }}
+            style={{ marginTop: 4, background: '#C8000A', borderColor: '#C8000A', fontWeight: 800 }}
           >
             {loading ? 'Authenticating Role...' : 'Sign In to CRM'} <FiLogIn />
           </button>
         </form>
-
-        <hr className="divider" style={{ margin: '20px 0' }} />
-
-        {/* Demo login card */}
-        <div style={{ textAlign: 'center' }}>
-          <div style={{
-            padding: '8px 12px',
-            borderRadius: 'var(--radius-md)',
-            background: 'var(--color-bg-alt)',
-            border: '1px solid var(--color-border)',
-            marginBottom: 12,
-            fontSize: 12,
-            color: 'var(--color-text-2)',
-          }}>
-            🔑 Admin Credentials: <br />
-            Email: <strong style={{ color: 'var(--color-text)' }}>admin@nextrent.com</strong> <br />
-            Password: <strong style={{ color: 'var(--color-accent)' }}>shubham@1234</strong>
-          </div>
-          <button
-            onClick={handleCreateDemoAdmin}
-            disabled={loading}
-            className="btn btn-secondary btn-sm w-full"
-            style={{ justifyContent: 'center' }}
-          >
-            <FiUserCheck /> Auto-Login with shubham@1234
-          </button>
-        </div>
       </motion.div>
     </div>
   );

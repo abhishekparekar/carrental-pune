@@ -58,9 +58,10 @@ export default function AdminSettings() {
         businessName: settings.businessName || 'SA Self Drive Cars',
         tagline: settings.tagline || 'Premium self-drive car rentals with 300 km daily limit, doorstep delivery & verified fleet in Pune.',
         phone: settings.phone || '+91 9270762176',
-        email: settings.email || 'info@saselfdrivecars.com',
-        address: settings.address || 'Pune, Maharashtra',
+        email: settings.email || 'support@nextrent.com',
+        address: settings.address || 'Pimpri-Chinchwad & Pune City, Maharashtra',
         whatsapp: settings.whatsapp || '919270762176',
+        businessHours: settings.businessHours || '24 Hours • 365 Days Doorstep Delivery',
         facebook: settings.facebook || 'https://facebook.com',
         instagram: settings.instagram || 'https://instagram.com',
         twitter: settings.twitter || 'https://twitter.com',
@@ -179,7 +180,94 @@ export default function AdminSettings() {
           
           <form onSubmit={handleSubmitSettings} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
             
-            {/* 📖 1. ABOUT PAGE CONTENT MANAGEMENT */}
+            {/* 🏢 1. BUSINESS BRANDING & CONTACT DETAILS */}
+            <div style={{
+              background: '#FFFFFF',
+              borderRadius: 16,
+              padding: 22,
+              border: '1px solid #E2E8F0',
+              boxShadow: '0 4px 16px rgba(0,0,0,0.04)',
+            }}>
+              <h3 style={{ fontSize: 16, fontWeight: 800, color: '#C8000A', margin: '0 0 16px', display: 'flex', alignItems: 'center', gap: 8 }}>
+                <FiPhone /> Live Contact Page & Business Details
+              </h3>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14 }}>
+                <div className="form-group">
+                  <label className="form-label">Business Name</label>
+                  <input
+                    type="text"
+                    required
+                    className="form-input"
+                    value={form.businessName}
+                    onChange={e => setForm({ ...form, businessName: e.target.value })}
+                    placeholder="SA Self Drive Cars"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Phone Number *</label>
+                  <input
+                    type="text"
+                    required
+                    className="form-input"
+                    value={form.phone}
+                    onChange={e => setForm({ ...form, phone: e.target.value })}
+                    placeholder="+91 9270762176"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">WhatsApp Number (with 91)</label>
+                  <input
+                    type="text"
+                    required
+                    className="form-input"
+                    value={form.whatsapp}
+                    onChange={e => setForm({ ...form, whatsapp: e.target.value })}
+                    placeholder="919270762176"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Email Support Address *</label>
+                  <input
+                    type="email"
+                    required
+                    className="form-input"
+                    value={form.email}
+                    onChange={e => setForm({ ...form, email: e.target.value })}
+                    placeholder="info@saselfdrivecars.com"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Office Address *</label>
+                  <input
+                    type="text"
+                    required
+                    className="form-input"
+                    value={form.address}
+                    onChange={e => setForm({ ...form, address: e.target.value })}
+                    placeholder="Pimpri-Chinchwad & Pune City, Maharashtra"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Business Hours *</label>
+                  <input
+                    type="text"
+                    required
+                    className="form-input"
+                    value={form.businessHours}
+                    onChange={e => setForm({ ...form, businessHours: e.target.value })}
+                    placeholder="24 Hours • 365 Days Doorstep Delivery"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* 📖 2. ABOUT PAGE CONTENT MANAGEMENT */}
             <div style={{
               background: '#FFFFFF',
               borderRadius: 16,
@@ -240,7 +328,7 @@ export default function AdminSettings() {
               </div>
             </div>
 
-            {/* 📊 2. ABOUT PAGE STAT COUNTERS */}
+            {/* 📊 3. ABOUT PAGE STAT COUNTERS */}
             <div style={{
               background: '#FFFFFF',
               borderRadius: 16,
@@ -298,69 +386,6 @@ export default function AdminSettings() {
                     value={form.statsRating}
                     onChange={e => setForm({ ...form, statsRating: e.target.value })}
                     placeholder="4.9/5"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* 🏢 3. BUSINESS BRANDING & CONTACT DETAILS */}
-            <div style={{
-              background: '#FFFFFF',
-              borderRadius: 16,
-              padding: 22,
-              border: '1px solid #E2E8F0',
-              boxShadow: '0 4px 16px rgba(0,0,0,0.04)',
-            }}>
-              <h3 style={{ fontSize: 16, fontWeight: 800, color: '#111318', margin: '0 0 16px', display: 'flex', alignItems: 'center', gap: 8 }}>
-                <FiPhone color="#C8000A" /> Contact Details (Live in Footer & Headers)
-              </h3>
-
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14 }}>
-                <div className="form-group">
-                  <label className="form-label">Business Name</label>
-                  <input
-                    type="text"
-                    required
-                    className="form-input"
-                    value={form.businessName}
-                    onChange={e => setForm({ ...form, businessName: e.target.value })}
-                    placeholder="SA Self Drive Cars"
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label">Phone Number *</label>
-                  <input
-                    type="text"
-                    required
-                    className="form-input"
-                    value={form.phone}
-                    onChange={e => setForm({ ...form, phone: e.target.value })}
-                    placeholder="+91 9270762176"
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label">WhatsApp Number (with 91)</label>
-                  <input
-                    type="text"
-                    required
-                    className="form-input"
-                    value={form.whatsapp}
-                    onChange={e => setForm({ ...form, whatsapp: e.target.value })}
-                    placeholder="919270762176"
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label">Email Support Address *</label>
-                  <input
-                    type="email"
-                    required
-                    className="form-input"
-                    value={form.email}
-                    onChange={e => setForm({ ...form, email: e.target.value })}
-                    placeholder="info@saselfdrivecars.com"
                   />
                 </div>
               </div>

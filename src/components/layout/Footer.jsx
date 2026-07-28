@@ -232,29 +232,12 @@ export default function Footer() {
           <div style={{ height: 1, background: 'rgba(255, 255, 255, 0.08)', margin: '36px 0 20px' }} />
 
           <div style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            flexWrap: 'wrap', gap: 12,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            flexWrap: 'wrap', gap: 12, textAlign: 'center',
           }}>
             <p style={{ fontSize: 12.5, color: '#64748B', margin: 0, fontWeight: 500 }}>
               © {new Date().getFullYear()} <strong style={{ color: '#E2E8F0' }}>{settings?.businessName || 'SA Self Drive Cars'}</strong>. All rights reserved.
             </p>
-            <Link
-              to="/admin/login"
-              style={{
-                fontSize: 12,
-                fontWeight: 700,
-                color: '#64748B',
-                textDecoration: 'none',
-                transition: 'color 0.15s',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 4,
-              }}
-              onMouseEnter={e => { e.currentTarget.style.color = '#FF3333'; }}
-              onMouseLeave={e => { e.currentTarget.style.color = '#64748B'; }}
-            >
-              Admin Portal CRM <FiArrowRight size={13} />
-            </Link>
           </div>
         </div>
       </div>

@@ -194,13 +194,6 @@ export async function upsertCustomer(tenantId, { name, email, phone }, userId = 
   }
 }
 
-export function subscribeToCustomers(tenantId, callback) {
-  const ref = query(tenantCollection(tenantId, 'customers'), orderBy('createdAt', 'desc'));
-  return onSnapshot(ref, snap => {
-    callback(snap.docs.map(d => ({ id: d.id, ...d.data() })));
-  });
-}
-
 // ─── Inquiries ─────────────────────────────────────────────────────────────────
 export async function addInquiry(tenantId, inquiryData, userId = null) {
   const activeUserId = userId || inquiryData.userId || 'guest';
@@ -233,6 +226,40 @@ export async function updateInquiryStatus(tenantId, inquiryId, status, adminUid 
 
 export async function deleteInquiry(tenantId, inquiryId) {
   return deleteDoc(tenantDoc(tenantId, 'inquiries', inquiryId));
+}
+
+// ─── Customer CRM Management ──────────────────────────────────────────────────
+
+export function subscribeToCustomers(tenantId, callback) {
+  const ref = query(tenantCollection(tenantId, 'customers'), orderBy('createdAt', 'desc'));
+  return onSnapshot(ref, snap => {
+    callback(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+  }, err => {
+    console.error('Error in customers subscription:', err);
+  });
+}
+
+export async function addCustomer(tenantId, customerData, adminUid = null) {
+  const ref = tenantCollection(tenantId, 'customers');
+  return addDoc(ref, {
+    tenantId,
+    ...customerData,
+    createdBy: adminUid || 'admin',
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  });
+}
+
+export async function updateCustomer(tenantId, customerId, updates, adminUid = null) {
+  return updateDoc(tenantDoc(tenantId, 'customers', customerId), {
+    ...updates,
+    updatedBy: adminUid || 'admin',
+    updatedAt: serverTimestamp(),
+  });
+}
+
+export async function deleteCustomer(tenantId, customerId) {
+  return deleteDoc(tenantDoc(tenantId, 'customers', customerId));
 }
 
 // ─── Customer Reviews ───────────────────────────────────────────────────────────

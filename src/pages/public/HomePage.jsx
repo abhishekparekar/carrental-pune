@@ -22,18 +22,40 @@ import TermsAndConditions from '../../components/ui/TermsAndConditions';
 
 import { useTenant } from '../../contexts/TenantContext';
 import { subscribeToCars, subscribeToReviews } from '../../firebase/firestore';
-import { seedInitialCars, SAMPLE_REVIEWS } from '../../firebase/seedData';
 
 import heroBgImg from '../../assets/herobg1.jpeg';
 import logoImg from '../../assets/logo1.jpeg';
 
+const DEFAULT_REVIEWS = [
+  {
+    name: 'Rahul Deshmukh',
+    location: 'Pune (Kothrud)',
+    carName: 'Mahindra Thar 4x4',
+    rating: 5,
+    date: '2 days ago',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
+    comment: 'Booked Thar 4x4 for a weekend trip to Mahabaleshwar. 300 km daily limit was more than enough! Doorstep delivery was quick.',
+    verified: true,
+  },
+  {
+    name: 'Priya Sharma',
+    location: 'Pune (Viman Nagar)',
+    carName: 'Maruti Swift ZXi',
+    rating: 5,
+    date: '1 week ago',
+    avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80',
+    comment: 'Best self-drive car service in Pune! Transparent pricing, deposit was returned promptly upon car handover.',
+    verified: true,
+  },
+];
+
 const CITIES = ['Pune', 'Mumbai', 'Delhi NCR', 'Bangalore', 'Hyderabad', 'Chennai', 'Kolkata'];
 
 const CATEGORIES = [
-  { id: 'hatchback', name: 'Hatchback', desc: 'Compact & agile for quick city drives', icon: <BsCarFront size={24} /> },
-  { id: 'sedan', name: 'Sedan', desc: 'Executive comfort & smooth highway cruises', icon: <BsCarFrontFill size={24} /> },
-  { id: 'suv', name: 'SUV & 4x4', desc: 'Power, space & high ground clearance', icon: <FiTruck size={24} /> },
-  { id: 'premium', name: 'Luxury', desc: 'Prestige, speed & VIP status', icon: <BsAward size={24} /> },
+  { id: 'hatchback', name: 'Hatchback', desc: 'Swift, i20, Baleno — Easy city handling & peppy drive', icon: <BsCarFront size={24} /> },
+  { id: 'sedan', name: 'Sedan & CNG', desc: 'Dzire CNG — Maximum fuel efficiency for long trips', icon: <BsCarFrontFill size={24} /> },
+  { id: 'suv', name: 'SUV & 4x4', desc: 'Thar 4x4, Punch, Venue — Off-road power & ground clearance', icon: <FiTruck size={24} /> },
+  { id: 'muv', name: '7-Seater MUV', desc: 'Ertiga Manual & Automatic — Spacious 7-seater family comfort', icon: <BsCarFront size={24} /> },
 ];
 
 const FEATURES = [
@@ -61,7 +83,7 @@ export default function HomePage() {
   const navigate = useNavigate();
 
   const [cars, setCars] = useState([]);
-  const [reviews, setReviews] = useState(SAMPLE_REVIEWS);
+  const [reviews, setReviews] = useState(DEFAULT_REVIEWS);
   const [loading, setLoading] = useState(true);
   const [selectedCar, setSelectedCar] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -76,17 +98,12 @@ export default function HomePage() {
   const nextRef = useRef(null);
 
   useEffect(() => {
-    seedInitialCars(tenantId).catch(console.error);
     const unsubCars = subscribeToCars(tenantId, (data) => {
       setCars(data);
       setLoading(false);
     });
     const unsubReviews = subscribeToReviews(tenantId, (data) => {
-      if (data && data.length > 0) {
-        setReviews(data);
-      } else {
-        setReviews(SAMPLE_REVIEWS);
-      }
+      setReviews(data || []);
     });
     return () => {
       unsubCars();
@@ -168,7 +185,7 @@ export default function HomePage() {
                 backdropFilter: 'blur(12px)',
                 WebkitBackdropFilter: 'blur(12px)',
               }}>
-                <BsCarFront color="#E50010" size={16} /> S A SELF DRIVE CAR RENT
+                <BsCarFront color="#E50010" size={16} /> SA SELF DRIVE CAR RENT
               </span>
             </motion.div>
 
@@ -185,7 +202,7 @@ export default function HomePage() {
                 textShadow: '0 4px 24px rgba(0,0,0,0.8)',
               }}
             >
-              <span>Drive the Freedom with</span><br />
+              <span>Drive Your Freedom, Your Way.</span><br />
               <span style={{ color: '#E50010', textShadow: '0 0 35px rgba(229,0,16,0.75)' }}>
                 S A SELF DRIVE CAR RENT
               </span>
@@ -290,6 +307,10 @@ export default function HomePage() {
               <CarSkeleton />
               <CarSkeleton />
             </div>
+          ) : cars.filter(c => c.isPopular !== false).length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '24px 0', color: '#64748B', fontSize: 13 }}>
+              No cars currently marked as popular. Admin can toggle Popular Choice in Admin Panel.
+            </div>
           ) : (
             <Swiper
               modules={[Navigation, Autoplay]}
@@ -310,7 +331,7 @@ export default function HomePage() {
               }}
               style={{ paddingBottom: 8 }}
             >
-              {cars.map((car) => (
+              {cars.filter(c => c.isPopular !== false).map((car) => (
                 <SwiperSlide key={car.id} style={{ height: 'auto' }}>
                   <RevvCarCard car={car} onEnquire={openEnquiry} />
                 </SwiperSlide>
@@ -407,6 +428,26 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* 4.5 DIRECT HOMEPAGE INQUIRY FORM SECTION */}
+      <section id="inquiry-form-section" style={{ background: '#F8FAFC', borderTop: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', padding: '32px 0' }}>
+        <div className="container" style={{ maxWidth: 860 }}>
+          <div className="section-header text-center" style={{ marginBottom: 16 }}>
+            <span className="section-label-red">Instant Booking & Quote</span>
+            <h2 className="section-title" style={{ fontSize: 'clamp(20px, 3.5vw, 26px)', margin: '4px 0' }}>Submit Your <span>Car Rental Inquiry</span></h2>
+          </div>
+
+          <div style={{
+            background: '#FFFFFF',
+            borderRadius: 16,
+            padding: '16px 18px',
+            border: '1px solid #E2E8F0',
+            boxShadow: '0 4px 18px rgba(15, 23, 42, 0.05)',
+          }}>
+            <BookingForm car={null} onSuccess={() => toast.success('Rental inquiry submitted! We will reach out shortly.')} />
+          </div>
+        </div>
+      </section>
+
       {/* 5. WHY CHOOSE US */}
       <section className="section-sm" style={{ background: '#FFFFFF' }}>
         <div className="container">
@@ -467,55 +508,61 @@ export default function HomePage() {
             <h2 className="section-title">Loved by <span>Drivers</span></h2>
           </div>
 
-          <div className="reviews-grid">
-            {reviews.map((rev, idx) => (
-              <div
-                key={rev.id || idx}
-                style={{
-                  padding: 22,
-                  background: '#FFFFFF',
-                  borderRadius: 16,
-                  border: '1px solid #E4E6EA',
-                  boxShadow: '0 4px 20px rgba(17,19,24,0.05)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  gap: 14,
-                }}
-              >
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
-                    <div style={{ display: 'flex', gap: 3, color: '#F59E0B' }}>
-                      {[...Array(rev.rating || 5)].map((_, i) => <BsStarFill key={i} size={14} />)}
-                    </div>
-                    <span style={{ fontSize: 11, background: 'rgba(22,163,74,0.08)', color: '#16A34A', fontWeight: 700, padding: '2px 8px', borderRadius: 99, border: '1px solid rgba(22,163,74,0.2)' }}>
-                      Verified ✓
-                    </span>
-                  </div>
-                  <p style={{ fontSize: 13, fontStyle: 'italic', color: '#5A5F6E', margin: 0, lineHeight: 1.6 }}>
-                    "{rev.comment}"
-                  </p>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 10, borderTop: '1px solid #F0F1F3' }}>
-                  <div style={{
-                    width: 38, height: 38,
-                    borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #C8000A 0%, #900007 100%)',
-                    color: '#FFFFFF',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: 13, fontWeight: 800,
-                    boxShadow: '0 2px 10px rgba(200,0,10,0.30)',
-                  }}>
-                    {rev.name?.charAt(0) || 'R'}
-                  </div>
+          {reviews.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '24px 0', color: '#64748B', fontSize: 13 }}>
+              No customer reviews published yet. Admin can add live customer reviews in Admin Panel Settings.
+            </div>
+          ) : (
+            <div className="reviews-grid">
+              {reviews.map((rev, idx) => (
+                <div
+                  key={rev.id || idx}
+                  style={{
+                    padding: 22,
+                    background: '#FFFFFF',
+                    borderRadius: 16,
+                    border: '1px solid #E4E6EA',
+                    boxShadow: '0 4px 20px rgba(17,19,24,0.05)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    gap: 14,
+                  }}
+                >
                   <div>
-                    <strong style={{ display: 'block', fontSize: 14, color: '#111318', lineHeight: 1.2 }}>{rev.name}</strong>
-                    <span style={{ fontSize: 11, color: '#8C909A' }}>{rev.location || 'Pune'} • {rev.carName || 'Self Drive'}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+                      <div style={{ display: 'flex', gap: 3, color: '#F59E0B' }}>
+                        {[...Array(rev.rating || 5)].map((_, i) => <BsStarFill key={i} size={14} />)}
+                      </div>
+                      <span style={{ fontSize: 11, background: 'rgba(22,163,74,0.08)', color: '#16A34A', fontWeight: 700, padding: '2px 8px', borderRadius: 99, border: '1px solid rgba(22,163,74,0.2)' }}>
+                        Verified Customer
+                      </span>
+                    </div>
+                    <p style={{ fontSize: 13, fontStyle: 'italic', color: '#5A5F6E', margin: 0, lineHeight: 1.6 }}>
+                      "{rev.comment}"
+                    </p>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 10, borderTop: '1px solid #F0F1F3' }}>
+                    <div style={{
+                      width: 38, height: 38,
+                      borderRadius: '50%',
+                      background: 'linear-gradient(135deg, #C8000A 0%, #900007 100%)',
+                      color: '#FFFFFF',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: 13, fontWeight: 800,
+                      boxShadow: '0 2px 10px rgba(200,0,10,0.30)',
+                    }}>
+                      {rev.name?.charAt(0) || 'R'}
+                    </div>
+                    <div>
+                      <strong style={{ display: 'block', fontSize: 14, color: '#111318', lineHeight: 1.2 }}>{rev.name}</strong>
+                      <span style={{ fontSize: 11, color: '#8C909A' }}>{rev.location || 'Pune'} • {rev.carName || 'Self Drive'}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
