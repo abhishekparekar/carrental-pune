@@ -1,9 +1,13 @@
 import { motion } from 'framer-motion';
 import { BsWhatsapp } from 'react-icons/bs';
+import { useTenant } from '../../contexts/TenantContext';
 
 export default function WhatsAppButton() {
-  const phoneNumber = '919270762176';
-  const defaultMessage = encodeURIComponent('Hi SA Self Drive Cars, I want to inquire about renting a self-drive car.');
+  const { settings } = useTenant();
+  const rawNum = settings?.whatsapp || settings?.phone || '919270762176';
+  const phoneNumber = rawNum.replace(/\D/g, '');
+  const bizName = settings?.businessName || 'SA Self Drive Cars';
+  const defaultMessage = encodeURIComponent(`Hi ${bizName}, I want to inquire about renting a self-drive car.`);
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${defaultMessage}`;
 
   return (
@@ -33,7 +37,7 @@ export default function WhatsAppButton() {
         cursor: 'pointer',
         textDecoration: 'none',
       }}
-      title="Chat with SA Self Drive Cars on WhatsApp (+91 9270762176)"
+      title={`Chat with ${bizName} on WhatsApp (${settings?.phone || '+91 9270762176'})`}
       aria-label="Chat on WhatsApp"
     >
       <BsWhatsapp />

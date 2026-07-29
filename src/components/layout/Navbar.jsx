@@ -5,6 +5,7 @@ import { FiMenu, FiX, FiPhone, FiCalendar, FiChevronRight } from 'react-icons/fi
 import { BsWhatsapp } from 'react-icons/bs';
 
 import logoImg from '../../assets/logo1.jpeg';
+import { useTenant } from '../../contexts/TenantContext';
 
 const navLinks = [
   { label: 'Home',         to: '/' },
@@ -15,6 +16,7 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const { settings } = useTenant();
   const [scrolled,  setScrolled]  = useState(false);
   const [hidden,    setHidden]    = useState(false);
   const [menuOpen,  setMenuOpen]  = useState(false);
@@ -121,7 +123,7 @@ export default function Navbar() {
           {/* ── Desktop CTA Buttons ── */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <a
-              href="tel:+919270762176"
+              href={`tel:${(settings?.phone || '+91 9270762176').replace(/\s+/g, '')}`}
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -140,7 +142,7 @@ export default function Navbar() {
               onMouseEnter={e => { e.currentTarget.style.color = '#C8000A'; e.currentTarget.style.borderColor = 'rgba(200,0,10,0.25)'; }}
               onMouseLeave={e => { e.currentTarget.style.color = '#1E293B'; e.currentTarget.style.borderColor = '#E2E8F0'; }}
             >
-              <FiPhone size={13} style={{ color: '#C8000A' }} /> +91 9270762176
+              <FiPhone size={13} style={{ color: '#C8000A' }} /> {settings?.phone || '+91 9270762176'}
             </a>
 
             <button
@@ -296,7 +298,7 @@ export default function Navbar() {
                 gap: 10,
               }}>
                 <a
-                  href="https://wa.me/919270762176?text=Hi%20SA%20Self%20Drive%20Cars,%20I%20want%20to%20book%20a%20car."
+                  href={`https://wa.me/${(settings?.whatsapp || settings?.phone || '919270762176').replace(/\D/g, '')}?text=Hi%20${encodeURIComponent(settings?.businessName || 'SA Self Drive Cars')},%20I%20want%20to%20book%20a%20car.`}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -314,7 +316,7 @@ export default function Navbar() {
                     boxShadow: '0 4px 14px rgba(37,211,102,0.3)',
                   }}
                 >
-                  <BsWhatsapp size={16} /> WhatsApp: +91 9270762176
+                  <BsWhatsapp size={16} /> WhatsApp: {settings?.phone || '+91 9270762176'}
                 </a>
 
                 <button

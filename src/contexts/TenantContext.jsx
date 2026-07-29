@@ -5,10 +5,23 @@ const DEFAULT_TENANT_ID = 'nextrent-demo';
 
 function deriveTenantId() {
   const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
-  if (!hostname || hostname === 'localhost' || hostname.split('.').length <= 2) {
+  if (
+    !hostname ||
+    hostname === 'localhost' ||
+    hostname === '127.0.0.1' ||
+    hostname.includes('vercel.app') ||
+    hostname.includes('netlify.app') ||
+    hostname.includes('github.io') ||
+    hostname.includes('onrender.com') ||
+    hostname.split('.').length <= 2
+  ) {
     return DEFAULT_TENANT_ID;
   }
-  return hostname.split('.')[0];
+  const subdomain = hostname.split('.')[0];
+  if (['www', 'app', 'admin', 'carrental-pune', 'nextrent'].includes(subdomain.toLowerCase())) {
+    return DEFAULT_TENANT_ID;
+  }
+  return subdomain;
 }
 
 const TenantContext = createContext({
