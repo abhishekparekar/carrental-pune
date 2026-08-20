@@ -674,11 +674,11 @@ export default function HomePage() {
                 <div
                   key={rev.id || idx}
                   style={{
-                    padding: 22,
+                    padding: '20px',
                     background: '#FFFFFF',
                     borderRadius: 16,
-                    border: '1px solid #E4E6EA',
-                    boxShadow: '0 4px 20px rgba(17,19,24,0.05)',
+                    border: '1px solid #E2E8F0',
+                    boxShadow: '0 4px 20px rgba(15, 23, 42, 0.05)',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
@@ -686,33 +686,34 @@ export default function HomePage() {
                   }}
                 >
                   <div>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
                       <div style={{ display: 'flex', gap: 3, color: '#F59E0B' }}>
                         {[...Array(rev.rating || 5)].map((_, i) => <BsStarFill key={i} size={14} />)}
                       </div>
-                      <span style={{ fontSize: 11, background: 'rgba(22,163,74,0.08)', color: '#16A34A', fontWeight: 700, padding: '2px 8px', borderRadius: 99, border: '1px solid rgba(22,163,74,0.2)' }}>
+                      <span style={{ fontSize: 11, background: 'rgba(22, 163, 74, 0.08)', color: '#16A34A', fontWeight: 800, padding: '3px 9px', borderRadius: 99, border: '1px solid rgba(22, 163, 74, 0.25)' }}>
                         Verified Customer
                       </span>
                     </div>
-                    <p style={{ fontSize: 13, fontStyle: 'italic', color: '#5A5F6E', margin: 0, lineHeight: 1.6 }}>
+                    <p style={{ fontSize: 13.5, fontStyle: 'normal', color: '#1E293B', fontWeight: 500, margin: 0, lineHeight: 1.65 }}>
                       "{rev.comment}"
                     </p>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 10, borderTop: '1px solid #F0F1F3' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 12, borderTop: '1px solid #F1F5F9' }}>
                     <div style={{
                       width: 38, height: 38,
                       borderRadius: '50%',
                       background: 'linear-gradient(135deg, #C8000A 0%, #900007 100%)',
                       color: '#FFFFFF',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: 13, fontWeight: 800,
-                      boxShadow: '0 2px 10px rgba(200,0,10,0.30)',
+                      fontSize: 14, fontWeight: 800,
+                      boxShadow: '0 2px 10px rgba(200, 0, 10, 0.30)',
+                      flexShrink: 0,
                     }}>
                       {rev.name?.charAt(0) || 'R'}
                     </div>
                     <div>
-                      <strong style={{ display: 'block', fontSize: 14, color: '#111318', lineHeight: 1.2 }}>{rev.name}</strong>
-                      <span style={{ fontSize: 11, color: '#8C909A' }}>{rev.location || 'Pune'} • {rev.carName || 'Self Drive'}</span>
+                      <strong style={{ display: 'block', fontSize: 14, color: '#0F172A', fontWeight: 800, lineHeight: 1.2 }}>{rev.name}</strong>
+                      <span style={{ fontSize: 11.5, color: '#64748B', fontWeight: 600 }}>{rev.location || 'Pune'} • {rev.carName || 'Self Drive'}</span>
                     </div>
                   </div>
                 </div>
