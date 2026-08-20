@@ -57,18 +57,17 @@ export default function RevvCarCard({ car, onEnquire }) {
             </div>
           )}
 
-          {/* Full Crisp Uncropped Car Image */}
+          {/* Full Edge-to-Edge Crisp Car Image */}
           <img
             src={primaryImage}
             alt={car.name}
             style={{
               width: '100%',
               height: '100%',
-              objectFit: 'contain',
+              objectFit: 'cover',
               objectPosition: 'center center',
               transition: 'transform 0.3s ease',
               display: 'block',
-              background: 'transparent',
             }}
             onError={(e) => {
               e.target.src = 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=600&q=80';

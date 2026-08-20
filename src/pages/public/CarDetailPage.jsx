@@ -168,12 +168,7 @@ export default function CarDetailPage() {
                     width: '100%',
                     borderRadius: 12,
                     overflow: 'hidden',
-                    background: '#FFFFFF',
-                    border: '1px solid #E2E8F0',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '4px',
+                    background: '#0F172A',
                     marginBottom: images.length > 1 ? 6 : 0,
                   }}
                   className="car-gallery-main"
@@ -184,7 +179,7 @@ export default function CarDetailPage() {
                     style={{
                       width: '100%',
                       height: '100%',
-                      objectFit: 'contain',
+                      objectFit: 'cover',
                       objectPosition: 'center center',
                       display: 'block',
                     }}
