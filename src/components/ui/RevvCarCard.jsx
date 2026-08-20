@@ -34,13 +34,13 @@ export default function RevvCarCard({ car, onEnquire }) {
         onClick={handleCardClick}
       >
         {/* Car Image */}
-        <div className="revv-card-img" style={{ position: 'relative', background: '#0B0F19', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="revv-card-img" style={{ position: 'relative', background: '#F8FAFC', overflow: 'hidden' }}>
           {car.isPopular && (
             <div style={{
               position: 'absolute',
               top: 8,
               left: 8,
-              zIndex: 3,
+              zIndex: 2,
               background: 'linear-gradient(135deg, #C8000A 0%, #990000 100%)',
               color: '#FFFFFF',
               fontSize: 10,
@@ -57,45 +57,28 @@ export default function RevvCarCard({ car, onEnquire }) {
             </div>
           )}
 
-          {/* Ambient blurred backdrop */}
-          <img
-            src={primaryImage}
-            alt=""
-            aria-hidden="true"
-            style={{
-              position: 'absolute',
-              inset: 0,
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              filter: 'blur(16px) brightness(0.6)',
-              transform: 'scale(1.15)',
-              zIndex: 0,
-            }}
-          />
-
-          {/* Full Vehicle Image - Uncropped */}
+          {/* Full-Size Clean Car Image */}
           <img
             src={primaryImage}
             alt={car.name}
             style={{
-              position: 'relative',
-              zIndex: 1,
               width: '100%',
               height: '100%',
-              objectFit: 'contain',
-              padding: '4px',
+              objectFit: 'cover',
+              objectPosition: 'center center',
               transition: 'transform 0.3s ease',
+              display: 'block',
             }}
             onError={(e) => {
               e.target.src = 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=600&q=80';
             }}
           />
+
           <div style={{
             position: 'absolute',
             top: 8,
             right: 8,
-            zIndex: 3,
+            zIndex: 2,
             background: 'rgba(15, 23, 42, 0.75)',
             backdropFilter: 'blur(4px)',
             color: '#FFFFFF',

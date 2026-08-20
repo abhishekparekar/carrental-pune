@@ -168,44 +168,19 @@ export default function CarDetailPage() {
                     width: '100%',
                     borderRadius: 12,
                     overflow: 'hidden',
-                    background: '#0B0F19',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    background: '#F8FAFC',
                     marginBottom: images.length > 1 ? 6 : 0,
                   }}
                   className="car-gallery-main"
                 >
-                  {/* Ambient blurred backdrop for cinema aesthetic */}
-                  <img
-                    src={images[selectedImageIndex]}
-                    alt=""
-                    aria-hidden="true"
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      filter: 'blur(22px) brightness(0.55)',
-                      transform: 'scale(1.15)',
-                      zIndex: 0,
-                    }}
-                  />
-
-                  {/* Complete Full Uncropped Car Image */}
                   <img
                     src={images[selectedImageIndex]}
                     alt={car.name}
                     style={{
-                      position: 'relative',
-                      zIndex: 1,
-                      maxWidth: '100%',
-                      maxHeight: '100%',
-                      width: 'auto',
+                      width: '100%',
                       height: '100%',
-                      objectFit: 'contain',
-                      padding: '4px',
+                      objectFit: 'cover',
+                      objectPosition: 'center center',
                     }}
                   />
                   <button
@@ -221,7 +196,7 @@ export default function CarDetailPage() {
                       zIndex: 2,
                       borderRadius: '50%',
                       background: '#FFFFFF',
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.25)',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
                     }}
                     title="Share Car Link"
                   >
