@@ -34,7 +34,7 @@ export default function RevvCarCard({ car, onEnquire }) {
         onClick={handleCardClick}
       >
         {/* Car Image */}
-        <div className="revv-card-img" style={{ position: 'relative', background: '#F8FAFC', overflow: 'hidden' }}>
+        <div className="revv-card-img" style={{ position: 'relative', background: '#F1F5F9', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px' }}>
           {car.isPopular && (
             <div style={{
               position: 'absolute',
@@ -57,14 +57,14 @@ export default function RevvCarCard({ car, onEnquire }) {
             </div>
           )}
 
-          {/* Full-Size Clean Car Image */}
+          {/* Full-Size 100% Complete Uncropped Car Image */}
           <img
             src={primaryImage}
             alt={car.name}
             style={{
               width: '100%',
               height: '100%',
-              objectFit: 'cover',
+              objectFit: 'contain',
               objectPosition: 'center center',
               transition: 'transform 0.3s ease',
               display: 'block',

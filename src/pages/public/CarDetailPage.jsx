@@ -168,7 +168,11 @@ export default function CarDetailPage() {
                     width: '100%',
                     borderRadius: 12,
                     overflow: 'hidden',
-                    background: '#F8FAFC',
+                    background: '#F1F5F9',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '8px',
                     marginBottom: images.length > 1 ? 6 : 0,
                   }}
                   className="car-gallery-main"
@@ -179,8 +183,9 @@ export default function CarDetailPage() {
                     style={{
                       width: '100%',
                       height: '100%',
-                      objectFit: 'cover',
+                      objectFit: 'contain',
                       objectPosition: 'center center',
+                      display: 'block',
                     }}
                   />
                   <button
