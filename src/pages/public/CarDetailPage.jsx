@@ -168,20 +168,46 @@ export default function CarDetailPage() {
                     width: '100%',
                     borderRadius: 12,
                     overflow: 'hidden',
-                    background: '#0F172A',
+                    background: '#0B0F17',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     marginBottom: images.length > 1 ? 6 : 0,
                   }}
                   className="car-gallery-main"
                 >
+                  {/* Ambient Background Fill */}
+                  <img
+                    src={images[selectedImageIndex]}
+                    alt=""
+                    aria-hidden="true"
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      filter: 'blur(20px) brightness(0.55)',
+                      transform: 'scale(1.2)',
+                      zIndex: 1,
+                    }}
+                  />
+
+                  {/* Sharp 100% Full Uncropped Car Photo */}
                   <img
                     src={images[selectedImageIndex]}
                     alt={car.name}
                     style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      objectPosition: 'center center',
+                      position: 'relative',
+                      zIndex: 2,
+                      maxWidth: '100%',
+                      maxHeight: '100%',
+                      width: 'auto',
+                      height: 'auto',
+                      objectFit: 'contain',
                       display: 'block',
+                      margin: '0 auto',
+                      filter: 'drop-shadow(0 8px 24px rgba(0, 0, 0, 0.45))',
                     }}
                   />
                   <button

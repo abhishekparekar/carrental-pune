@@ -33,14 +33,14 @@ export default function RevvCarCard({ car, onEnquire }) {
         className="revv-car-card"
         onClick={handleCardClick}
       >
-        {/* Car Image Container - Pure Seamless White (No Grey Box/Bars) */}
-        <div className="revv-card-img" style={{ position: 'relative', background: '#FFFFFF', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {/* Car Image Container with Ambient Studio Framing */}
+        <div className="revv-card-img" style={{ position: 'relative', background: '#0F172A', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           {car.isPopular && (
             <div style={{
               position: 'absolute',
               top: 8,
               left: 8,
-              zIndex: 2,
+              zIndex: 3,
               background: 'linear-gradient(135deg, #C8000A 0%, #990000 100%)',
               color: '#FFFFFF',
               fontSize: 9.5,
@@ -57,17 +57,39 @@ export default function RevvCarCard({ car, onEnquire }) {
             </div>
           )}
 
-          {/* Full Edge-to-Edge Crisp Car Image */}
+          {/* Ambient Blurred Fill */}
+          <img
+            src={primaryImage}
+            alt=""
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              filter: 'blur(16px) brightness(0.6)',
+              transform: 'scale(1.2)',
+              zIndex: 1,
+            }}
+          />
+
+          {/* 100% Complete Uncropped Sharp Car Photo */}
           <img
             src={primaryImage}
             alt={car.name}
             style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              objectPosition: 'center center',
-              transition: 'transform 0.3s ease',
+              position: 'relative',
+              zIndex: 2,
+              maxWidth: '100%',
+              maxHeight: '100%',
+              width: 'auto',
+              height: 'auto',
+              objectFit: 'contain',
               display: 'block',
+              margin: '0 auto',
+              filter: 'drop-shadow(0 4px 14px rgba(0, 0, 0, 0.4))',
+              transition: 'transform 0.3s ease',
             }}
             onError={(e) => {
               e.target.src = 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=600&q=80';
