@@ -117,29 +117,33 @@ export default function RevvCarCard({ car, onEnquire }) {
         </div>
 
         {/* Card Body */}
-        <div className="revv-card-body" style={{ flex: 1 }}>
-          {/* Model year + name */}
-          <span className="revv-modelyear" style={{ fontSize: 11, color: '#94A3B8', fontWeight: 600, display: 'block', marginBottom: 2 }}>
-            {car.modelYear || `${car.name.split(' ').slice(-1)[0]} 2025`}
-          </span>
-          <h3 className="revv-card-title" style={{ fontSize: 15.5, fontWeight: 800, color: '#0F172A', margin: '0 0 1px', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-            {car.name}
-          </h3>
-          <p className="revv-card-subtitle" style={{ fontSize: 11.5, color: '#64748B', margin: '0 0 4px', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-            {car.brand || car.name.split(' ')[0]} • {car.fuelType ? car.fuelType.toUpperCase() : 'PETROL'}
-          </p>
+        <div className="revv-card-body" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 4, marginBottom: 1 }}>
+              <span className="revv-modelyear" style={{ fontSize: 10.5, color: '#94A3B8', fontWeight: 600 }}>
+                {car.modelYear || `${car.name.split(' ').slice(-1)[0]} 2025`}
+              </span>
+              <span className="revv-card-subtitle" style={{ fontSize: 10.5, color: '#64748B', fontWeight: 700, margin: 0 }}>
+                {car.brand || car.name.split(' ')[0]} • {car.fuelType ? car.fuelType.toUpperCase() : 'PETROL'}
+              </span>
+            </div>
+            
+            <h3 className="revv-card-title" style={{ fontSize: 15, fontWeight: 800, color: '#0F172A', margin: '0 0 4px', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {car.name}
+            </h3>
+          </div>
 
           {/* Specs bar */}
           <div className="revv-specs-bar" style={{
             display: 'flex',
             alignItems: 'center',
-            gap: 8,
-            fontSize: 10.5,
+            justifyContent: 'space-between',
+            gap: 4,
+            fontSize: 10,
             color: '#64748B',
-            paddingTop: 5,
-            paddingBottom: 6,
+            paddingTop: 4,
+            paddingBottom: 5,
             borderTop: '1px solid #F1F5F9',
-            flexWrap: 'wrap',
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
               <BsCarFront size={11} style={{ color: '#C8000A' }} />
@@ -165,14 +169,14 @@ export default function RevvCarCard({ car, onEnquire }) {
           gap: 6,
         }}>
           <div>
-            <span style={{ fontSize: 9.5, color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block' }}>
-              Daily Tariff
+            <span style={{ fontSize: 9, color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', lineHeight: 1 }}>
+              Tariff
             </span>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 2 }}>
-              <span className="revv-card-price" style={{ fontSize: 16.5, fontWeight: 900, color: '#C8000A' }}>
+              <span className="revv-card-price" style={{ fontSize: 16, fontWeight: 900, color: '#C8000A', lineHeight: 1.2 }}>
                 {formatCurrency(car.pricePerDay || 2300)}
               </span>
-              <span style={{ fontSize: 10.5, color: '#64748B', fontWeight: 600 }}>/day</span>
+              <span style={{ fontSize: 10, color: '#64748B', fontWeight: 600 }}>/d</span>
             </div>
           </div>
 
@@ -181,20 +185,20 @@ export default function RevvCarCard({ car, onEnquire }) {
             onClick={handleInquireClick}
             className="btn btn-primary btn-sm revv-inquire-btn"
             style={{
-              padding: '6px 14px',
-              fontSize: 11.5,
+              padding: '5px 12px',
+              fontSize: 11,
               fontWeight: 800,
               borderRadius: 'var(--radius-full)',
               background: '#C8000A',
               borderColor: '#C8000A',
               display: 'flex',
               alignItems: 'center',
-              gap: 4,
+              gap: 3,
               boxShadow: '0 2px 8px rgba(200, 0, 10, 0.25)',
             }}
           >
-            <span>Book Now</span>
-            <FiArrowRight size={11} />
+            <span>Book</span>
+            <FiArrowRight size={10} />
           </button>
         </div>
       </motion.div>
@@ -204,7 +208,7 @@ export default function RevvCarCard({ car, onEnquire }) {
           background: #FFFFFF;
           border-radius: 12px;
           overflow: hidden;
-          box-shadow: 0 2px 14px rgba(15, 23, 42, 0.06);
+          box-shadow: 0 2px 12px rgba(15, 23, 42, 0.05);
           border: 1px solid #E2E8F0;
           display: flex;
           flex-direction: column;
@@ -221,31 +225,31 @@ export default function RevvCarCard({ car, onEnquire }) {
         }
         .revv-card-img {
           width: 100%;
-          aspect-ratio: 16 / 10;
-          height: clamp(170px, 15vw, 205px);
+          aspect-ratio: 16 / 9.5;
+          height: clamp(140px, 13vw, 175px);
           overflow: hidden;
-          background: #FFFFFF;
+          background: #0F172A;
           flex-shrink: 0;
           position: relative;
         }
         .revv-card-body {
-          padding: 10px 12px 0;
+          padding: 8px 10px 0;
         }
         .revv-card-footer {
-          padding: 6px 12px 10px;
+          padding: 5px 10px 8px;
         }
         @media (max-width: 640px) {
           .revv-car-card { border-radius: 10px; }
-          .revv-card-img { height: clamp(120px, 32vw, 155px); }
-          .revv-card-body { padding: 7px 8px 0; }
-          .revv-card-footer { padding: 4px 8px 8px; }
-          .revv-card-title { font-size: 13px !important; font-weight: 800 !important; }
-          .revv-card-subtitle { font-size: 10px !important; margin-bottom: 2px !important; }
-          .revv-specs-bar { gap: 4px !important; font-size: 9.5px !important; padding-top: 3px !important; padding-bottom: 4px !important; }
-          .revv-specs-bar svg { width: 9px !important; height: 9px !important; }
-          .revv-card-price { font-size: 14px !important; }
-          .revv-inquire-btn { padding: 4px 8px !important; font-size: 10px !important; border-radius: 99px !important; }
-          .revv-modelyear { font-size: 9px !important; margin-bottom: 1px !important; }
+          .revv-card-img { height: clamp(105px, 28vw, 135px); aspect-ratio: 16 / 10; }
+          .revv-card-body { padding: 6px 7px 0; }
+          .revv-card-footer { padding: 4px 7px 6px; }
+          .revv-card-title { font-size: 12.5px !important; font-weight: 800 !important; }
+          .revv-card-subtitle { font-size: 9.5px !important; }
+          .revv-specs-bar { font-size: 9px !important; padding-top: 3px !important; padding-bottom: 3px !important; }
+          .revv-specs-bar svg { width: 8.5px !important; height: 8.5px !important; }
+          .revv-card-price { font-size: 13.5px !important; }
+          .revv-inquire-btn { padding: 3px 8px !important; font-size: 9.5px !important; border-radius: 99px !important; }
+          .revv-modelyear { font-size: 8.5px !important; }
         }
       `}</style>
     </>
