@@ -34,7 +34,7 @@ export default function RevvCarCard({ car, onEnquire }) {
         onClick={handleCardClick}
       >
         {/* Car Image */}
-        <div className="revv-card-img" style={{ position: 'relative', background: '#F1F5F9', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px' }}>
+        <div className="revv-card-img" style={{ position: 'relative', background: '#F8FAFC', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           {car.isPopular && (
             <div style={{
               position: 'absolute',
@@ -43,7 +43,7 @@ export default function RevvCarCard({ car, onEnquire }) {
               zIndex: 2,
               background: 'linear-gradient(135deg, #C8000A 0%, #990000 100%)',
               color: '#FFFFFF',
-              fontSize: 10,
+              fontSize: 9.5,
               fontWeight: 900,
               padding: '3px 8px',
               borderRadius: 99,
@@ -57,7 +57,7 @@ export default function RevvCarCard({ car, onEnquire }) {
             </div>
           )}
 
-          {/* Full-Size 100% Complete Uncropped Car Image */}
+          {/* Clean Admin-Set Car Image Displayed As It Is */}
           <img
             src={primaryImage}
             alt={car.name}
@@ -82,7 +82,7 @@ export default function RevvCarCard({ car, onEnquire }) {
             background: 'rgba(15, 23, 42, 0.75)',
             backdropFilter: 'blur(4px)',
             color: '#FFFFFF',
-            fontSize: 10,
+            fontSize: 9.5,
             fontWeight: 800,
             padding: '3px 8px',
             borderRadius: 99,
@@ -100,7 +100,7 @@ export default function RevvCarCard({ car, onEnquire }) {
           <span className="revv-modelyear" style={{ fontSize: 11, color: '#94A3B8', fontWeight: 600, display: 'block', marginBottom: 2 }}>
             {car.modelYear || `${car.name.split(' ').slice(-1)[0]} 2025`}
           </span>
-          <h3 className="revv-card-title" style={{ fontSize: 16, fontWeight: 800, color: '#0F172A', margin: '0 0 1px', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          <h3 className="revv-card-title" style={{ fontSize: 15.5, fontWeight: 800, color: '#0F172A', margin: '0 0 1px', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {car.name}
           </h3>
           <p className="revv-card-subtitle" style={{ fontSize: 11.5, color: '#64748B', margin: '0 0 4px', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -114,8 +114,8 @@ export default function RevvCarCard({ car, onEnquire }) {
             gap: 8,
             fontSize: 10.5,
             color: '#64748B',
-            paddingTop: 6,
-            paddingBottom: 8,
+            paddingTop: 5,
+            paddingBottom: 6,
             borderTop: '1px solid #F1F5F9',
             flexWrap: 'wrap',
           }}>
@@ -147,7 +147,7 @@ export default function RevvCarCard({ car, onEnquire }) {
               Daily Tariff
             </span>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 2 }}>
-              <span className="revv-card-price" style={{ fontSize: 17, fontWeight: 900, color: '#C8000A' }}>
+              <span className="revv-card-price" style={{ fontSize: 16.5, fontWeight: 900, color: '#C8000A' }}>
                 {formatCurrency(car.pricePerDay || 2300)}
               </span>
               <span style={{ fontSize: 10.5, color: '#64748B', fontWeight: 600 }}>/day</span>
@@ -180,9 +180,9 @@ export default function RevvCarCard({ car, onEnquire }) {
       <style>{`
         .revv-car-card {
           background: #FFFFFF;
-          border-radius: 14px;
+          border-radius: 12px;
           overflow: hidden;
-          box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+          box-shadow: 0 2px 14px rgba(15, 23, 42, 0.06);
           border: 1px solid #E2E8F0;
           display: flex;
           flex-direction: column;
@@ -191,46 +191,36 @@ export default function RevvCarCard({ car, onEnquire }) {
           height: 100%;
         }
         .revv-car-card:hover {
-          box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+          box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
           border-color: #CBD5E1;
         }
         .revv-car-card:hover .revv-card-img img {
-          transform: scale(1.03);
+          transform: scale(1.02);
         }
         .revv-card-img {
           width: 100%;
-          aspect-ratio: 16 / 10.5;
-          height: clamp(170px, 15vw, 210px);
+          aspect-ratio: 16 / 10;
+          height: clamp(160px, 14vw, 195px);
           overflow: hidden;
           background: #F8FAFC;
           flex-shrink: 0;
           position: relative;
         }
         .revv-card-body {
-          padding: 12px 14px 0;
+          padding: 10px 12px 0;
         }
         .revv-card-footer {
-          padding: 8px 14px 14px;
+          padding: 6px 12px 10px;
         }
         @media (max-width: 640px) {
           .revv-car-card { border-radius: 12px; }
-          .revv-card-img { height: clamp(130px, 32vw, 160px); }
-          .revv-card-body { padding: 10px 10px 0; }
-          .revv-card-footer { padding: 6px 10px 10px; }
-          .revv-card-title { font-size: 13.5px !important; font-weight: 800 !important; }
+          .revv-card-img { height: clamp(150px, 42vw, 180px); }
+          .revv-card-body { padding: 10px 12px 0; }
+          .revv-card-footer { padding: 6px 12px 10px; }
+          .revv-card-title { font-size: 14.5px !important; }
           .revv-card-subtitle { font-size: 11px !important; }
-          .revv-card-price { font-size: 15px !important; }
+          .revv-card-price { font-size: 15.5px !important; }
           .revv-inquire-btn { padding: 5px 12px !important; font-size: 11px !important; }
-          .revv-specs-bar { gap: 6px !important; font-size: 10px !important; padding-top: 6px !important; padding-bottom: 8px !important; }
-          .revv-modelyear { font-size: 10px !important; }
-        }
-        @media (max-width: 380px) {
-          .revv-card-img { height: 120px; }
-          .revv-card-body { padding: 8px 8px 0; }
-          .revv-card-footer { padding: 4px 8px 8px; }
-          .revv-card-title { font-size: 12.5px !important; }
-          .revv-card-price { font-size: 13.5px !important; }
-          .revv-inquire-btn { padding: 4px 8px !important; font-size: 10px !important; }
         }
       `}</style>
     </>

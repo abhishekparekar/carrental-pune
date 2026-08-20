@@ -72,9 +72,6 @@ export default function FleetPage() {
             <h1 style={{ fontSize: 'clamp(20px, 4vw, 32px)', fontWeight: 900, color: '#111318', margin: '0 0 6px' }}>
               Explore Available <span>Self-Drive Cars</span>
             </h1>
-            <p style={{ fontSize: 'clamp(12.5px, 1.8vw, 14px)', color: '#64748B', margin: 0, maxWidth: 540, lineHeight: 1.5 }}>
-              All vehicles include 300 km daily limit, doorstep delivery, full insurance & zero hidden charges.
-            </p>
           </div>
         </div>
 
@@ -217,22 +214,18 @@ export default function FleetPage() {
               }
               .grid-fleet-catalog {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
+                gap: 14px;
               }
             }
-            @media (max-width: 500px) {
+            @media (max-width: 520px) {
               .fleet-container {
                 padding: 0 12px;
               }
               .grid-fleet-catalog {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 8px;
-              }
-            }
-            @media (max-width: 360px) {
-              .grid-fleet-catalog {
                 grid-template-columns: 1fr;
-                gap: 10px;
+                gap: 14px;
+                max-width: 380px;
+                margin: 0 auto;
               }
             }
           `}</style>
