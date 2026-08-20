@@ -10,7 +10,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
 import { FiSearch, FiMapPin, FiCalendar, FiChevronLeft, FiChevronRight, FiShield, FiClock, FiKey, FiTruck, FiArrowRight, FiZap, FiCheckCircle, FiStar } from 'react-icons/fi';
-import { BsCarFront, BsStarFill, BsAward, BsCarFrontFill } from 'react-icons/bs';
+import { BsCarFront, BsStarFill, BsAward, BsCarFrontFill, BsWhatsapp } from 'react-icons/bs';
 
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
@@ -25,6 +25,7 @@ import { subscribeToCars, subscribeToReviews } from '../../firebase/firestore';
 
 import heroBgImg from '../../assets/herobg1.jpeg';
 import logoImg from '../../assets/logo1.jpeg';
+import familyTravelImg from '../../assets/family_travel.jpg';
 
 const DEFAULT_REVIEWS = [
   {
@@ -431,22 +432,184 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 4.5 DIRECT HOMEPAGE INQUIRY FORM SECTION */}
-      <section id="inquiry-form-section" style={{ background: '#F8FAFC', borderTop: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', padding: '32px 0' }}>
-        <div className="container" style={{ maxWidth: 1100 }}>
-          <div className="section-header text-center" style={{ marginBottom: 16 }}>
-            <span className="section-label-red">Instant Booking & Quote</span>
-            <h2 className="section-title" style={{ fontSize: 'clamp(20px, 3.5vw, 26px)', margin: '4px 0' }}>Submit Your <span>Car Rental Inquiry</span></h2>
+      {/* 4.5 DIRECT HOMEPAGE INQUIRY FORM & MARKETING SHOWCASE */}
+      <section id="inquiry-form-section" style={{ background: '#F8FAFC', borderTop: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', padding: 'clamp(28px, 4vw, 48px) 0' }}>
+        <div className="container">
+          <div className="section-header text-center" style={{ marginBottom: 24 }}>
+            <span className="section-label-red">Instant Booking & Fast Confirmation</span>
+            <h2 className="section-title" style={{ fontSize: 'clamp(22px, 3.8vw, 32px)', margin: '6px 0 8px' }}>
+              Book Your <span>Self-Drive Car</span> in Minutes
+            </h2>
+            <p className="section-desc" style={{ maxWidth: 620, margin: '0 auto' }}>
+              Choose your favorite car, select trip dates, and get prompt vehicle delivery right at your doorstep in Pune & PCMC.
+            </p>
           </div>
 
-          <div style={{
-            background: '#FFFFFF',
-            borderRadius: 16,
-            padding: 'clamp(14px, 2.5vw, 24px)',
-            border: '1px solid #E2E8F0',
-            boxShadow: '0 4px 18px rgba(15, 23, 42, 0.05)',
-          }}>
-            <BookingForm car={null} onSuccess={() => toast.success('Rental inquiry submitted! We will reach out shortly.')} />
+          <div className="inquiry-section-grid">
+            {/* Left Column: Interactive Booking Form */}
+            <div style={{
+              background: '#FFFFFF',
+              borderRadius: 20,
+              padding: 'clamp(16px, 2.5vw, 26px)',
+              border: '1px solid #E2E8F0',
+              boxShadow: '0 8px 30px rgba(15, 23, 42, 0.06)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+            }}>
+              <div style={{ marginBottom: 12, paddingBottom: 10, borderBottom: '1px solid #F1F5F9' }}>
+                <h3 style={{ fontSize: 16, fontWeight: 800, color: '#0F172A', margin: 0 }}>
+                  Rental Details & Fast Quotation
+                </h3>
+                <span style={{ fontSize: 11.5, color: '#64748B' }}>
+                  No heavy security deposit • Transparent pricing • 5 Simple documents
+                </span>
+              </div>
+              <BookingForm car={null} onSuccess={() => toast.success('Rental inquiry submitted! We will reach out shortly.')} />
+            </div>
+
+            {/* Right Column: Family Traveling & Marketing Showcase Card */}
+            <div className="marketing-travel-card" style={{
+              borderRadius: 20,
+              overflow: 'hidden',
+              position: 'relative',
+              boxShadow: '0 8px 30px rgba(15, 23, 42, 0.12)',
+              border: '1px solid #E2E8F0',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              minHeight: 460,
+              background: '#0F172A',
+            }}>
+              {/* Background Marketing Photo */}
+              <img
+                src={familyTravelImg}
+                alt="Family road trip in self-drive car"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  zIndex: 0,
+                }}
+              />
+
+              {/* Dark & Brand Gradient Overlay */}
+              <div style={{
+                position: 'absolute',
+                inset: 0,
+                background: 'linear-gradient(180deg, rgba(15, 23, 42, 0.25) 0%, rgba(15, 23, 42, 0.65) 45%, rgba(15, 23, 42, 0.95) 100%)',
+                zIndex: 1,
+              }} />
+
+              {/* Top Floating Badge */}
+              <div style={{ position: 'relative', zIndex: 2, padding: '20px 20px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 8 }}>
+                <span style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  background: 'rgba(255, 255, 255, 0.95)',
+                  color: '#0F172A',
+                  padding: '6px 14px',
+                  borderRadius: 99,
+                  fontSize: 12,
+                  fontWeight: 800,
+                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)',
+                }}>
+                  <FiStar color="#F59E0B" fill="#F59E0B" size={13} /> 4.9★ Rated • 10,000+ Happy Trips
+                </span>
+
+                <span style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  background: 'rgba(200, 0, 10, 0.90)',
+                  color: '#FFFFFF',
+                  padding: '6px 12px',
+                  borderRadius: 99,
+                  fontSize: 11.5,
+                  fontWeight: 800,
+                  backdropFilter: 'blur(8px)',
+                  boxShadow: '0 4px 14px rgba(200, 0, 10, 0.4)',
+                }}>
+                  <FiTruck size={12} /> Doorstep Delivery
+                </span>
+              </div>
+
+              {/* Bottom Content & Value Propositions */}
+              <div style={{ position: 'relative', zIndex: 2, padding: '20px', color: '#FFFFFF' }}>
+                <span style={{
+                  color: '#E50010',
+                  textTransform: 'uppercase',
+                  fontWeight: 900,
+                  fontSize: 11,
+                  letterSpacing: '1.5px',
+                  display: 'block',
+                  marginBottom: 4,
+                }}>
+                  Family Vacations & Long Drives
+                </span>
+                <h3 style={{ fontSize: 'clamp(20px, 2.5vw, 24px)', fontWeight: 900, color: '#FFFFFF', margin: '0 0 8px', lineHeight: 1.25 }}>
+                  Safe & Memorable Family Road Trips
+                </h3>
+                <p style={{ fontSize: 13, color: '#E2E8F0', lineHeight: 1.55, margin: '0 0 16px', maxWidth: 440 }}>
+                  Travel in clean, sanitized and commercially insured cars. Enjoy 300 km daily limit for stress-free travel across Lonavala, Mahabaleshwar, Goa, and beyond.
+                </p>
+
+                {/* 4 Feature Pills */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8, marginBottom: 16 }}>
+                  {[
+                    { icon: <FiCheckCircle color="#22C55E" size={13} />, text: '100% Sanitized Fleet' },
+                    { icon: <FiKey color="#F59E0B" size={13} />, text: '300 KM Daily Limit' },
+                    { icon: <FiTruck color="#38BDF8" size={13} />, text: '30-Min Doorstep Drop' },
+                    { icon: <FiShield color="#A855F7" size={13} />, text: 'Commercial Permits' },
+                  ].map((f, idx) => (
+                    <div key={idx} style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 6,
+                      background: 'rgba(255, 255, 255, 0.12)',
+                      backdropFilter: 'blur(8px)',
+                      border: '1px solid rgba(255, 255, 255, 0.16)',
+                      padding: '6px 10px',
+                      borderRadius: 10,
+                      fontSize: 11.5,
+                      fontWeight: 600,
+                    }}>
+                      {f.icon}
+                      <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{f.text}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Direct WhatsApp Action */}
+                <a
+                  href="https://wa.me/919270762176?text=Hi%20SA%20Self%20Drive%20Cars,%20I%20want%20to%20book%20a%20family%20road%20trip%20car."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 8,
+                    padding: '11px 18px',
+                    borderRadius: 12,
+                    background: 'linear-gradient(135deg, #25D366 0%, #1EAA52 100%)',
+                    color: '#FFFFFF',
+                    fontSize: 13.5,
+                    fontWeight: 800,
+                    textDecoration: 'none',
+                    boxShadow: '0 4px 20px rgba(37, 211, 102, 0.4)',
+                    transition: 'transform 0.15s ease',
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
+                  onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
+                >
+                  <BsWhatsapp size={16} /> Instant WhatsApp Support (+91 9270762176)
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -586,6 +749,26 @@ export default function HomePage() {
       <Footer />
 
       <style>{`
+        .inquiry-section-grid {
+          display: grid;
+          grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.95fr);
+          gap: clamp(16px, 2.5vw, 32px);
+          align-items: stretch;
+        }
+        @media (max-width: 1024px) {
+          .inquiry-section-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+          }
+          .marketing-travel-card {
+            min-height: 400px !important;
+          }
+        }
+        @media (max-width: 640px) {
+          .marketing-travel-card {
+            min-height: 380px !important;
+          }
+        }
         .home-fleet-grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);

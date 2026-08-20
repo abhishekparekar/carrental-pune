@@ -216,10 +216,10 @@ export default function BookingForm({ car, onSuccess }) {
             type="text"
             required
             className="form-input"
-            placeholder="e.g. Amit Patil"
+            placeholder="Enter your full name"
             value={formData.customerName}
             onChange={e => setFormData({ ...formData, customerName: e.target.value })}
-            style={{ height: 36, fontSize: 12.5 }}
+            style={{ height: 38, fontSize: 13 }}
           />
         </div>
 
@@ -229,10 +229,10 @@ export default function BookingForm({ car, onSuccess }) {
             type="tel"
             required
             className="form-input"
-            placeholder="+91 98765 43210"
+            placeholder="Enter 10-digit mobile number"
             value={formData.phone}
             onChange={e => setFormData({ ...formData, phone: e.target.value })}
-            style={{ height: 36, fontSize: 12.5 }}
+            style={{ height: 38, fontSize: 13 }}
           />
         </div>
 
