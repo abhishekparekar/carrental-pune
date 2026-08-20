@@ -14,7 +14,7 @@ import {
   FiTruck,
   FiKey,
 } from 'react-icons/fi';
-import { BsFuelPump, BsStarFill, BsLuggage } from 'react-icons/bs';
+import { BsFuelPump, BsStarFill, BsLuggage, BsWhatsapp } from 'react-icons/bs';
 import toast from 'react-hot-toast';
 
 import Navbar from '../../components/layout/Navbar';
