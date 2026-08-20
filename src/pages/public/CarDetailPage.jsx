@@ -429,7 +429,7 @@ export default function CarDetailPage() {
                 <span className="section-label-red">More Options</span>
                 <h2 style={{ fontSize: 18, margin: '4px 0 0', color: '#111318', fontWeight: 800 }}>Similar Vehicles in Fleet</h2>
               </div>
-              <div className="grid-3">
+              <div className="similar-cars-grid">
                 {similarCars.map((sCar) => (
                   <RevvCarCard key={sCar.id} car={sCar} onEnquire={(c) => navigate(`/cars/${c.id}`)} />
                 ))}
@@ -455,6 +455,11 @@ export default function CarDetailPage() {
         .car-gallery-main {
           height: clamp(240px, 26vw, 360px);
         }
+        .similar-cars-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 16px;
+        }
         @media (max-width: 1024px) {
           .car-detail-layout {
             grid-template-columns: 1fr !important;
@@ -467,9 +472,19 @@ export default function CarDetailPage() {
             height: clamp(220px, 45vw, 320px);
           }
         }
+        @media (max-width: 820px) {
+          .similar-cars-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 10px !important;
+          }
+        }
         @media (max-width: 480px) {
           .car-gallery-main {
-            height: 200px;
+            height: 220px;
+          }
+          .similar-cars-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 8px !important;
           }
         }
       `}</style>
