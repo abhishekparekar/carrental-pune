@@ -168,15 +168,45 @@ export default function CarDetailPage() {
                     width: '100%',
                     borderRadius: 12,
                     overflow: 'hidden',
-                    background: '#F1F5F9',
+                    background: '#0B0F19',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     marginBottom: images.length > 1 ? 6 : 0,
                   }}
                   className="car-gallery-main"
                 >
+                  {/* Ambient blurred backdrop for cinema aesthetic */}
+                  <img
+                    src={images[selectedImageIndex]}
+                    alt=""
+                    aria-hidden="true"
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      filter: 'blur(22px) brightness(0.55)',
+                      transform: 'scale(1.15)',
+                      zIndex: 0,
+                    }}
+                  />
+
+                  {/* Complete Full Uncropped Car Image */}
                   <img
                     src={images[selectedImageIndex]}
                     alt={car.name}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    style={{
+                      position: 'relative',
+                      zIndex: 1,
+                      maxWidth: '100%',
+                      maxHeight: '100%',
+                      width: 'auto',
+                      height: '100%',
+                      objectFit: 'contain',
+                      padding: '4px',
+                    }}
                   />
                   <button
                     className="btn-icon"
@@ -188,9 +218,10 @@ export default function CarDetailPage() {
                       position: 'absolute',
                       top: 12,
                       right: 12,
+                      zIndex: 2,
                       borderRadius: '50%',
                       background: '#FFFFFF',
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.25)',
                     }}
                     title="Share Car Link"
                   >

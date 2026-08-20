@@ -34,13 +34,13 @@ export default function RevvCarCard({ car, onEnquire }) {
         onClick={handleCardClick}
       >
         {/* Car Image */}
-        <div className="revv-card-img" style={{ position: 'relative' }}>
+        <div className="revv-card-img" style={{ position: 'relative', background: '#0B0F19', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           {car.isPopular && (
             <div style={{
               position: 'absolute',
               top: 8,
               left: 8,
-              zIndex: 2,
+              zIndex: 3,
               background: 'linear-gradient(135deg, #C8000A 0%, #990000 100%)',
               color: '#FFFFFF',
               fontSize: 10,
@@ -56,14 +56,35 @@ export default function RevvCarCard({ car, onEnquire }) {
               <span>🔥 POPULAR</span>
             </div>
           )}
+
+          {/* Ambient blurred backdrop */}
+          <img
+            src={primaryImage}
+            alt=""
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              filter: 'blur(16px) brightness(0.6)',
+              transform: 'scale(1.15)',
+              zIndex: 0,
+            }}
+          />
+
+          {/* Full Vehicle Image - Uncropped */}
           <img
             src={primaryImage}
             alt={car.name}
             style={{
+              position: 'relative',
+              zIndex: 1,
               width: '100%',
               height: '100%',
-              objectFit: 'cover',
-              objectPosition: 'center center',
+              objectFit: 'contain',
+              padding: '4px',
               transition: 'transform 0.3s ease',
             }}
             onError={(e) => {
@@ -74,6 +95,7 @@ export default function RevvCarCard({ car, onEnquire }) {
             position: 'absolute',
             top: 8,
             right: 8,
+            zIndex: 3,
             background: 'rgba(15, 23, 42, 0.75)',
             backdropFilter: 'blur(4px)',
             color: '#FFFFFF',
@@ -85,6 +107,7 @@ export default function RevvCarCard({ car, onEnquire }) {
             alignItems: 'center',
             gap: 4,
           }}>
+            <span>+₹{extraKm}/km</span>
           </div>
         </div>
 
