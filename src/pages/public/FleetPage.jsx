@@ -210,22 +210,26 @@ export default function FleetPage() {
             }
             @media (max-width: 820px) {
               .fleet-container {
-                padding: 0 16px;
-              }
-              .grid-fleet-catalog {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 14px;
-              }
-            }
-            @media (max-width: 520px) {
-              .fleet-container {
                 padding: 0 12px;
               }
               .grid-fleet-catalog {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+              }
+            }
+            @media (max-width: 480px) {
+              .fleet-container {
+                padding: 0 10px;
+              }
+              .grid-fleet-catalog {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+              }
+            }
+            @media (max-width: 330px) {
+              .grid-fleet-catalog {
                 grid-template-columns: 1fr;
-                gap: 14px;
-                max-width: 380px;
-                margin: 0 auto;
+                gap: 10px;
               }
             }
           `}</style>

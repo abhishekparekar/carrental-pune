@@ -235,14 +235,17 @@ export default function RevvCarCard({ car, onEnquire }) {
           padding: 6px 12px 10px;
         }
         @media (max-width: 640px) {
-          .revv-car-card { border-radius: 12px; }
-          .revv-card-img { height: clamp(150px, 42vw, 180px); }
-          .revv-card-body { padding: 10px 12px 0; }
-          .revv-card-footer { padding: 6px 12px 10px; }
-          .revv-card-title { font-size: 14.5px !important; }
-          .revv-card-subtitle { font-size: 11px !important; }
-          .revv-card-price { font-size: 15.5px !important; }
-          .revv-inquire-btn { padding: 5px 12px !important; font-size: 11px !important; }
+          .revv-car-card { border-radius: 10px; }
+          .revv-card-img { height: clamp(120px, 32vw, 155px); }
+          .revv-card-body { padding: 7px 8px 0; }
+          .revv-card-footer { padding: 4px 8px 8px; }
+          .revv-card-title { font-size: 13px !important; font-weight: 800 !important; }
+          .revv-card-subtitle { font-size: 10px !important; margin-bottom: 2px !important; }
+          .revv-specs-bar { gap: 4px !important; font-size: 9.5px !important; padding-top: 3px !important; padding-bottom: 4px !important; }
+          .revv-specs-bar svg { width: 9px !important; height: 9px !important; }
+          .revv-card-price { font-size: 14px !important; }
+          .revv-inquire-btn { padding: 4px 8px !important; font-size: 10px !important; border-radius: 99px !important; }
+          .revv-modelyear { font-size: 9px !important; margin-bottom: 1px !important; }
         }
       `}</style>
     </>

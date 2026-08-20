@@ -316,15 +316,14 @@ export default function HomePage() {
           ) : (
             <Swiper
               modules={[Navigation, Autoplay]}
-              spaceBetween={12}
-              slidesPerView={1.12}
+              spaceBetween={10}
+              slidesPerView={1.35}
               breakpoints={{
-                400: { slidesPerView: 1.25, spaceBetween: 12 },
-                560: { slidesPerView: 1.8, spaceBetween: 14 },
-                768: { slidesPerView: 2.5, spaceBetween: 16 },
-                1024: { slidesPerView: 3.2, spaceBetween: 16 },
-                1280: { slidesPerView: 4, spaceBetween: 18 },
-                1600: { slidesPerView: 4.5, spaceBetween: 20 },
+                360: { slidesPerView: 1.45, spaceBetween: 10 },
+                480: { slidesPerView: 2.1, spaceBetween: 12 },
+                768: { slidesPerView: 3.1, spaceBetween: 16 },
+                1024: { slidesPerView: 4, spaceBetween: 18 },
+                1500: { slidesPerView: 4.6, spaceBetween: 20 },
               }}
               autoplay={{ delay: 5000, disableOnInteraction: false }}
               onInit={(swiper) => {
@@ -780,15 +779,19 @@ export default function HomePage() {
         @media (max-width: 820px) {
           .home-fleet-grid {
             grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
+            gap: 10px;
           }
         }
-        @media (max-width: 520px) {
+        @media (max-width: 480px) {
+          .home-fleet-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+          }
+        }
+        @media (max-width: 330px) {
           .home-fleet-grid {
             grid-template-columns: 1fr;
-            gap: 14px;
-            max-width: 380px;
-            margin: 0 auto;
+            gap: 10px;
           }
         }
       `}</style>
