@@ -209,7 +209,7 @@ export default function BookingForm({ car, onSuccess }) {
       )}
 
       {/* Row 1: Contact Details */}
-      <div className="grid-3" style={{ gap: 10 }}>
+      <div className="booking-fields-row" style={{ display: 'grid', gap: 10 }}>
         <div className="form-group" style={{ margin: 0 }}>
           <label className="form-label" style={{ fontSize: 11, marginBottom: 2 }}>Full Name *</label>
           <input
@@ -242,7 +242,7 @@ export default function BookingForm({ car, onSuccess }) {
             className="form-select"
             value={formData.city}
             onChange={e => setFormData({ ...formData, city: e.target.value })}
-            style={{ height: 36, fontSize: 12.5 }}
+            style={{ height: 38, fontSize: 13 }}
           >
             {cities.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
@@ -250,7 +250,7 @@ export default function BookingForm({ car, onSuccess }) {
       </div>
 
       {/* Row 2: Trip Dates & Delivery Option */}
-      <div className="grid-3" style={{ gap: 10 }}>
+      <div className="booking-fields-row" style={{ display: 'grid', gap: 10 }}>
         <div className="form-group" style={{ margin: 0 }}>
           <label className="form-label" style={{ fontSize: 11, marginBottom: 2 }}>Pickup Date & Time</label>
           <DatePicker
@@ -260,7 +260,7 @@ export default function BookingForm({ car, onSuccess }) {
             dateFormat="MMM d, h:mm aa"
             minDate={new Date()}
             className="form-input"
-            style={{ height: 36, fontSize: 12.5 }}
+            style={{ height: 38, fontSize: 13 }}
           />
         </div>
 
@@ -273,13 +273,13 @@ export default function BookingForm({ car, onSuccess }) {
             dateFormat="MMM d, h:mm aa"
             minDate={formData.pickupDate || new Date()}
             className="form-input"
-            style={{ height: 36, fontSize: 12.5 }}
+            style={{ height: 38, fontSize: 13 }}
           />
         </div>
 
         <div className="form-group" style={{ margin: 0 }}>
           <label className="form-label" style={{ fontSize: 11, marginBottom: 2 }}>Delivery Preference</label>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, height: 36 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, height: 38 }}>
             <button
               type="button"
               className={`btn ${formData.pickupType === 'delivery' ? 'btn-primary' : 'btn-secondary'} btn-sm`}

@@ -187,6 +187,27 @@ ul, ol { list-style: none; }
   .grid-4 { grid-template-columns: 1fr; gap: 12px; }
 }
 
+/* ── Booking Form Fields Responsive Row ── */
+.booking-fields-row {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.car-detail-sidebar .booking-fields-row {
+  grid-template-columns: 1fr !important;
+  gap: 8px !important;
+}
+@media (max-width: 900px) {
+  .booking-fields-row {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+}
+@media (min-width: 901px) and (max-width: 1200px) {
+  .booking-fields-row {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 8px;
+  }
+}
+
 /* ── Reviews Grid ── */
 .reviews-grid {
   display: grid;
