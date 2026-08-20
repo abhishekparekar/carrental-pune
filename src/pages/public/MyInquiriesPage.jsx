@@ -72,13 +72,13 @@ export default function MyInquiriesPage() {
       <Navbar />
 
       <main style={{ paddingTop: 'clamp(68px, 9vw, 84px)', paddingBottom: 40, flex: 1 }}>
-        <div className="container" style={{ maxWidth: 820 }}>
+        <div className="container" style={{ maxWidth: 1000 }}>
           
           {/* Header */}
           <div className="section-header text-center" style={{ marginBottom: 24 }}>
             <span className="section-label-red">Track Your Request</span>
             <h1 className="section-title">My Rental <span>Inquiries</span></h1>
-            <p className="section-desc" style={{ maxWidth: 540, margin: '0 auto' }}>
+            <p className="section-desc" style={{ maxWidth: 580, margin: '0 auto' }}>
               Enter your mobile number, email, or inquiry reference ID to track live updates and share directly with us on WhatsApp.
             </p>
           </div>

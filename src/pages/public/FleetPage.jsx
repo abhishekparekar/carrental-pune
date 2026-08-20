@@ -189,40 +189,40 @@ export default function FleetPage() {
           <style>{`
             .fleet-container {
               width: 100%;
-              max-width: 1340px;
+              max-width: 1560px;
               margin: 0 auto;
-              padding: 0 20px;
+              padding: 0 clamp(16px, 2.5vw, 36px);
               box-sizing: border-box;
             }
             .grid-fleet-catalog {
               display: grid;
               grid-template-columns: repeat(4, 1fr);
-              gap: 16px;
+              gap: clamp(14px, 1.8vw, 22px);
             }
             @media (min-width: 1600px) {
               .grid-fleet-catalog {
                 grid-template-columns: repeat(5, 1fr);
-                gap: 20px;
+                gap: 22px;
               }
             }
-            @media (max-width: 1200px) {
+            @media (max-width: 1280px) {
               .grid-fleet-catalog {
                 grid-template-columns: repeat(3, 1fr);
                 gap: 16px;
               }
             }
-            @media (max-width: 768px) {
+            @media (max-width: 820px) {
               .fleet-container {
-                padding: 0 14px;
+                padding: 0 16px;
               }
               .grid-fleet-catalog {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 12px;
               }
             }
-            @media (max-width: 480px) {
+            @media (max-width: 500px) {
               .fleet-container {
-                padding: 0 10px;
+                padding: 0 12px;
               }
               .grid-fleet-catalog {
                 grid-template-columns: repeat(2, 1fr);

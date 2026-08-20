@@ -70,11 +70,16 @@ export default function Navbar() {
         borderBottom: scrolled ? '1px solid #E4E6EA' : '1px solid #EDEDF0',
         boxShadow: scrolled ? '0 4px 20px rgba(17,19,24,0.08)' : 'none',
       }}>
-        <div className="container" style={{
+        <div style={{
+          width: '100%',
+          maxWidth: 1600,
+          margin: '0 auto',
+          padding: '0 clamp(16px, 2.5vw, 36px)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           height: 68,
+          boxSizing: 'border-box',
         }}>
 
           {/* ── Logo ── */}

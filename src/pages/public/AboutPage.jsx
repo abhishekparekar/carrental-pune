@@ -85,7 +85,7 @@ export default function AboutPage() {
 
         {/* ─── Hero Header ─── */}
         <div style={{ background: '#FFFFFF', borderBottom: '1px solid #E2E8F0', marginBottom: 32 }}>
-          <div className="container" style={{ padding: '36px 16px 30px' }}>
+          <div className="container" style={{ padding: '36px 0 30px' }}>
             <span className="section-label-red" style={{ marginBottom: 10, display: 'inline-block' }}>
               About {settings?.businessName || 'SA Self Drive Cars'}
             </span>
@@ -98,7 +98,7 @@ export default function AboutPage() {
           </div>
         </div>
 
-        <div className="container" style={{ padding: '0 16px' }}>
+        <div className="container">
 
           {/* ─── Dynamic Stats Grid ─── */}
           <div className="about-stats-grid" style={{ marginBottom: 32 }}>

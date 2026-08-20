@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { motion } from 'framer-motion';
 import { FiSend, FiCheckCircle, FiMapPin, FiTruck, FiKey } from 'react-icons/fi';
 import { BsCarFront } from 'react-icons/bs';
 import toast from 'react-hot-toast';
-import { addInquiry } from '../../firebase/firestore';
+import { addInquiry, subscribeToCars } from '../../firebase/firestore';
 import { useTenant } from '../../contexts/TenantContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { formatCurrency } from '../../utils/formatCurrency';
@@ -16,7 +16,8 @@ export default function BookingForm({ car, onSuccess }) {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
-  const [selectedCarName, setSelectedCarName] = useState('Maruti Suzuki Swift');
+  const [fleetCars, setFleetCars] = useState([]);
+  const [selectedCarId, setSelectedCarId] = useState('');
 
   const [formData, setFormData] = useState({
     customerName: '',
@@ -29,6 +30,17 @@ export default function BookingForm({ car, onSuccess }) {
     message: '',
   });
 
+  useEffect(() => {
+    if (car) return;
+    const unsub = subscribeToCars(tenantId, (data) => {
+      setFleetCars(data || []);
+      if (data && data.length > 0) {
+        setSelectedCarId(prev => prev || data[0].id);
+      }
+    });
+    return () => unsub();
+  }, [tenantId, car]);
+
   const cities = ['Pune', 'Mumbai', 'Pimpri-Chinchwad', 'Lonavala', 'Outstation'];
 
   const calculateDays = () => {
@@ -39,7 +51,8 @@ export default function BookingForm({ car, onSuccess }) {
   };
 
   const daysCount = calculateDays();
-  const estimatedPrice = car ? (car.pricePerDay || 2300) * daysCount : 0;
+  const activeCar = car || fleetCars.find(c => c.id === selectedCarId) || fleetCars[0] || null;
+  const estimatedPrice = activeCar ? (activeCar.pricePerDay || 2500) * daysCount : 0;
 
   const { user } = useAuth();
 
@@ -58,9 +71,10 @@ export default function BookingForm({ car, onSuccess }) {
 
     setSubmitting(true);
     try {
+      const targetCar = car || activeCar;
       await addInquiry(tenantId, {
-        carId: car?.id || null,
-        carName: car?.name || selectedCarName || 'General Inquiry',
+        carId: targetCar?.id || null,
+        carName: targetCar?.name || 'General Inquiry',
         customerName: formData.customerName,
         phone: formData.phone,
         email: formData.email || 'N/A',
@@ -141,23 +155,33 @@ export default function BookingForm({ car, onSuccess }) {
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
       {/* Selected Vehicle Banner / Selector */}
       {!car ? (
-        <div className="form-group" style={{ margin: 0 }}>
-          <label className="form-label" style={{ fontSize: 11, marginBottom: 2 }}>Select Vehicle Model *</label>
-          <select
-            className="form-select"
-            value={selectedCarName}
-            onChange={e => setSelectedCarName(e.target.value)}
-            style={{ fontWeight: 800, height: 38, fontSize: 13 }}
-          >
-            <option value="Maruti Suzuki Swift">Maruti Suzuki Swift — ₹2,300/day</option>
-            <option value="Mahindra Thar 4x4">Mahindra Thar 4x4 — ₹5,000/day</option>
-            <option value="Maruti Suzuki Ertiga 7-Seater">Maruti Suzuki Ertiga 7-Seater — ₹2,500/day</option>
-            <option value="Hyundai i20">Hyundai i20 — ₹2,300/day</option>
-            <option value="Maruti Suzuki Dzire CNG">Maruti Suzuki Dzire CNG — ₹2,500/day</option>
-            <option value="Tata Punch SUV">Tata Punch SUV — ₹2,500/day</option>
-            <option value="Hyundai Venue">Hyundai Venue — ₹3,000/day</option>
-            <option value="Maruti Suzuki Baleno">Maruti Suzuki Baleno — ₹2,300/day</option>
-          </select>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div className="form-group" style={{ margin: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <label className="form-label" style={{ fontSize: 11, marginBottom: 2 }}>Select Vehicle Model *</label>
+              {activeCar && (
+                <span style={{ fontSize: 11, color: '#C8000A', fontWeight: 800 }}>
+                  Est. {formatCurrency(estimatedPrice)} ({daysCount} {daysCount === 1 ? 'day' : 'days'})
+                </span>
+              )}
+            </div>
+            <select
+              className="form-select"
+              value={selectedCarId || activeCar?.id || ''}
+              onChange={e => setSelectedCarId(e.target.value)}
+              style={{ fontWeight: 800, height: 40, fontSize: 13.5 }}
+            >
+              {fleetCars.length === 0 ? (
+                <option value="">Loading fleet cars from database...</option>
+              ) : (
+                fleetCars.map(c => (
+                  <option key={c.id} value={c.id}>
+                    {c.name} — {formatCurrency(c.pricePerDay || 2500)}/day
+                  </option>
+                ))
+              )}
+            </select>
+          </div>
         </div>
       ) : (
         <div style={{

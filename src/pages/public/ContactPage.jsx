@@ -144,7 +144,7 @@ export default function ContactPage() {
 
         {/* ─── Hero Header ─── */}
         <div style={{ background: '#FFFFFF', borderBottom: '1px solid #E2E8F0', marginBottom: 24 }}>
-          <div className="container" style={{ padding: '24px 16px 20px', maxWidth: 1100 }}>
+          <div className="container" style={{ padding: '24px 0 20px', maxWidth: 1400 }}>
             <span className="section-label-red" style={{ display: 'inline-block', marginBottom: 6 }}>Contact & Instant Quote</span>
             <h1 style={{ fontSize: 'clamp(22px, 4vw, 32px)', fontWeight: 900, color: '#0F172A', margin: '0 0 6px', lineHeight: 1.2 }}>
               Get in Touch with <span style={{ color: '#C8000A' }}>Car Rental Support</span>
@@ -155,7 +155,7 @@ export default function ContactPage() {
           </div>
         </div>
 
-        <div className="container" style={{ maxWidth: 1100, padding: '0 16px' }}>
+        <div className="container" style={{ maxWidth: 1400 }}>
 
           {/* ─── Contact Info Cards ─── */}
           <div className="grid-4" style={{ gap: 12, marginBottom: 24 }}>

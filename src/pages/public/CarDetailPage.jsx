@@ -404,8 +404,8 @@ export default function CarDetailPage() {
       <style>{`
         .car-detail-layout {
           display: grid;
-          grid-template-columns: minmax(0, 1fr) 300px;
-          gap: 20px;
+          grid-template-columns: minmax(0, 1.45fr) minmax(320px, 380px);
+          gap: clamp(16px, 2.5vw, 30px);
         }
         .car-detail-sidebar {
           align-self: start;
@@ -413,15 +413,12 @@ export default function CarDetailPage() {
           top: 84px;
         }
         .car-gallery-main {
-          height: 380px;
+          height: clamp(280px, 32vw, 440px);
         }
         @media (max-width: 1100px) {
           .car-detail-layout {
-            grid-template-columns: minmax(0, 1fr) 280px;
-            gap: 16px;
-          }
-          .car-gallery-main {
-            height: 320px;
+            grid-template-columns: minmax(0, 1.3fr) 320px;
+            gap: 18px;
           }
         }
         @media (max-width: 900px) {
@@ -433,17 +430,12 @@ export default function CarDetailPage() {
             position: static !important;
           }
           .car-gallery-main {
-            height: 260px;
+            height: clamp(220px, 45vw, 320px);
           }
         }
-        @media (max-width: 640px) {
+        @media (max-width: 480px) {
           .car-gallery-main {
-            height: 220px;
-          }
-        }
-        @media (max-width: 400px) {
-          .car-gallery-main {
-            height: 180px;
+            height: 210px;
           }
         }
       `}</style>

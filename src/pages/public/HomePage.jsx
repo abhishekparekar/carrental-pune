@@ -302,7 +302,8 @@ export default function HomePage() {
 
           {/* Swiper Carousel */}
           {loading ? (
-            <div className="grid-3">
+            <div className="grid-4">
+              <CarSkeleton />
               <CarSkeleton />
               <CarSkeleton />
               <CarSkeleton />
@@ -315,12 +316,13 @@ export default function HomePage() {
             <Swiper
               modules={[Navigation, Autoplay]}
               spaceBetween={14}
-              slidesPerView={1.3}
+              slidesPerView={1.2}
               breakpoints={{
-                480: { slidesPerView: 1.6, spaceBetween: 14 },
-                640: { slidesPerView: 2.1, spaceBetween: 16 },
-                1024: { slidesPerView: 3.1, spaceBetween: 18 },
-                1280: { slidesPerView: 3.4, spaceBetween: 20 },
+                420: { slidesPerView: 1.5, spaceBetween: 12 },
+                640: { slidesPerView: 2.2, spaceBetween: 14 },
+                960: { slidesPerView: 3.2, spaceBetween: 16 },
+                1280: { slidesPerView: 4.1, spaceBetween: 18 },
+                1600: { slidesPerView: 4.8, spaceBetween: 20 },
               }}
               autoplay={{ delay: 5000, disableOnInteraction: false }}
               onInit={(swiper) => {
@@ -355,15 +357,16 @@ export default function HomePage() {
           </div>
 
           {loading ? (
-            <div className="grid-3">
+            <div className="home-fleet-grid">
+              <CarSkeleton />
               <CarSkeleton />
               <CarSkeleton />
               <CarSkeleton />
             </div>
           ) : (
             <>
-              <div className="grid-3">
-                {cars.slice(0, 6).map((car) => (
+              <div className="home-fleet-grid">
+                {cars.slice(0, 8).map((car) => (
                   <RevvCarCard key={car.id} car={car} onEnquire={openEnquiry} />
                 ))}
               </div>
@@ -430,7 +433,7 @@ export default function HomePage() {
 
       {/* 4.5 DIRECT HOMEPAGE INQUIRY FORM SECTION */}
       <section id="inquiry-form-section" style={{ background: '#F8FAFC', borderTop: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', padding: '32px 0' }}>
-        <div className="container" style={{ maxWidth: 860 }}>
+        <div className="container" style={{ maxWidth: 1100 }}>
           <div className="section-header text-center" style={{ marginBottom: 16 }}>
             <span className="section-label-red">Instant Booking & Quote</span>
             <h2 className="section-title" style={{ fontSize: 'clamp(20px, 3.5vw, 26px)', margin: '4px 0' }}>Submit Your <span>Car Rental Inquiry</span></h2>
@@ -439,7 +442,7 @@ export default function HomePage() {
           <div style={{
             background: '#FFFFFF',
             borderRadius: 16,
-            padding: '16px 18px',
+            padding: 'clamp(14px, 2.5vw, 24px)',
             border: '1px solid #E2E8F0',
             boxShadow: '0 4px 18px rgba(15, 23, 42, 0.05)',
           }}>
@@ -581,6 +584,44 @@ export default function HomePage() {
       </Modal>
 
       <Footer />
+
+      <style>{`
+        .home-fleet-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: clamp(14px, 1.8vw, 20px);
+        }
+        @media (min-width: 1600px) {
+          .home-fleet-grid {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 22px;
+          }
+        }
+        @media (max-width: 1200px) {
+          .home-fleet-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+          }
+        }
+        @media (max-width: 800px) {
+          .home-fleet-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+          }
+        }
+        @media (max-width: 480px) {
+          .home-fleet-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+          }
+        }
+        @media (max-width: 360px) {
+          .home-fleet-grid {
+            grid-template-columns: 1fr;
+            gap: 10px;
+          }
+        }
+      `}</style>
     </div>
   );
 }

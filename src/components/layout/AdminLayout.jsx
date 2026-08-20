@@ -273,7 +273,7 @@ export default function AdminLayout({ children }) {
         </header>
 
         {/* Inner Page View */}
-        <main style={{ flex: 1, padding: 20, overflowX: 'hidden' }}>
+        <main style={{ flex: 1, padding: 'clamp(14px, 2vw, 24px)', overflowX: 'hidden', width: '100%', boxSizing: 'border-box' }}>
           {children}
         </main>
       </div>

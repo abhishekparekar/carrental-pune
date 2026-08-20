@@ -246,15 +246,19 @@ export default function Footer() {
         .footer-grid {
           display: grid;
           grid-template-columns: 1.6fr 1fr 1fr 1fr 1.3fr;
-          gap: 28px;
+          gap: clamp(16px, 2.5vw, 32px);
         }
-        @media (max-width: 1024px) {
+        @media (max-width: 1100px) {
           .footer-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; }
           .footer-brand-col { grid-column: span 3; }
         }
-        @media (max-width: 640px) {
+        @media (max-width: 680px) {
           .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
           .footer-brand-col { grid-column: span 2; margin-bottom: 8px; }
+        }
+        @media (max-width: 440px) {
+          .footer-grid { grid-template-columns: 1fr; gap: 20px; }
+          .footer-brand-col { grid-column: span 1; }
         }
       `}</style>
     </footer>
