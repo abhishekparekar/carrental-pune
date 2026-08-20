@@ -119,16 +119,16 @@ export default function RevvCarCard({ car, onEnquire }) {
         {/* Card Body */}
         <div className="revv-card-body" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 4, marginBottom: 1 }}>
-              <span className="revv-modelyear" style={{ fontSize: 10.5, color: '#94A3B8', fontWeight: 600 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 4, marginBottom: 2 }}>
+              <span className="revv-modelyear" style={{ fontSize: 11, color: '#475569', fontWeight: 700 }}>
                 {car.modelYear || `${car.name.split(' ').slice(-1)[0]} 2025`}
               </span>
-              <span className="revv-card-subtitle" style={{ fontSize: 10.5, color: '#64748B', fontWeight: 700, margin: 0 }}>
+              <span className="revv-card-subtitle" style={{ fontSize: 11, color: '#1E293B', fontWeight: 800, margin: 0 }}>
                 {car.brand || car.name.split(' ')[0]} • {car.fuelType ? car.fuelType.toUpperCase() : 'PETROL'}
               </span>
             </div>
             
-            <h3 className="revv-card-title" style={{ fontSize: 15, fontWeight: 800, color: '#0F172A', margin: '0 0 4px', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            <h3 className="revv-card-title" style={{ fontSize: 15.5, fontWeight: 900, color: '#0F172A', margin: '0 0 4px', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {car.name}
             </h3>
           </div>
@@ -139,22 +139,23 @@ export default function RevvCarCard({ car, onEnquire }) {
             alignItems: 'center',
             justifyContent: 'space-between',
             gap: 4,
-            fontSize: 10,
-            color: '#64748B',
-            paddingTop: 4,
-            paddingBottom: 5,
+            fontSize: 11,
+            fontWeight: 700,
+            color: '#334155',
+            paddingTop: 5,
+            paddingBottom: 6,
             borderTop: '1px solid #F1F5F9',
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-              <BsCarFront size={11} style={{ color: '#C8000A' }} />
+              <BsCarFront size={12} style={{ color: '#C8000A' }} />
               <span>{categoryName}</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-              <FiSettings size={11} style={{ color: '#C8000A' }} />
+              <FiSettings size={12} style={{ color: '#C8000A' }} />
               <span style={{ textTransform: 'capitalize' }}>{car.transmission || 'Manual'}</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-              <FiUsers size={11} style={{ color: '#C8000A' }} />
+              <FiUsers size={12} style={{ color: '#C8000A' }} />
               <span>{seatsNum} Seats</span>
             </div>
           </div>
@@ -169,14 +170,14 @@ export default function RevvCarCard({ car, onEnquire }) {
           gap: 6,
         }}>
           <div>
-            <span style={{ fontSize: 9, color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', lineHeight: 1 }}>
-              Tariff
+            <span style={{ fontSize: 9.5, color: '#475569', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.6px', display: 'block', lineHeight: 1 }}>
+              Daily Tariff
             </span>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 2 }}>
-              <span className="revv-card-price" style={{ fontSize: 16, fontWeight: 900, color: '#C8000A', lineHeight: 1.2 }}>
+              <span className="revv-card-price" style={{ fontSize: 17, fontWeight: 900, color: '#C8000A', lineHeight: 1.2 }}>
                 {formatCurrency(car.pricePerDay || 2300)}
               </span>
-              <span style={{ fontSize: 10, color: '#64748B', fontWeight: 600 }}>/d</span>
+              <span style={{ fontSize: 11, color: '#475569', fontWeight: 700 }}>/day</span>
             </div>
           </div>
 
@@ -185,20 +186,20 @@ export default function RevvCarCard({ car, onEnquire }) {
             onClick={handleInquireClick}
             className="btn btn-primary btn-sm revv-inquire-btn"
             style={{
-              padding: '5px 12px',
-              fontSize: 11,
+              padding: '6px 14px',
+              fontSize: 11.5,
               fontWeight: 800,
               borderRadius: 'var(--radius-full)',
               background: '#C8000A',
               borderColor: '#C8000A',
               display: 'flex',
               alignItems: 'center',
-              gap: 3,
-              boxShadow: '0 2px 8px rgba(200, 0, 10, 0.25)',
+              gap: 4,
+              boxShadow: '0 2px 8px rgba(200, 0, 10, 0.30)',
             }}
           >
-            <span>Book</span>
-            <FiArrowRight size={10} />
+            <span>Book Now</span>
+            <FiArrowRight size={11} />
           </button>
         </div>
       </motion.div>
