@@ -168,11 +168,12 @@ export default function CarDetailPage() {
                     width: '100%',
                     borderRadius: 12,
                     overflow: 'hidden',
-                    background: '#F1F5F9',
+                    background: '#FFFFFF',
+                    border: '1px solid #E2E8F0',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    padding: '8px',
+                    padding: '4px',
                     marginBottom: images.length > 1 ? 6 : 0,
                   }}
                   className="car-gallery-main"

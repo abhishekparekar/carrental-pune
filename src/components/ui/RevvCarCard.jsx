@@ -33,8 +33,8 @@ export default function RevvCarCard({ car, onEnquire }) {
         className="revv-car-card"
         onClick={handleCardClick}
       >
-        {/* Car Image */}
-        <div className="revv-card-img" style={{ position: 'relative', background: '#F8FAFC', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {/* Car Image Container - Pure Seamless White (No Grey Box/Bars) */}
+        <div className="revv-card-img" style={{ position: 'relative', background: '#FFFFFF', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           {car.isPopular && (
             <div style={{
               position: 'absolute',
@@ -57,7 +57,7 @@ export default function RevvCarCard({ car, onEnquire }) {
             </div>
           )}
 
-          {/* Clean Admin-Set Car Image Displayed As It Is */}
+          {/* Full Crisp Uncropped Car Image */}
           <img
             src={primaryImage}
             alt={car.name}
@@ -68,6 +68,7 @@ export default function RevvCarCard({ car, onEnquire }) {
               objectPosition: 'center center',
               transition: 'transform 0.3s ease',
               display: 'block',
+              background: 'transparent',
             }}
             onError={(e) => {
               e.target.src = 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=600&q=80';
@@ -200,9 +201,9 @@ export default function RevvCarCard({ car, onEnquire }) {
         .revv-card-img {
           width: 100%;
           aspect-ratio: 16 / 10;
-          height: clamp(160px, 14vw, 195px);
+          height: clamp(170px, 15vw, 205px);
           overflow: hidden;
-          background: #F8FAFC;
+          background: #FFFFFF;
           flex-shrink: 0;
           position: relative;
         }
