@@ -65,11 +65,11 @@ export default function AdminLogin() {
             src={logoImg}
             alt="SA Self Drive Cars"
             style={{
-              height: 64,
+              height: 76,
               width: 'auto',
-              margin: '0 auto 12px',
+              margin: '0 auto 14px',
               display: 'block',
-              filter: 'drop-shadow(0 4px 14px rgba(200,0,10,0.35))',
+              filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.08))',
             }}
           />
           <h2 style={{ fontSize: 20, fontWeight: 800, margin: '0 0 4px', color: '#111318' }}>SA Self Drive Admin Portal</h2>
@@ -121,12 +121,9 @@ export default function AdminLogin() {
                   setEmail(e.target.value);
                   setErrorMsg('');
                 }}
-                placeholder="shubhamastrkar@gmail.com"
+                placeholder="admin@saselfdrivecars.com"
               />
             </div>
-            <span style={{ fontSize: 11, color: '#64748B', marginTop: 4, display: 'block' }}>
-              Authorized: <code style={{ color: '#C8000A', fontWeight: 700 }}>shubhamastrkar@gmail.com</code>
-            </span>
           </div>
 
           <div className="form-group">
