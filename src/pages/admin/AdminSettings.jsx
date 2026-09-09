@@ -58,7 +58,7 @@ export default function AdminSettings() {
         businessName: settings.businessName || 'SA Self Drive Cars',
         tagline: settings.tagline || 'Premium self-drive car rentals with 300 km daily limit, doorstep delivery & verified fleet in Pune.',
         phone: settings.phone || '+91 9270762176',
-        email: settings.email || 'support@nextrent.com',
+        email: settings.email || 'shubhamastrkar@gmail.com',
         address: settings.address || 'Pimpri-Chinchwad & Pune City, Maharashtra',
         whatsapp: settings.whatsapp || '919270762176',
         businessHours: settings.businessHours || '24 Hours • 365 Days Doorstep Delivery',

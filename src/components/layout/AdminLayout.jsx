@@ -17,7 +17,7 @@ import {
 } from 'react-icons/fi';
 import { BsCarFront } from 'react-icons/bs';
 import { useAuth } from '../../contexts/AuthContext';
-import logoImg from '../../assets/logo1.jpeg';
+import logoImg from '../../assets/logo1.png';
 
 const navItems = [
   { icon: <FiGrid />, label: 'Dashboard', to: '/admin' },

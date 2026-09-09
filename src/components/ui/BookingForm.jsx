@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { motion } from 'framer-motion';
 import { FiSend, FiCheckCircle, FiMapPin, FiTruck, FiKey } from 'react-icons/fi';
-import { BsCarFront } from 'react-icons/bs';
+import { BsCarFront, BsWhatsapp } from 'react-icons/bs';
 import toast from 'react-hot-toast';
 import { addInquiry, subscribeToCars } from '../../firebase/firestore';
 import { useTenant } from '../../contexts/TenantContext';
@@ -99,42 +99,78 @@ export default function BookingForm({ car, onSuccess }) {
   };
 
   if (submitted) {
+    const activeCarName = car?.name || fleetCars.find(c => c.id === selectedCarId)?.name || 'Self-Drive Vehicle';
+    const waText = encodeURIComponent(`Hi SA Self Drive Cars, I just submitted a booking inquiry for *${activeCarName}* for ${daysCount} days (${formData.pickupDate?.toLocaleDateString()} to ${formData.returnDate?.toLocaleDateString()}). My name is *${formData.customerName}* (Phone: ${formData.phone}). Please confirm booking!`);
+    const waLink = `https://wa.me/919270762176?text=${waText}`;
+
     return (
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         style={{
           textAlign: 'center',
-          padding: '20px 12px',
+          padding: '24px 14px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: 10,
+          gap: 12,
         }}
       >
         <div style={{
-          width: 48,
-          height: 48,
+          width: 52,
+          height: 52,
           borderRadius: '50%',
           background: 'rgba(22,163,74,0.1)',
+          border: '1px solid rgba(22,163,74,0.3)',
           color: '#16A34A',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-          <FiCheckCircle size={24} />
+          <FiCheckCircle size={28} />
         </div>
 
-        <h3 style={{ fontSize: 18, margin: 0, color: '#0F172A', fontWeight: 900 }}>Inquiry Received!</h3>
-        <p style={{ fontSize: 12.5, color: '#64748B', maxWidth: 360, margin: 0, lineHeight: 1.5 }}>
-          Thank you! Our representative will confirm vehicle availability and doorstep delivery within 15 minutes.
-        </p>
+        <div>
+          <h3 style={{ fontSize: 19, margin: 0, color: '#0F172A', fontWeight: 900 }}>Inquiry & Booking Received!</h3>
+          <p style={{ fontSize: 13, color: '#475569', maxWidth: 360, margin: '6px auto 0', lineHeight: 1.5 }}>
+            Your booking inquiry is registered in the Admin CRM and dispatched to <strong>shubhamastrkar@gmail.com</strong>.
+          </p>
+        </div>
 
-        <div style={{ display: 'flex', gap: 8, marginTop: 4 }}>
+        <div style={{
+          background: '#F8FAFC',
+          border: '1px solid #E2E8F0',
+          borderRadius: 12,
+          padding: '10px 14px',
+          width: '100%',
+          maxWidth: 380,
+          textAlign: 'left',
+          fontSize: 12,
+          color: '#334155',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 4,
+        }}>
+          <div><strong>Vehicle:</strong> {activeCarName}</div>
+          <div><strong>Customer:</strong> {formData.customerName} ({formData.phone})</div>
+          <div><strong>Dates:</strong> {formData.pickupDate?.toLocaleDateString()} ➔ {formData.returnDate?.toLocaleDateString()} ({daysCount} days)</div>
+          <div><strong>Est. Tariff:</strong> ₹{estimatedPrice}</div>
+        </div>
+
+        <div style={{ display: 'flex', gap: 8, marginTop: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
+          <a
+            href={waLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-primary btn-sm"
+            style={{ padding: '8px 16px', fontSize: 12.5, background: '#25D366', borderColor: '#25D366', color: '#FFFFFF', fontWeight: 800, display: 'inline-flex', alignItems: 'center', gap: 6 }}
+          >
+            <BsWhatsapp size={14} /> WhatsApp Fast-Track
+          </a>
           <a
             href="/my-inquiries"
             className="btn btn-primary btn-sm"
-            style={{ padding: '6px 14px', fontSize: 12, background: '#C8000A', borderColor: '#C8000A', fontWeight: 800 }}
+            style={{ padding: '8px 14px', fontSize: 12.5, background: '#C8000A', borderColor: '#C8000A', fontWeight: 800 }}
           >
             Track Status ➔
           </a>
@@ -142,7 +178,7 @@ export default function BookingForm({ car, onSuccess }) {
             type="button"
             onClick={() => setSubmitted(false)}
             className="btn btn-secondary btn-sm"
-            style={{ padding: '6px 12px', fontSize: 12 }}
+            style={{ padding: '8px 14px', fontSize: 12.5 }}
           >
             New Request
           </button>

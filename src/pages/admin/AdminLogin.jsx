@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiLock, FiMail, FiLogIn, FiAlertCircle, FiEye, FiEyeOff } from 'react-icons/fi';
 import { useAuth } from '../../contexts/AuthContext';
-import logoImg from '../../assets/logo1.jpeg';
+import logoImg from '../../assets/logo1.png';
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
@@ -121,9 +121,12 @@ export default function AdminLogin() {
                   setEmail(e.target.value);
                   setErrorMsg('');
                 }}
-                placeholder="admin@saselfdrivecars.com"
+                placeholder="shubhamastrkar@gmail.com"
               />
             </div>
+            <span style={{ fontSize: 11, color: '#64748B', marginTop: 4, display: 'block' }}>
+              Authorized: <code style={{ color: '#C8000A', fontWeight: 700 }}>shubhamastrkar@gmail.com</code>
+            </span>
           </div>
 
           <div className="form-group">

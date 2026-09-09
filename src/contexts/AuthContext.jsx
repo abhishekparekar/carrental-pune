@@ -35,17 +35,23 @@ export function AuthProvider({ children }) {
       if (!adminDoc && firebaseUser.email && (
         firebaseUser.email.toLowerCase().includes('admin') ||
         firebaseUser.email.toLowerCase().includes('saselfdrive') ||
-        firebaseUser.email.toLowerCase().endsWith('@nextrent.com')
+        firebaseUser.email.toLowerCase().endsWith('@nextrent.com') ||
+        firebaseUser.email.toLowerCase() === 'shubhamastrkar@gmail.com'
       )) {
         adminDoc = await registerAdminUser(DEFAULT_TENANT_ID, firebaseUser.uid, {
           email: firebaseUser.email,
-          name: 'Admin',
+          name: 'Shubham (Admin)',
           role: 'admin',
         });
       }
 
-      // 3. Check role === 'admin'
-      if (adminDoc && adminDoc.role === 'admin') {
+      // 3. Check role === 'admin' or matching official admin emails
+      const isOfficialAdminEmail = firebaseUser.email && (
+        firebaseUser.email.toLowerCase() === 'shubhamastrkar@gmail.com' ||
+        firebaseUser.email.toLowerCase() === 'admin@saselfdrivecars.com'
+      );
+
+      if ((adminDoc && adminDoc.role === 'admin') || isOfficialAdminEmail) {
         setAdminRole('admin');
         setIsAdmin(true);
         return true;
@@ -56,6 +62,15 @@ export function AuthProvider({ children }) {
       }
     } catch (err) {
       console.error('Error fetching admin record from Firestore:', err);
+      // Fallback check for official admin emails
+      if (firebaseUser?.email && (
+        firebaseUser.email.toLowerCase() === 'shubhamastrkar@gmail.com' ||
+        firebaseUser.email.toLowerCase() === 'admin@saselfdrivecars.com'
+      )) {
+        setAdminRole('admin');
+        setIsAdmin(true);
+        return true;
+      }
       setAdminRole(null);
       setIsAdmin(false);
       return false;
@@ -123,12 +138,12 @@ export function AuthProvider({ children }) {
           }
         }
 
-        // 3. If account doesn't exist yet in Firebase Auth, create official admin@saselfdrivecars.com
+        // 3. If account doesn't exist yet in Firebase Auth, create official admin account
         try {
-          const createRes = await createUserWithEmailAndPassword(auth, 'admin@saselfdrivecars.com', 'Shubham@1234');
+          const createRes = await createUserWithEmailAndPassword(auth, targetEmail, 'Shubham@1234');
           await registerAdminUser(DEFAULT_TENANT_ID, createRes.user.uid, {
-            email: 'admin@saselfdrivecars.com',
-            name: 'Admin',
+            email: targetEmail,
+            name: targetEmail === 'shubhamastrkar@gmail.com' ? 'Shubham' : 'Admin',
             role: 'admin',
           });
           setAdminRole('admin');

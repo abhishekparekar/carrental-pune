@@ -24,7 +24,7 @@ import { useTenant } from '../../contexts/TenantContext';
 import { subscribeToCars, subscribeToReviews } from '../../firebase/firestore';
 
 import heroBgImg from '../../assets/herobg1.jpeg';
-import logoImg from '../../assets/logo1.jpeg';
+import logoImg from '../../assets/logo1.png';
 import familyTravelImg from '../../assets/family_travel.jpg';
 
 const DEFAULT_REVIEWS = [

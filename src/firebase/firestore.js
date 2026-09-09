@@ -19,6 +19,7 @@ import {
   Timestamp,
 } from 'firebase/firestore';
 import { db } from './config';
+import { sendEmailNotification } from '../utils/sendEmailNotification';
 
 // ─── Tenant Scoping ────────────────────────────────────────────────────────────
 /**
@@ -194,10 +195,10 @@ export async function upsertCustomer(tenantId, { name, email, phone }, userId = 
   }
 }
 
-// ─── Inquiries ─────────────────────────────────────────────────────────────────
+// ─── Inquiries & Booking Ingestion ───────────────────────────────────────────
 export async function addInquiry(tenantId, inquiryData, userId = null) {
   const activeUserId = userId || inquiryData.userId || 'guest';
-  return addDoc(tenantCollection(tenantId, 'inquiries'), {
+  const newInquiry = {
     tenantId,
     userId: activeUserId,
     createdBy: activeUserId,
@@ -205,27 +206,142 @@ export async function addInquiry(tenantId, inquiryData, userId = null) {
     status: inquiryData.status || 'new',
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
-  });
+  };
+
+  let docRef = null;
+  try {
+    docRef = await addDoc(tenantCollection(tenantId, 'inquiries'), newInquiry);
+  } catch (err) {
+    console.warn('Firestore addDoc warning:', err);
+  }
+
+  const generatedId = docRef?.id || `inq_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+  const fullItem = {
+    id: generatedId,
+    ...newInquiry,
+    createdAt: new Date().toISOString(),
+  };
+
+  // 1. Save to LocalStorage cache so Admin Panel immediately displays it without delay
+  try {
+    const key = `nextrent_inquiries_${tenantId}`;
+    const existing = JSON.parse(localStorage.getItem(key) || '[]');
+    const filtered = existing.filter(x => x.id !== generatedId);
+    localStorage.setItem(key, JSON.stringify([fullItem, ...filtered]));
+  } catch (e) {
+    console.error('LocalStorage error:', e);
+  }
+
+  // 2. Auto-upsert customer into customers collection for CRM
+  if (inquiryData.customerName || inquiryData.phone || inquiryData.email) {
+    try {
+      await upsertCustomer(tenantId, {
+        name: inquiryData.customerName || 'Inquiry Customer',
+        email: inquiryData.email && inquiryData.email !== 'N/A' ? inquiryData.email : '',
+        phone: inquiryData.phone || '',
+      }, activeUserId);
+    } catch (custErr) {
+      console.warn('Auto-upsert customer notice:', custErr);
+    }
+  }
+
+  // 3. If vehicle booking details exist, also sync to bookings collection
+  if (inquiryData.carName && inquiryData.pickupDate) {
+    try {
+      await addDoc(tenantCollection(tenantId, 'bookings'), {
+        tenantId,
+        inquiryId: generatedId,
+        userId: activeUserId,
+        createdBy: activeUserId,
+        customerName: inquiryData.customerName || 'Customer',
+        customerPhone: inquiryData.phone || '',
+        customerEmail: inquiryData.email || '',
+        carId: inquiryData.carId || null,
+        carName: inquiryData.carName,
+        pickupDate: inquiryData.pickupDate,
+        returnDate: inquiryData.returnDate,
+        pickupCity: inquiryData.city || 'Pune',
+        pickupType: inquiryData.pickupType || 'delivery',
+        totalPrice: inquiryData.estimatedPrice || 0,
+        daysCount: inquiryData.daysCount || 1,
+        status: 'pending',
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      });
+    } catch (bookErr) {
+      console.warn('Bookings sync notice:', bookErr);
+    }
+  }
+
+  // 4. Send email notification to shubhamastrkar@gmail.com asynchronously
+  sendEmailNotification(fullItem).catch(e => console.warn('Email dispatch notice:', e));
+
+  return docRef || { id: generatedId };
 }
 
 export function subscribeToInquiries(tenantId, callback) {
   const ref = query(tenantCollection(tenantId, 'inquiries'), orderBy('createdAt', 'desc'));
-  return onSnapshot(ref, snap => {
-    callback(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+
+  const getLocal = () => {
+    try {
+      return JSON.parse(localStorage.getItem(`nextrent_inquiries_${tenantId}`) || '[]');
+    } catch {
+      return [];
+    }
+  };
+
+  return onSnapshot(ref, (snap) => {
+    const remoteDocs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const localDocs = getLocal();
+
+    // Merge: remote docs take precedence, but keep any local docs not yet reflected
+    const remoteIds = new Set(remoteDocs.map(d => d.id));
+    const pendingLocal = localDocs.filter(d => !remoteIds.has(d.id));
+    const merged = [...pendingLocal, ...remoteDocs];
+
+    try {
+      localStorage.setItem(`nextrent_inquiries_${tenantId}`, JSON.stringify(merged));
+    } catch {}
+
+    callback(merged);
+  }, (err) => {
+    console.warn('Firestore subscribeToInquiries notice, using local cache:', err);
+    callback(getLocal());
   });
 }
 
 export async function updateInquiryStatus(tenantId, inquiryId, status, adminUid = null) {
-  return updateDoc(tenantDoc(tenantId, 'inquiries', inquiryId), {
-    tenantId,
-    status,
-    updatedBy: adminUid || 'admin',
-    updatedAt: serverTimestamp(),
-  });
+  try {
+    const key = `nextrent_inquiries_${tenantId}`;
+    const items = JSON.parse(localStorage.getItem(key) || '[]');
+    const updated = items.map(i => i.id === inquiryId ? { ...i, status, updatedAt: new Date().toISOString() } : i);
+    localStorage.setItem(key, JSON.stringify(updated));
+  } catch {}
+
+  try {
+    return await updateDoc(tenantDoc(tenantId, 'inquiries', inquiryId), {
+      tenantId,
+      status,
+      updatedBy: adminUid || 'admin',
+      updatedAt: serverTimestamp(),
+    });
+  } catch (err) {
+    console.warn('Firestore updateDoc notice:', err);
+  }
 }
 
 export async function deleteInquiry(tenantId, inquiryId) {
-  return deleteDoc(tenantDoc(tenantId, 'inquiries', inquiryId));
+  try {
+    const key = `nextrent_inquiries_${tenantId}`;
+    const items = JSON.parse(localStorage.getItem(key) || '[]');
+    localStorage.setItem(key, JSON.stringify(items.filter(i => i.id !== inquiryId)));
+  } catch {}
+
+  try {
+    return await deleteDoc(tenantDoc(tenantId, 'inquiries', inquiryId));
+  } catch (err) {
+    console.warn('Firestore deleteDoc notice:', err);
+  }
 }
 
 // ─── Customer CRM Management ──────────────────────────────────────────────────
@@ -367,7 +483,7 @@ export const DEFAULT_TENANT_SETTINGS = {
   businessName: 'SA Self Drive Cars',
   tagline: 'Premium self-drive car rentals with 300 km daily limit, doorstep delivery & verified fleet in Pune.',
   phone: '+91 9270762176',
-  email: 'info@saselfdrivecars.com',
+  email: 'shubhamastrkar@gmail.com',
   address: 'Pune, Maharashtra',
   whatsapp: '919270762176',
   facebook: 'https://facebook.com',
@@ -426,10 +542,15 @@ export function subscribeToTenantSettings(tenantId, callback) {
 
 export function formatTimestamp(ts) {
   if (!ts) return '—';
-  const date = ts.toDate ? ts.toDate() : new Date(ts);
-  return date.toLocaleDateString('en-IN', {
-    day: '2-digit', month: 'short', year: 'numeric'
-  });
+  try {
+    const date = ts.toDate ? ts.toDate() : new Date(ts);
+    if (isNaN(date.getTime())) return String(ts);
+    return date.toLocaleDateString('en-IN', {
+      day: '2-digit', month: 'short', year: 'numeric'
+    });
+  } catch {
+    return '—';
+  }
 }
 
 export { serverTimestamp, Timestamp };

@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FiMenu, FiX, FiPhone, FiCalendar, FiChevronRight } from 'react-icons/fi';
 import { BsWhatsapp } from 'react-icons/bs';
 
-import logoImg from '../../assets/logo1.jpeg';
+import logoImg from '../../assets/logo1.png';
 import { useTenant } from '../../contexts/TenantContext';
 
 const navLinks = [
@@ -78,7 +78,7 @@ export default function Navbar() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          height: 68,
+          height: 72,
           boxSizing: 'border-box',
         }}>
 
@@ -92,11 +92,11 @@ export default function Navbar() {
               src={logoImg}
               alt="SA Self Drive Cars"
               style={{
-                height: 52,
+                height: 56,
                 width: 'auto',
                 objectFit: 'contain',
                 display: 'block',
-                filter: 'drop-shadow(0 2px 8px rgba(200,0,10,0.25))',
+                filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.10))',
               }}
             />
           </Link>
@@ -238,7 +238,7 @@ export default function Navbar() {
                 <img
                   src={logoImg}
                   alt="SA Self Drive Cars"
-                  style={{ height: 44, width: 'auto', objectFit: 'contain' }}
+                  style={{ height: 48, width: 'auto', objectFit: 'contain' }}
                 />
 
                 <button

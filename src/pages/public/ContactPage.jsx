@@ -26,8 +26,8 @@ const DEFAULT_CONTACT_ITEMS = [
   {
     icon: <FiMail size={18} />,
     label: 'Email Support',
-    value: 'support@nextrent.com',
-    href: 'mailto:support@nextrent.com',
+    value: 'shubhamastrkar@gmail.com',
+    href: 'mailto:shubhamastrkar@gmail.com',
     color: '#2563EB',
     bg: 'rgba(37,99,235,0.08)',
   },
@@ -59,7 +59,7 @@ export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
 
   const phone = settings?.phone || '+91 9270762176';
-  const email = settings?.email || 'support@nextrent.com';
+  const email = settings?.email || 'shubhamastrkar@gmail.com';
   const address = settings?.address || 'Pimpri-Chinchwad & Pune City, Maharashtra';
   const whatsapp = settings?.whatsapp || '919270762176';
   const hours = settings?.businessHours || '24 Hours • 365 Days Doorstep Delivery';

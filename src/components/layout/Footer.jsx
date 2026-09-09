@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { BsFacebook, BsInstagram, BsTwitterX, BsYoutube, BsWhatsapp } from 'react-icons/bs';
 import { FiMail, FiPhone, FiMapPin, FiShield, FiZap, FiTruck, FiChevronRight } from 'react-icons/fi';
-import logoImg from '../../assets/logo1.jpeg';
+import logoImg from '../../assets/logo1_dark_bg.png';
 import { useTenant } from '../../contexts/TenantContext';
 
 export default function Footer() {
@@ -58,24 +58,17 @@ export default function Footer() {
             {/* ── 1. Brand & Identity ── */}
             <div className="footer-col-brand">
               <Link to="/" style={{ display: 'inline-block', marginBottom: 14, textDecoration: 'none' }}>
-                <div style={{
-                  background: '#FFFFFF',
-                  padding: '6px 12px',
-                  borderRadius: 10,
-                  display: 'inline-block',
-                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.35)',
-                }}>
-                  <img
-                    src={logoImg}
-                    alt={settings?.businessName || 'SA Self Drive Cars'}
-                    style={{
-                      height: 38,
-                      width: 'auto',
-                      objectFit: 'contain',
-                      display: 'block',
-                    }}
-                  />
-                </div>
+                <img
+                  src={logoImg}
+                  alt={settings?.businessName || 'SA Self Drive Cars'}
+                  style={{
+                    height: 56,
+                    width: 'auto',
+                    objectFit: 'contain',
+                    display: 'block',
+                    filter: 'drop-shadow(0 2px 14px rgba(255, 255, 255, 0.12))',
+                  }}
+                />
               </Link>
               
               <p style={{
@@ -156,13 +149,13 @@ export default function Footer() {
                   </div>
                 </a>
 
-                <a href={`mailto:${settings?.email || 'info@saselfdrivecars.com'}`} className="footer-contact-row">
+                <a href={`mailto:${settings?.email || 'shubhamastrkar@gmail.com'}`} className="footer-contact-row">
                   <div className="footer-contact-icon">
                     <FiMail size={13} />
                   </div>
                   <div>
                     <span className="footer-contact-label">Email Us</span>
-                    <span className="footer-contact-val">{settings?.email || 'info@saselfdrivecars.com'}</span>
+                    <span className="footer-contact-val">{settings?.email || 'shubhamastrkar@gmail.com'}</span>
                   </div>
                 </a>
 
