@@ -1,9 +1,16 @@
+import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { BsWhatsapp } from 'react-icons/bs';
 import { useTenant } from '../../contexts/TenantContext';
 
 export default function WhatsAppButton() {
+  const location = useLocation();
   const { settings } = useTenant();
+
+  // Hide floating WhatsApp button on car details page (/cars/:carId)
+  if (location.pathname.startsWith('/cars/')) {
+    return null;
+  }
   const rawNum = settings?.whatsapp || settings?.phone || '919270762176';
   const phoneNumber = rawNum.replace(/\D/g, '');
   const bizName = settings?.businessName || 'SA Self Drive Cars';
