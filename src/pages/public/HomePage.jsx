@@ -134,26 +134,25 @@ export default function HomePage() {
         }} />
 
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
-          <div style={{ maxWidth: 880, margin: '0 auto', textAlign: 'center' }}>
-
+          <div style={{ maxWidth: 860, margin: '0 auto', textAlign: 'center' }}>
 
             {/* Business Name Badge */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.05 }}
-              style={{ marginBottom: 16 }}
+              style={{ marginBottom: 'clamp(12px, 2vw, 20px)' }}
             >
               <span style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: 8,
-                padding: '6px 20px',
+                padding: 'clamp(5px, 1vw, 7px) clamp(14px, 2vw, 22px)',
                 borderRadius: '9999px',
                 background: 'rgba(200, 0, 10, 0.22)',
                 border: '1px solid rgba(229, 0, 16, 0.45)',
                 color: '#FFFFFF',
-                fontSize: 'clamp(12px, 2.2vw, 15px)',
+                fontSize: 'clamp(11px, 1.8vw, 14px)',
                 fontWeight: 900,
                 letterSpacing: '2px',
                 textTransform: 'uppercase',
@@ -161,31 +160,41 @@ export default function HomePage() {
                 backdropFilter: 'blur(12px)',
                 WebkitBackdropFilter: 'blur(12px)',
               }}>
-                <BsCarFront color="#E50010" size={16} /> SA SELF DRIVE CAR RENT
+                <BsCarFront color="#E50010" size={15} /> SA SELF DRIVE CAR RENT
               </span>
             </motion.div>
 
             {/* Main Animated Title */}
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.15 }}
+              transition={{ duration: 0.55, delay: 0.15 }}
               className="hero-main-title"
               style={{
                 fontWeight: 900,
-                lineHeight: 1.15,
                 textShadow: '0 4px 28px rgba(0,0,0,0.85)',
               }}
             >
-              <span className="text-gradient-white">Drive Your Freedom, Your Way.</span><br />
-              <span className="text-gradient-red" style={{ filter: 'drop-shadow(0 0 25px rgba(229,0,16,0.65))' }}>
-                S A SELF DRIVE CAR RENT
+              <span className="text-gradient-white">Drive Your Freedom,</span><br />
+              <span className="text-gradient-red" style={{ filter: 'drop-shadow(0 0 22px rgba(229,0,16,0.6))' }}>
+                Your Way in Pune.
               </span>
             </motion.h1>
 
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.25 }}
+              className="hero-subtitle"
+            >
+              Pune's most trusted self-drive car rental — doorstep delivery across Pune & PCMC,
+              300 KM daily limit, low deposit & 24/7 booking support.
+            </motion.p>
+
             {/* Floating Trust Metrics Badges */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.92 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4, delay: 0.3 }}
               className="hero-trust-badges"
@@ -193,7 +202,8 @@ export default function HomePage() {
               {[
                 { icon: <FiCheckCircle color="#22C55E" size={13} />, text: '10,000+ Happy Renters' },
                 { icon: <BsCarFront color="#CC0000" size={13} />, text: 'Premium Fleet' },
-                { icon: <FiStar color="#F59E0B" size={13} />, text: '4.9★ Rating' },
+                { icon: <FiStar color="#F59E0B" size={13} />, text: '4.9★ Google Rating' },
+                { icon: <FiCheckCircle color="#60A5FA" size={13} />, text: '300 KM / Day' },
               ].map((item, idx) => (
                 <div key={idx} className="hero-trust-pill">
                   {item.icon} <span>{item.text}</span>
@@ -205,39 +215,54 @@ export default function HomePage() {
             <motion.div
               initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.35 }}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 14,
-                marginTop: 24,
-                flexWrap: 'wrap',
-              }}
+              transition={{ duration: 0.5, delay: 0.38 }}
+              className="hero-action-row"
             >
               <Link
                 to="/fleet"
                 className="btn btn-primary btn-lg"
-                style={{ padding: '14px 32px', fontSize: 15, fontWeight: 800 }}
+                style={{ padding: 'clamp(11px, 1.5vw, 15px) clamp(22px, 3vw, 36px)', fontSize: 'clamp(13px, 1.6vw, 16px)', fontWeight: 800 }}
               >
-                <BsCarFront size={18} /> Explore Our Fleet
+                <BsCarFront size={17} /> Explore Our Fleet
               </Link>
               <a
-                href="https://wa.me/919270762176?text=Hi%20SA%20Self%20Drive%20Cars,%20I%20want%20to%20inquire%20about%20booking%20a%20car."
+                href={`https://wa.me/919270762176?text=Hi%20SA%20Self%20Drive%20Cars,%20I%20want%20to%20inquire%20about%20booking%20a%20car.`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-secondary btn-lg"
                 style={{
-                  padding: '14px 28px',
-                  fontSize: 15,
+                  padding: 'clamp(11px, 1.5vw, 15px) clamp(18px, 2.5vw, 30px)',
+                  fontSize: 'clamp(13px, 1.6vw, 15px)',
                   fontWeight: 700,
-                  background: 'rgba(255, 255, 255, 0.95)',
+                  background: 'rgba(255, 255, 255, 0.94)',
                   border: '1px solid rgba(255, 255, 255, 0.3)',
+                  color: '#0F172A',
                 }}
               >
-                WhatsApp Inquiry (+91 9270762176)
+                💬 WhatsApp Inquiry
               </a>
             </motion.div>
+
+            {/* Stats Strip */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="hero-stats-strip"
+            >
+              {[
+                { num: '10,000+', label: 'Happy Customers' },
+                { num: '15+', label: 'Cars Available' },
+                { num: '4.9★', label: 'Google Rating' },
+                { num: '300 KM', label: 'Daily Limit' },
+              ].map((stat, idx) => (
+                <div key={idx} className="hero-stat-item">
+                  <span className="hero-stat-num">{stat.num}</span>
+                  <span className="hero-stat-label">{stat.label}</span>
+                </div>
+              ))}
+            </motion.div>
+
           </div>
         </div>
       </section>

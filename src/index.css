@@ -412,26 +412,46 @@ ul, ol { list-style: none; }
 /* ── Hero Section (still has dark overlay over photo) ── */
 .hero-bg-section {
   position: relative;
-  padding-top: 100px;
-  padding-bottom: 60px;
+  min-height: clamp(540px, 88vh, 960px);
+  padding-top: clamp(110px, 12vw, 160px);
+  padding-bottom: clamp(80px, 10vw, 130px);
   background-color: #1A1A1A;
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
+/* ── Hero Main Title ── */
 .hero-main-title {
-  font-size: clamp(1.8rem, 4.5vw, 3.4rem);
-  margin-bottom: 16px;
+  font-size: clamp(1.65rem, 5.5vw, 3.8rem);
+  margin-bottom: clamp(12px, 2.5vw, 20px);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
 }
 
+/* ── Hero Subtitle / Description ── */
+.hero-subtitle {
+  font-size: clamp(13px, 1.8vw, 17px);
+  color: rgba(255, 255, 255, 0.82);
+  font-weight: 500;
+  line-height: 1.6;
+  margin-bottom: clamp(16px, 2.5vw, 28px);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── Trust Badges Row ── */
 .hero-trust-badges {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin-bottom: 24px;
+  gap: clamp(6px, 1.5vw, 12px);
+  margin-bottom: clamp(20px, 3vw, 32px);
   flex-wrap: wrap;
 }
 
@@ -440,52 +460,88 @@ ul, ol { list-style: none; }
   align-items: center;
   gap: 5px;
   color: #FFFFFF;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: clamp(10px, 1.5vw, 13px);
+  font-weight: 700;
   background: rgba(255,255,255,0.12);
-  padding: 4px 12px;
+  padding: clamp(4px, 0.8vw, 7px) clamp(10px, 1.5vw, 16px);
   border-radius: var(--radius-full);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.20);
+  border: 1px solid rgba(255,255,255,0.22);
+  white-space: nowrap;
+  transition: background 0.2s ease;
+}
+.hero-trust-pill:hover {
+  background: rgba(255,255,255,0.18);
+}
+
+/* ── Hero Action Buttons Row ── */
+.hero-action-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 2vw, 16px);
+  flex-wrap: wrap;
+  margin-top: clamp(16px, 2.5vw, 28px);
+}
+
+/* ── Stats Strip ── */
+.hero-stats-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(18px, 4vw, 50px);
+  margin-top: clamp(28px, 4vw, 48px);
+  padding-top: clamp(18px, 2.5vw, 28px);
+  border-top: 1px solid rgba(255,255,255,0.12);
+  flex-wrap: wrap;
+}
+.hero-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.hero-stat-num {
+  font-size: clamp(1.3rem, 2.8vw, 2rem);
+  font-weight: 900;
+  color: #FFFFFF;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.hero-stat-label {
+  font-size: clamp(9px, 1.2vw, 12px);
+  color: rgba(255,255,255,0.60);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
   white-space: nowrap;
 }
 
-/* Search bar INSIDE hero — stays white/light */
-.hero-search-card {
-  padding: 18px 20px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  align-items: end;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
-  text-align: left;
-  border-radius: 20px;
-  background: #FFFFFF;
-  border: 1px solid #E4E6EA;
-}
-
-@media (max-width: 900px) {
-  .hero-search-card {
-    grid-template-columns: 1fr !important;
-    gap: 10px !important;
-    padding: 14px 14px !important;
-    border-radius: 14px !important;
-  }
-}
-
+/* ── Mobile ≤ 580px ── */
 @media (max-width: 580px) {
-  .hero-bg-section {
-    padding-top: 76px !important;
-    padding-bottom: 24px !important;
-  }
   .hero-main-title {
-    font-size: 1.4rem !important;
-    margin-bottom: 10px !important;
-    line-height: 1.25 !important;
+    font-size: clamp(1.55rem, 7.5vw, 2rem) !important;
+    margin-bottom: 12px !important;
+    line-height: 1.2 !important;
   }
-  .hero-trust-badges { gap: 4px !important; margin-bottom: 12px !important; }
-  .hero-trust-pill   { font-size: 9.5px !important; padding: 3px 6px !important; }
+  .hero-trust-badges { gap: 6px !important; margin-bottom: 14px !important; }
+  .hero-trust-pill   { font-size: 10px !important; padding: 4px 9px !important; }
+  .hero-action-row   { gap: 8px !important; margin-top: 14px !important; }
+  .hero-stats-strip  { gap: 16px !important; margin-top: 22px !important; padding-top: 16px !important; }
+  .hero-stat-num     { font-size: 1.4rem !important; }
+  .hero-stat-label   { font-size: 9px !important; }
+}
+
+/* ── Very small ≤ 380px ── */
+@media (max-width: 380px) {
+  .hero-main-title {
+    font-size: 1.45rem !important;
+    letter-spacing: -0.01em !important;
+  }
+  .hero-trust-badges { gap: 4px !important; }
+  .hero-trust-pill   { font-size: 9px !important; padding: 3px 7px !important; }
+  .hero-stats-strip  { gap: 12px !important; }
 }
 
 /* ── Luxury Gradient Button System ── */
@@ -750,7 +806,7 @@ ul, ol { list-style: none; }
 
 @media (min-width: 521px) and (max-width: 768px) {
   .container          { max-width: 100% !important; padding: 0 16px !important; }
-  .hero-bg-section    { padding-top: 86px !important; padding-bottom: 32px !important; }
+  .hero-bg-section    { min-height: 75vh !important; padding-top: 100px !important; padding-bottom: 60px !important; }
   .section            { padding: 32px 0 !important; }
   .section-sm         { padding: 22px 0 !important; }
   .btn-lg             { padding: 10px 20px !important; font-size: 14px !important; }
@@ -758,7 +814,7 @@ ul, ol { list-style: none; }
 
 @media (max-width: 520px) {
   .container          { max-width: 100% !important; padding: 0 12px !important; }
-  .hero-bg-section    { padding-top: 76px !important; padding-bottom: 24px !important; }
+  .hero-bg-section    { min-height: 72vh !important; padding-top: 88px !important; padding-bottom: 52px !important; }
   .section            { padding: 24px 0 !important; }
   .section-sm         { padding: 16px 0 !important; }
   .btn-lg             { padding: 10px 16px !important; font-size: 13px !important; }
