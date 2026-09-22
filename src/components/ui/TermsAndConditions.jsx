@@ -29,6 +29,15 @@ export const CATEGORIZED_TERMS = [
     ],
   },
   {
+    category: 'Privacy Policy & Data Security',
+    icon: '🔒',
+    items: [
+      { highlight: 'ID Privacy', text: 'Submitted identity documents (Aadhaar/DL) are strictly used for rental verification only.' },
+      { highlight: 'No Third-Party Sharing', text: 'Customer contact details and personal information are 100% confidential and never shared.' },
+      { highlight: 'Deposit Safety', text: 'All security deposits and customer data are handled securely and transparently.' },
+    ],
+  },
+  {
     category: 'Rules & Fuel Policy',
     icon: '🚫',
     items: [
@@ -40,6 +49,7 @@ export const CATEGORIZED_TERMS = [
 ];
 
 export const HIGHLIGHT_CHIPS = [
+  { text: '🔒 100% Privacy Protected', icon: '🛡️' },
   { text: '300 KM / 24h Limit', icon: '📏' },
   { text: 'Bike / ₹10k Deposit', icon: '🔑' },
   { text: '5 Required Documents', icon: '📄' },
@@ -48,62 +58,67 @@ export const HIGHLIGHT_CHIPS = [
   { text: 'Rent at Pickup', icon: '🛻' },
 ];
 
-export default function TermsAndConditions({ expandable = false, defaultOpen = true, compact = false }) {
+export default function TermsAndConditions({ expandable = true, defaultOpen = false, compact = false }) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
     <div style={{
       background: '#FFFFFF',
-      borderRadius: 16,
+      borderRadius: 14,
       border: '1px solid rgba(200, 0, 10, 0.20)',
-      boxShadow: '0 4px 20px rgba(17, 19, 24, 0.05)',
+      boxShadow: '0 2px 12px rgba(15, 23, 42, 0.04)',
       overflow: 'hidden',
       width: '100%',
     }}>
-      {/* Top Banner Header */}
+      {/* Top Banner Header - Clickable Toggle */}
       <div
         onClick={() => expandable && setIsOpen(prev => !prev)}
         style={{
-          padding: compact ? '12px 16px' : '14px 20px',
-          background: 'linear-gradient(135deg, rgba(200,0,10,0.08) 0%, rgba(255,255,255,1) 100%)',
+          padding: compact ? '10px 14px' : '12px 18px',
+          background: 'linear-gradient(135deg, rgba(200,0,10,0.06) 0%, rgba(248,250,252,1) 100%)',
           borderBottom: (isOpen || !expandable) ? '1px solid rgba(200,0,10,0.15)' : 'none',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           cursor: expandable ? 'pointer' : 'default',
           userSelect: 'none',
+          transition: 'background 0.2s ease',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div style={{
-            width: 32, height: 32,
-            borderRadius: 10,
-            background: '#C8000A',
+            width: 30, height: 30,
+            borderRadius: 8,
+            background: 'linear-gradient(135deg, #FF1E2D 0%, #C8000A 100%)',
             color: '#FFFFFF',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 16,
-            boxShadow: '0 2px 8px rgba(200,0,10,0.3)',
+            fontSize: 14,
+            boxShadow: '0 2px 8px rgba(200,0,10,0.25)',
           }}>
             <FiShield />
           </div>
           <div>
-            <span style={{ fontSize: 10, color: '#C8000A', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.8px', display: 'block' }}>
-              SA Self Drive Cars
-            </span>
-            <h4 style={{ fontSize: compact ? 13 : 15, fontWeight: 800, color: '#111318', margin: 0 }}>
-              Rental Policy & Mandatory Documents
+            <h4 style={{ fontSize: compact ? 13 : 14.5, fontWeight: 800, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span>Privacy Policy, Rental Rules & Documents</span>
+              <span style={{ fontSize: 10.5, fontWeight: 700, color: '#C8000A', background: 'rgba(200,0,10,0.08)', padding: '2px 8px', borderRadius: 99 }}>
+                {isOpen ? 'Click to Collapse' : 'Click to Read'}
+              </span>
             </h4>
+            <span style={{ fontSize: 11, color: '#64748B', display: 'block', marginTop: 1 }}>
+              Data privacy protection, Aadhaar & DL verification, 300 km daily limit & deposit
+            </span>
           </div>
         </div>
 
         {expandable && (
           <div style={{
-            width: 26, height: 26,
+            width: 28, height: 28,
             borderRadius: '50%',
-            background: 'rgba(200,0,10,0.08)',
-            color: '#C8000A',
+            background: isOpen ? '#C8000A' : 'rgba(200,0,10,0.08)',
+            color: isOpen ? '#FFFFFF' : '#C8000A',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: 14,
+            transition: 'all 0.2s ease',
           }}>
             {isOpen ? <FiChevronUp /> : <FiChevronDown />}
           </div>

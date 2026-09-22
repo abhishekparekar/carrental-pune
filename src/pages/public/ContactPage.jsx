@@ -13,6 +13,7 @@ import Footer from '../../components/layout/Footer';
 import { useTenant } from '../../contexts/TenantContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { addInquiry } from '../../firebase/firestore';
+import { Helmet } from 'react-helmet-async';
 
 const DEFAULT_CONTACT_ITEMS = [
   {
@@ -137,7 +138,13 @@ export default function ContactPage() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#F8FAFC' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--gradient-page-bg)' }}>
+      <Helmet>
+        <title>Contact SA Self Drive Cars Pune | 24/7 Car Booking & Customer Support</title>
+        <meta name="title" content="Contact SA Self Drive Cars Pune | 24/7 Car Booking & Customer Support" />
+        <meta name="description" content="Contact SA Self Drive Cars Pune for immediate car bookings, doorstep delivery in Pune & PCMC, or price quotes. Available 24/7 on Call and WhatsApp at +91 9270762176." />
+        <link rel="canonical" href="https://www.saselfdrivecar.com/contact" />
+      </Helmet>
       <Navbar />
 
       <main style={{ paddingTop: 'clamp(68px, 9vw, 84px)', paddingBottom: 40, flex: 1 }}>

@@ -22,33 +22,11 @@ import TermsAndConditions from '../../components/ui/TermsAndConditions';
 
 import { useTenant } from '../../contexts/TenantContext';
 import { subscribeToCars, subscribeToReviews } from '../../firebase/firestore';
+import { Helmet } from 'react-helmet-async';
 
-import heroBgImg from '../../assets/herobg1.jpeg';
+import heroBgImg from '../../assets/hero_luxury.jpg';
 import logoImg from '../../assets/logo1.png';
 import familyTravelImg from '../../assets/family_travel.jpg';
-
-const DEFAULT_REVIEWS = [
-  {
-    name: 'Rahul Deshmukh',
-    location: 'Pune (Kothrud)',
-    carName: 'Mahindra Thar 4x4',
-    rating: 5,
-    date: '2 days ago',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
-    comment: 'Booked Thar 4x4 for a weekend trip to Mahabaleshwar. 300 km daily limit was more than enough! Doorstep delivery was quick.',
-    verified: true,
-  },
-  {
-    name: 'Priya Sharma',
-    location: 'Pune (Viman Nagar)',
-    carName: 'Maruti Swift ZXi',
-    rating: 5,
-    date: '1 week ago',
-    avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80',
-    comment: 'Best self-drive car service in Pune! Transparent pricing, deposit was returned promptly upon car handover.',
-    verified: true,
-  },
-];
 
 const CITIES = ['Pune', 'Mumbai', 'Delhi NCR', 'Bangalore', 'Hyderabad', 'Chennai', 'Kolkata'];
 
@@ -70,21 +48,12 @@ const FEATURES = [
   { icon: <FiStar size={22} />, title: 'Transparent Pricing', desc: 'No hidden taxes or unexpected surcharges at checkout.' },
 ];
 
-const TESTIMONIALS = [
-  { name: 'Rahul Sharma', initials: 'RS', city: 'Pune', role: 'Software Engineer', comment: 'Rented a Fronx for a trip to Lonavala. Car was delivered right at my door in Pune. Super smooth booking experience!', rating: 5, carUsed: 'Maruti Fronx 2026' },
-  { name: 'Priya Verma', initials: 'PV', city: 'Bangalore', role: 'Product Manager', comment: 'The Innova Hycross gave us royal comfort for our family road trip to Coorg. 10/10 service and vehicle quality!', rating: 5, carUsed: 'Innova Hycross AT' },
-  { name: 'Anish Kulkarni', initials: 'AK', city: 'Mumbai', role: 'Entrepreneur', comment: 'Extremely easy booking process. Rented the Mahindra Thar 4x4 for mountain camping. Highly recommended!', rating: 5, carUsed: 'Thar 4x4 Convertible' },
-  { name: 'Sneha Deshmukh', initials: 'SD', city: 'Hyderabad', role: 'Architect', comment: 'Zero security deposit hassle and 100% clean sanitized car. NextRent is now my go-to self-drive app!', rating: 5, carUsed: 'Hyundai Creta' },
-  { name: 'Deepak Patel', initials: 'DP', city: 'Delhi NCR', role: 'Business Owner', comment: 'Booked Scorpio N for a 5-day trip to Manali. Unlimited km option saved us so much money on fuel & fees!', rating: 5, carUsed: 'Scorpio N 2025' },
-  { name: 'Meera Kapoor', initials: 'MK', city: 'Chennai', role: 'Design Lead', comment: 'Doorstep drop and pick up made my weekend drive completely stress-free. Premium service quality!', rating: 5, carUsed: 'Swift ZXi' },
-];
-
 export default function HomePage() {
   const { tenantId } = useTenant();
   const navigate = useNavigate();
 
   const [cars, setCars] = useState([]);
-  const [reviews, setReviews] = useState(DEFAULT_REVIEWS);
+  const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCar, setSelectedCar] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -123,14 +92,20 @@ export default function HomePage() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#F7F7F8' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--gradient-page-bg)' }}>
+      <Helmet>
+        <title>SA SELF DRIVE CARS PUNE | Best Self Drive Car Rental & Booking Services in Pune</title>
+        <meta name="title" content="SA SELF DRIVE CARS PUNE | Best Self Drive Car Rental & Booking Services in Pune" />
+        <meta name="description" content="Best Self Drive Car Rental in Pune - SA SELF DRIVE CARS. Rent Swift, Thar 4x4, Ertiga 7-Seater, Creta & Scorpio with 300 KM daily limit, doorstep delivery across Pune & PCMC, low deposit & 24/7 booking support." />
+        <link rel="canonical" href="https://www.saselfdrivecar.com/" />
+      </Helmet>
       <Navbar />
 
       {/* 1. CINEMATIC ANIMATED HERO SECTION */}
       <section
         className="hero-bg-section"
         style={{
-          backgroundImage: `linear-gradient(135deg, rgba(0,0,0,0.88) 0%, rgba(8,8,8,0.75) 55%, rgba(180,0,0,0.28) 100%), url("${heroBgImg}")`,
+          backgroundImage: `var(--gradient-hero-overlay), url("${heroBgImg}")`,
         }}
       >
         {/* Red Crimson Glow — top right */}
@@ -197,14 +172,13 @@ export default function HomePage() {
               transition={{ duration: 0.5, delay: 0.15 }}
               className="hero-main-title"
               style={{
-                color: '#FFFFFF',
                 fontWeight: 900,
                 lineHeight: 1.15,
-                textShadow: '0 4px 24px rgba(0,0,0,0.8)',
+                textShadow: '0 4px 28px rgba(0,0,0,0.85)',
               }}
             >
-              <span>Drive Your Freedom, Your Way.</span><br />
-              <span style={{ color: '#E50010', textShadow: '0 0 35px rgba(229,0,16,0.75)' }}>
+              <span className="text-gradient-white">Drive Your Freedom, Your Way.</span><br />
+              <span className="text-gradient-red" style={{ filter: 'drop-shadow(0 0 25px rgba(229,0,16,0.65))' }}>
                 S A SELF DRIVE CAR RENT
               </span>
             </motion.h1>
@@ -268,88 +242,49 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 2. TOP SELLING CARS SECTION */}
-      <section style={{ padding: '32px 0 24px', background: '#FFFFFF' }}>
+      {/* 2. TOP CARS / MOST POPULAR SECTION (PROPER 4 COLUMNS GRID) */}
+      <section style={{ padding: '36px 0 28px', background: '#FFFFFF' }}>
         <div className="container">
-          {/* Section Header with Left Title + Right Carousel Controls */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, flexWrap: 'wrap', gap: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 22, flexWrap: 'wrap', gap: 12 }}>
             <div>
-              <span className="section-label">Most Popular</span>
-              <h2 style={{ fontSize: 'clamp(18px, 4vw, 24px)', fontWeight: 800, color: '#111318', margin: 0 }}>
-                Top Cars in <span style={{ color: '#C8000A' }}>{city}</span>
+              <span className="section-label-red" style={{ marginBottom: 6 }}>
+                MOST POPULAR
+              </span>
+              <h2 style={{ fontSize: 'clamp(22px, 3.5vw, 30px)', fontWeight: 900, color: '#111827', margin: '4px 0 0' }}>
+                Top Cars in <span style={{ color: '#C8000A' }}>{city || 'Pune'}</span>
               </h2>
             </div>
-
-            {/* Custom Carousel Arrows */}
-            <div style={{ display: 'flex', gap: 8 }}>
-              <button
-                ref={prevRef}
-                className="btn-icon"
-                style={{ width: 36, height: 36, borderRadius: '50%' }}
-                aria-label="Previous cars"
-              >
-                <FiChevronLeft size={18} />
-              </button>
-              <button
-                ref={nextRef}
-                className="btn-icon"
-                style={{ width: 36, height: 36, borderRadius: '50%' }}
-                aria-label="Next cars"
-              >
-                <FiChevronRight size={18} />
-              </button>
-            </div>
+            <Link to="/fleet?category=popular" className="btn btn-secondary btn-sm">
+              View All Popular <FiArrowRight />
+            </Link>
           </div>
 
-          {/* Swiper Carousel */}
           {loading ? (
-            <div className="grid-4">
+            <div className="home-fleet-grid">
               <CarSkeleton />
               <CarSkeleton />
               <CarSkeleton />
               <CarSkeleton />
-            </div>
-          ) : cars.filter(c => c.isPopular !== false).length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '24px 0', color: '#64748B', fontSize: 13 }}>
-              No cars currently marked as popular. Admin can toggle Popular Choice in Admin Panel.
             </div>
           ) : (
-            <Swiper
-              modules={[Navigation, Autoplay]}
-              spaceBetween={10}
-              slidesPerView={1.35}
-              breakpoints={{
-                360: { slidesPerView: 1.45, spaceBetween: 10 },
-                480: { slidesPerView: 2.1, spaceBetween: 12 },
-                768: { slidesPerView: 3.1, spaceBetween: 16 },
-                1024: { slidesPerView: 4, spaceBetween: 18 },
-                1500: { slidesPerView: 4.6, spaceBetween: 20 },
-              }}
-              autoplay={{ delay: 5000, disableOnInteraction: false }}
-              onInit={(swiper) => {
-                swiper.params.navigation.prevEl = prevRef.current;
-                swiper.params.navigation.nextEl = nextRef.current;
-                swiper.navigation.init();
-                swiper.navigation.update();
-              }}
-              style={{ paddingBottom: 8 }}
-            >
-              {cars.filter(c => c.isPopular !== false).map((car) => (
-                <SwiperSlide key={car.id} style={{ height: 'auto' }}>
-                  <RevvCarCard car={car} onEnquire={openEnquiry} />
-                </SwiperSlide>
+            <div className="home-fleet-grid">
+              {(cars.filter(c => c.isPopular !== false).length > 0 
+                ? cars.filter(c => c.isPopular !== false) 
+                : cars
+              ).slice(0, 8).map((car) => (
+                <RevvCarCard key={car.id} car={car} onEnquire={openEnquiry} />
               ))}
-            </Swiper>
+            </div>
           )}
         </div>
       </section>
 
       {/* 3. FULL FLEET SECTION */}
-      <section className="section-sm" style={{ background: '#F7F7F8', borderTop: '1px solid #E4E6EA', borderBottom: '1px solid #E4E6EA' }}>
+      <section className="section-sm" style={{ background: 'linear-gradient(180deg, #F8FAFC 0%, #EEF2F6 50%, #F8FAFC 100%)', borderTop: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0' }}>
         <div className="container">
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
             <div>
-              <span className="section-label">Full Fleet</span>
+              <span className="section-label-red">Full Fleet</span>
               <h2 className="section-title" style={{ margin: 0 }}>All Available <span>Self-Drive Cars</span></h2>
             </div>
             <Link to="/fleet" className="btn btn-secondary btn-sm">
@@ -423,8 +358,8 @@ export default function HomePage() {
                   }}>
                     {cat.icon}
                   </div>
-                  <h3 style={{ fontSize: 17, marginBottom: 4, color: '#111318', fontWeight: 800 }}>{cat.name}</h3>
-                  <p style={{ fontSize: 12, color: '#6B7080', margin: 0, lineHeight: 1.5 }}>{cat.desc}</p>
+                  <h3 style={{ fontSize: 17, marginBottom: 4, color: '#0F172A', fontWeight: 850 }}>{cat.name}</h3>
+                  <p style={{ fontSize: 12, color: '#1E293B', fontWeight: 600, margin: 0, lineHeight: 1.5 }}>{cat.desc}</p>
                 </div>
               </Link>
             ))}
@@ -433,7 +368,7 @@ export default function HomePage() {
       </section>
 
       {/* 4.5 DIRECT HOMEPAGE INQUIRY FORM & MARKETING SHOWCASE */}
-      <section id="inquiry-form-section" style={{ background: '#F8FAFC', borderTop: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', padding: 'clamp(24px, 3.5vw, 40px) 0' }}>
+      <section id="inquiry-form-section" style={{ background: 'linear-gradient(180deg, #F8FAFC 0%, #EEF2F6 45%, #F8FAFC 100%)', borderTop: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', padding: 'clamp(24px, 3.5vw, 40px) 0' }}>
         <div className="container">
           <div className="section-header text-center" style={{ marginBottom: 20, textAlign: 'center' }}>
             <span className="section-label-red">Instant Booking & Fast Confirmation</span>
@@ -462,7 +397,7 @@ export default function HomePage() {
                   <h3 style={{ fontSize: 15, fontWeight: 800, color: '#0F172A', margin: 0 }}>
                     Rental Details & Fast Quotation
                   </h3>
-                  <span style={{ fontSize: 11, color: '#64748B' }}>
+                  <span style={{ fontSize: 11, color: '#C8000A', fontWeight: 700 }}>
                     Transparent pricing • 5 Simple documents • 0 Hidden fees
                   </span>
                 </div>
@@ -641,34 +576,30 @@ export default function HomePage() {
                 }}>
                   {feat.icon}
                 </div>
-                <h3 style={{ fontSize: 16, color: '#111318', fontWeight: 800, margin: 0 }}>{feat.title}</h3>
-                <p style={{ fontSize: 13, color: '#5A5F6E', margin: 0, lineHeight: 1.5 }}>{feat.desc}</p>
+                <h3 style={{ fontSize: 16, color: '#0F172A', fontWeight: 800, margin: 0 }}>{feat.title}</h3>
+                <p style={{ fontSize: 13, color: '#1E293B', fontWeight: 600, margin: 0, lineHeight: 1.5 }}>{feat.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 5.5 TERMS & CONDITIONS SECTION */}
+      {/* 5.5 TERMS & CONDITIONS / PRIVACY POLICY SECTION */}
       <section className="section-sm" style={{ background: '#FFFFFF', borderTop: '1px solid #E4E6EA' }}>
         <div className="container">
-          <TermsAndConditions expandable={true} defaultOpen={true} />
+          <TermsAndConditions expandable={true} defaultOpen={false} />
         </div>
       </section>
 
-      {/* 6. TESTIMONIALS */}
-      <section className="section-sm" style={{ background: '#F7F7F8', borderTop: '1px solid #E4E6EA', paddingBottom: 48 }}>
-        <div className="container">
-          <div className="section-header text-center" style={{ marginBottom: 28 }}>
-            <span className="section-label-red">Reviews</span>
-            <h2 className="section-title">Loved by <span>Drivers</span></h2>
-          </div>
-
-          {reviews.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '24px 0', color: '#64748B', fontSize: 13 }}>
-              No customer reviews published yet. Admin can add live customer reviews in Admin Panel Settings.
+      {/* 6. REAL ADMIN-ADDED TESTIMONIALS & REVIEWS */}
+      {reviews && reviews.length > 0 && (
+        <section className="section-sm" style={{ background: '#F7F7F8', borderTop: '1px solid #E4E6EA', paddingBottom: 48 }}>
+          <div className="container">
+            <div className="section-header text-center" style={{ marginBottom: 28 }}>
+              <span className="section-label-red">Reviews</span>
+              <h2 className="section-title">Loved by <span>Drivers</span></h2>
             </div>
-          ) : (
+
             <div className="reviews-grid">
               {reviews.map((rev, idx) => (
                 <div
@@ -694,7 +625,7 @@ export default function HomePage() {
                         Verified Customer
                       </span>
                     </div>
-                    <p style={{ fontSize: 13.5, fontStyle: 'normal', color: '#1E293B', fontWeight: 500, margin: 0, lineHeight: 1.65 }}>
+                    <p style={{ fontSize: 13.5, fontStyle: 'normal', color: '#1E293B', fontWeight: 550, margin: 0, lineHeight: 1.65 }}>
                       "{rev.comment}"
                     </p>
                   </div>
@@ -702,7 +633,7 @@ export default function HomePage() {
                     <div style={{
                       width: 38, height: 38,
                       borderRadius: '50%',
-                      background: 'linear-gradient(135deg, #C8000A 0%, #900007 100%)',
+                      background: 'linear-gradient(135deg, #FF1E2D 0%, #C8000A 100%)',
                       color: '#FFFFFF',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: 14, fontWeight: 800,
@@ -713,15 +644,15 @@ export default function HomePage() {
                     </div>
                     <div>
                       <strong style={{ display: 'block', fontSize: 14, color: '#0F172A', fontWeight: 800, lineHeight: 1.2 }}>{rev.name}</strong>
-                      <span style={{ fontSize: 11.5, color: '#64748B', fontWeight: 600 }}>{rev.location || 'Pune'} • {rev.carName || 'Self Drive'}</span>
+                      <span style={{ fontSize: 11.5, color: '#C8000A', fontWeight: 700 }}>{rev.location || 'Pune'} • {rev.carName || 'Self Drive'}</span>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
-          )}
-        </div>
-      </section>
+          </div>
+        </section>
+      )}
 
       {/* ENQUIRY MODAL */}
       <Modal

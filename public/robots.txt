@@ -1,0 +1,8 @@
+# Robots.txt for https://www.saselfdrivecar.com/
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+
+# Sitemaps
+Sitemap: https://www.saselfdrivecar.com/sitemap.xml

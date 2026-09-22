@@ -8,56 +8,67 @@
 
 :root {
   /* ── Base Light Palette ── */
-  --color-bg:          #FFFFFF;
-  --color-bg-alt:      #F7F7F8;
+  --color-bg:          #F8FAFC;
+  --color-bg-alt:      #F1F5F9;
   --color-bg-card:     #FFFFFF;
   --color-surface:     #FFFFFF;
-  --color-surface-2:   #F2F3F5;
-  --color-border:      #E4E6EA;
-  --color-border-2:    #CDD0D6;
+  --color-surface-2:   #F1F5F9;
+  --color-border:      #E2E8F0;
+  --color-border-2:    #CBD5E1;
 
-  /* ── SA Brand: Crimson Red (logo "A" + "SA" text) ── */
-  --color-accent:        #C8000A;
-  --color-accent-light:  #E50010;
-  --color-accent-hover:  #A50008;
-  --gradient-accent-btn: linear-gradient(135deg, #E50010 0%, #C8000A 55%, #A00008 100%);
-  --gradient-secondary-btn: linear-gradient(180deg, #FFFFFF 0%, #F4F5F7 100%);
-  --gradient-hero-overlay: linear-gradient(135deg, rgba(0,0,0,0.80) 0%, rgba(10,10,10,0.65) 55%, rgba(180,0,10,0.28) 100%);
+  /* ── Rich Linear Gradient Background System ── */
+  --gradient-page-bg:        linear-gradient(180deg, #FAFAFC 0%, #F1F5F9 45%, #F8FAFC 100%);
+  --gradient-page-soft:      linear-gradient(135deg, #F8FAFC 0%, #EEF2F6 50%, #F8FAFC 100%);
+  --gradient-card-surface:   linear-gradient(155deg, #FFFFFF 0%, #F8FAFC 100%);
+  --gradient-card-highlight: linear-gradient(145deg, rgba(255,255,255,1) 0%, rgba(248,250,252,0.95) 100%);
+  --gradient-section-tint:   linear-gradient(180deg, rgba(200,0,10,0.03) 0%, rgba(248,250,252,0.6) 50%, rgba(248,250,252,1) 100%);
 
-  --color-accent-glow:   rgba(200, 0, 10, 0.22);
-  --color-accent-bg:     rgba(200, 0, 10, 0.07);
-  --color-accent-border: rgba(200, 0, 10, 0.20);
+  /* ── SA Brand: Crimson Red Multi-Stop Linear Gradients ── */
+  --color-accent:            #C8000A;
+  --color-accent-light:      #E50010;
+  --color-accent-hover:      #A50008;
+  --gradient-accent-btn:     linear-gradient(135deg, #FF1E2D 0%, #E50010 32%, #C8000A 70%, #9B0008 100%);
+  --gradient-accent-hover:   linear-gradient(135deg, #FF3340 0%, #F50012 30%, #D6000B 70%, #A80009 100%);
+  --gradient-secondary-btn:  linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 40%, #EDF2F7 100%);
+  --gradient-whatsapp-btn:   linear-gradient(135deg, #2EE872 0%, #25D366 45%, #18A34A 100%);
+  --gradient-hero-overlay:   linear-gradient(135deg, rgba(8, 12, 20, 0.90) 0%, rgba(15, 23, 42, 0.78) 55%, rgba(160, 0, 8, 0.35) 100%);
+  --gradient-nav:            linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%);
 
-  /* ── Silver/Chrome (logo "S" letter + car silhouette) ── */
-  --color-silver:        #8C909A;
-  --color-silver-light:  #BEC2CB;
+  --color-accent-glow:       rgba(200, 0, 10, 0.28);
+  --color-accent-bg:         rgba(200, 0, 10, 0.07);
+  --color-accent-border:     rgba(200, 0, 10, 0.22);
 
-  /* ── Text Colors ── */
-  --color-text:        #111318;
-  --color-text-2:      #4A4F5C;
-  --color-text-3:      #7A7F8C;
+  /* ── Silver/Chrome ── */
+  --color-silver:            #8C909A;
+  --color-silver-light:      #BEC2CB;
+
+  /* ── Text Colors — High Contrast, No Washed-Out Light Black ── */
+  --color-text:              #0F172A;
+  --color-text-2:            #1E293B;
+  --color-text-3:            #334155;
 
   /* ── Semantic Colors ── */
-  --color-blue:        #2563EB;
-  --color-blue-bg:     rgba(37, 99, 235, 0.08);
-  --color-success:     #16A34A;
-  --color-success-bg:  rgba(22, 163, 74, 0.08);
-  --color-warning:     #D97706;
-  --color-warning-bg:  rgba(217, 119, 6, 0.08);
-  --color-error:       #DC2626;
-  --color-error-bg:    rgba(220, 38, 38, 0.08);
+  --color-blue:              #2563EB;
+  --color-blue-bg:           rgba(37, 99, 235, 0.08);
+  --color-success:           #16A34A;
+  --color-success-bg:        rgba(22, 163, 74, 0.08);
+  --color-warning:           #D97706;
+  --color-warning-bg:        rgba(217, 119, 6, 0.08);
+  --color-error:             #DC2626;
+  --color-error-bg:          rgba(220, 38, 38, 0.08);
 
   /* ── Shadows ── */
-  --shadow-sm:    0 1px 3px rgba(17, 19, 24, 0.06);
-  --shadow-md:    0 4px 16px rgba(17, 19, 24, 0.09);
-  --shadow-lg:    0 10px 32px rgba(17, 19, 24, 0.11);
-  --shadow-xl:    0 20px 50px rgba(17, 19, 24, 0.13);
-  --shadow-accent: 0 6px 22px rgba(200, 0, 10, 0.32);
-  --shadow-card:  0 2px 10px rgba(17, 19, 24, 0.07), 0 0 0 1px rgba(17,19,24,0.04);
+  --shadow-sm:               0 1px 3px rgba(15, 23, 42, 0.06);
+  --shadow-md:               0 4px 16px rgba(15, 23, 42, 0.08);
+  --shadow-lg:               0 10px 32px rgba(15, 23, 42, 0.12);
+  --shadow-xl:               0 20px 50px rgba(15, 23, 42, 0.15);
+  --shadow-accent:           0 6px 22px rgba(200, 0, 10, 0.35);
+  --shadow-whatsapp:         0 6px 20px rgba(37, 211, 102, 0.35);
+  --shadow-card:             0 2px 12px rgba(15, 23, 42, 0.06);
 
   /* ── Typography ── */
-  --font-body:    'Inter', system-ui, -apple-system, sans-serif;
-  --font-heading: 'Space Grotesk', 'Inter', sans-serif;
+  --font-body:               'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading:            'Space Grotesk', 'Inter', sans-serif;
 
   /* ── Radii ── */
   --radius-sm:   6px;
@@ -110,7 +121,7 @@ body {
   overflow-x: hidden;
 }
 
-/* ── Typography ── */
+/* ── Typography & Text Gradients ── */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 700;
@@ -123,7 +134,43 @@ h1 { font-size: clamp(2rem, 4.5vw, 3.6rem); }
 h2 { font-size: clamp(1.5rem, 2.5vw, 2.1rem); }
 h3 { font-size: clamp(1.15rem, 1.8vw, 1.4rem); }
 
-p { color: var(--color-text-2); }
+/* ── Rich Linear Gradient Text Utilities ── */
+.text-gradient-dark {
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 40%, #334155 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.text-gradient-red {
+  background: linear-gradient(135deg, #FF1E2D 0%, #E50010 35%, #C8000A 75%, #990008 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.text-gradient-brand {
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 35%, #C8000A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.text-gradient-silver {
+  background: linear-gradient(135deg, #334155 0%, #475569 50%, #64748B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.text-gradient-white {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 50%, #E2E8F0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+p { color: #1E293B; font-weight: 500; }
 a { color: inherit; text-decoration: none; }
 img, video { max-width: 100%; height: auto; display: block; }
 input, textarea, select, button { font-family: var(--font-body); }
@@ -298,9 +345,30 @@ ul, ol { list-style: none; }
   margin-bottom: 10px;
 }
 
-.section-title       { color: var(--color-text); margin-bottom: 8px; }
-.section-title span  { color: var(--color-accent-light); }
-.section-desc        { color: var(--color-text-2); font-size: 15px; max-width: 580px; line-height: 1.6; }
+.section-title {
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 45%, #334155 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+  font-weight: 850;
+  letter-spacing: -0.02em;
+}
+
+.section-title span {
+  background: linear-gradient(135deg, #FF1E2D 0%, #E50010 40%, #B91C1C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.section-desc {
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 45%, #334155 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 15px;
+  font-weight: 650;
+  max-width: 620px;
+  line-height: 1.6;
+}
 
 /* ── Marquee Animations ── */
 .marquee-container {
@@ -420,7 +488,7 @@ ul, ol { list-style: none; }
   .hero-trust-pill   { font-size: 9.5px !important; padding: 3px 6px !important; }
 }
 
-/* ── Glossy Button System ── */
+/* ── Luxury Gradient Button System ── */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -428,25 +496,26 @@ ul, ol { list-style: none; }
   gap: 8px;
   padding: 10px 24px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   border-radius: var(--radius-full);
   border: 1px solid transparent;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
   text-decoration: none;
   line-height: 1.3;
+  letter-spacing: 0.2px;
 }
 
 .btn:active  { transform: scale(0.97); }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
-/* Primary — Crimson Red Gradient */
+/* Primary — Multi-Stop Crimson Red Linear Gradient */
 .btn-primary {
   background: var(--gradient-accent-btn);
   color: #FFFFFF;
-  box-shadow: var(--shadow-accent);
-  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 4px 16px rgba(200, 0, 10, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.20);
   position: relative;
   overflow: hidden;
 }
@@ -456,36 +525,61 @@ ul, ol { list-style: none; }
   position: absolute;
   top: 0; left: -100%;
   width: 100%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.28), transparent);
   transition: left 0.55s ease;
 }
 
 .btn-primary:hover::after  { left: 100%; }
 .btn-primary:hover {
-  box-shadow: 0 8px 28px rgba(200, 0, 10, 0.42);
-  transform: translateY(-1.5px);
+  background: var(--gradient-accent-hover);
+  box-shadow: 0 8px 26px rgba(200, 0, 10, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transform: translateY(-2px);
+  color: #FFFFFF;
 }
 
-/* Secondary — Clean Light */
+/* Secondary — Polished Glass/Silver Gradient */
 .btn-secondary {
   background: var(--gradient-secondary-btn);
   color: var(--color-text);
   border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05), inset 0 1px 0 #FFFFFF;
 }
 
 .btn-secondary:hover {
   background: #FFFFFF;
-  border-color: var(--color-border-2);
-  color: var(--color-accent-light);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-1px);
+  border-color: #CBD5E1;
+  color: var(--color-accent);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.09);
+  transform: translateY(-1.5px);
+}
+
+/* WhatsApp — Energetic Gradient */
+.btn-whatsapp {
+  background: var(--gradient-whatsapp-btn);
+  color: #FFFFFF !important;
+  box-shadow: var(--shadow-whatsapp), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-whatsapp:hover {
+  background: linear-gradient(135deg, #38F27D 0%, #28DB6D 45%, #16A84C 100%);
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45);
+  transform: translateY(-2px);
+  color: #FFFFFF !important;
 }
 
 .btn-outline {
   background: transparent;
   color: var(--color-accent-light);
-  border-color: var(--color-accent);
+  border: 1.5px solid var(--color-accent);
+}
+
+.btn-outline:hover {
+  background: var(--color-accent-bg);
+  border-color: var(--color-accent-hover);
+  transform: translateY(-1.5px);
 }
 
 .btn-outline:hover { background: var(--color-accent-bg); }
@@ -702,4 +796,177 @@ ul, ol { list-style: none; }
     font-size: 11px !important;
     margin-bottom: 2px !important;
   }
+}
+
+/* ── VK Fleet Card Global Styles & Gradient Typography ── */
+.vk-car-card {
+  background: #FFFFFF;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
+  border: 1px solid #E2E8F0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.vk-car-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(200, 0, 10, 0.12);
+  border-color: rgba(200, 0, 10, 0.35);
+}
+
+.vk-card-img-wrap {
+  position: relative;
+  width: 100%;
+  height: 195px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #F8FAFC 0%, #EEF2F6 100%);
+}
+
+.vk-badge-popular {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  background: linear-gradient(135deg, #FF1E2D 0%, #E50010 40%, #B91C1C 100%);
+  color: #FFFFFF;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  box-shadow: 0 2px 8px rgba(229, 0, 16, 0.4);
+  letter-spacing: 0.5px;
+}
+
+.vk-badge-category {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  background: rgba(15, 23, 42, 0.78);
+  backdrop-filter: blur(4px);
+  color: #FFFFFF;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.vk-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.vk-car-card:hover .vk-card-img {
+  transform: scale(1.05);
+}
+
+.vk-card-body {
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  background: #FFFFFF;
+}
+
+.vk-card-title {
+  font-size: 16px;
+  font-weight: 850;
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 45%, #334155 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0 0 6px;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: all 0.2s ease;
+}
+
+.vk-car-card:hover .vk-card-title {
+  background: linear-gradient(135deg, #FF1E2D 0%, #C8000A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.vk-card-specs {
+  font-size: 12.5px;
+  color: #0F172A;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.vk-dot {
+  color: #E50010;
+  font-weight: 900;
+  opacity: 0.85;
+}
+
+.vk-card-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid #F1F5F9;
+  gap: 10px;
+}
+
+.vk-price-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.vk-price-num {
+  font-size: 20px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #FF1E2D 0%, #C8000A 60%, #990008 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.1;
+}
+
+.vk-price-sub {
+  font-size: 10.5px;
+  background: linear-gradient(135deg, #C8000A 0%, #990008 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+.vk-btn-details {
+  background: linear-gradient(135deg, #FF1E2D 0%, #C8000A 60%, #990008 100%);
+  color: #FFFFFF;
+  border: none;
+  font-size: 12.5px;
+  font-weight: 800;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(200, 0, 10, 0.3);
+  text-decoration: none;
+}
+
+.vk-btn-details:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(200, 0, 10, 0.45);
+  background: linear-gradient(135deg, #FF3340 0%, #E50010 60%, #B9000A 100%);
+  color: #FFFFFF;
 }

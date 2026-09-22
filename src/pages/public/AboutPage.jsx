@@ -11,8 +11,7 @@ import TermsAndConditions from '../../components/ui/TermsAndConditions';
 
 import { useTenant } from '../../contexts/TenantContext';
 import { subscribeToReviews } from '../../firebase/firestore';
-
-
+import { Helmet } from 'react-helmet-async';
 
 const PROMISES = [
   {
@@ -78,23 +77,40 @@ export default function AboutPage() {
   ];
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#F8FAFC' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--gradient-page-bg)' }}>
+      <Helmet>
+        <title>About Us | SA SELF DRIVE CAR'S PUNE | Trusted Self Drive Car Rental Pune</title>
+        <meta name="title" content="About Us | SA SELF DRIVE CAR'S PUNE | Trusted Self Drive Car Rental Pune" />
+        <meta name="description" content="Learn about SA Self Drive Cars Pune. Pune's leading self-drive car rental agency offering 300 KM daily limit, 30-min doorstep delivery, and sanitized fleet across Pune and PCMC." />
+        <link rel="canonical" href="https://www.saselfdrivecar.com/about" />
+      </Helmet>
       <Navbar />
 
       <main style={{ paddingTop: 72, paddingBottom: 36, flex: 1 }}>
 
         {/* ─── Hero Header ─── */}
-        <div style={{ background: '#FFFFFF', borderBottom: '1px solid #E2E8F0', marginBottom: 32 }}>
-          <div className="container" style={{ padding: '36px 0 30px' }}>
-            <span className="section-label-red" style={{ marginBottom: 10, display: 'inline-block' }}>
-              About {settings?.businessName || 'SA Self Drive Cars'}
+        <div style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)', borderBottom: '1px solid #E2E8F0', marginBottom: 32, padding: '32px 0 26px' }}>
+          <div className="container">
+            <span className="section-label-red" style={{ marginBottom: 8, display: 'inline-block' }}>
+              About SA SELF DRIVE CAR'S PUNE
             </span>
-            <h1 style={{ fontSize: 'clamp(24px, 4.5vw, 38px)', fontWeight: 900, color: '#111318', margin: '0 0 10px', lineHeight: 1.2 }}>
-              {settings?.aboutTitle || 'Reinventing Self-Drive Rental in Pune'}
+            <h1 className="section-title" style={{ fontSize: 'clamp(24px, 4.2vw, 38px)', margin: '0 0 10px', lineHeight: 1.25 }}>
+              Reinventing <span>Self-Drive Car Rental</span> in Pune
             </h1>
-            <p style={{ fontSize: 'clamp(13px, 1.8vw, 15px)', color: '#64748B', margin: 0, maxWidth: 640, lineHeight: 1.6 }}>
-              {settings?.aboutSubtitle || 'Driven by 100% transparency, verified cars, 300 km daily limit, and 30-minute doorstep delivery in Pune.'}
+            <p className="section-desc" style={{ fontSize: 'clamp(14px, 1.8vw, 15.5px)', margin: '0 0 14px', maxWidth: 760, lineHeight: 1.65 }}>
+              {settings?.aboutSubtitle || 'Driven by 100% transparency, brand new verified fleet, 300 km daily allowance, and fast doorstep delivery across Pune & PCMC.'}
             </p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginTop: 10 }}>
+              <span style={{ fontSize: 11.5, color: '#16A34A', background: '#DCFCE7', padding: '4px 12px', borderRadius: 99, border: '1px solid rgba(22,163,74,0.25)', fontWeight: 800, display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                <FiCheckCircle size={12} /> 300 KM Daily Limit Included
+              </span>
+              <span style={{ fontSize: 11.5, color: '#C8000A', background: 'rgba(200,0,10,0.08)', padding: '4px 12px', borderRadius: 99, border: '1px solid rgba(200,0,10,0.20)', fontWeight: 800, display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                <FiTruck size={12} /> Doorstep Handover in 30 Mins
+              </span>
+              <span style={{ fontSize: 11.5, color: '#0F172A', background: '#F1F5F9', padding: '4px 12px', borderRadius: 99, border: '1px solid #CBD5E1', fontWeight: 800, display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                <FiShield size={12} /> 100% Sanitized Fleet
+              </span>
+            </div>
           </div>
         </div>
 
@@ -138,7 +154,7 @@ export default function AboutPage() {
                 <h2 style={{ fontSize: 'clamp(22px, 3.5vw, 30px)', color: '#C8000A', fontWeight: 900, margin: 0, lineHeight: 1 }}>
                   {s.value}
                 </h2>
-                <p style={{ fontSize: 12, color: '#64748B', margin: 0, fontWeight: 700 }}>{s.label}</p>
+                <p style={{ fontSize: 12, color: '#0F172A', margin: 0, fontWeight: 800 }}>{s.label}</p>
               </motion.div>
             ))}
           </div>
@@ -156,15 +172,15 @@ export default function AboutPage() {
               <span className="section-label-red" style={{ margin: 0 }}>Our Core Mission</span>
             </div>
             
-            <h2 style={{ fontSize: 'clamp(20px, 3.5vw, 28px)', fontWeight: 900, color: '#111318', marginBottom: 12, lineHeight: 1.25 }}>
-              {settings?.aboutMissionHeading || 'Empowering Renters with Complete Self-Drive Freedom'}
+            <h2 className="section-title" style={{ fontSize: 'clamp(20px, 3.5vw, 28px)', margin: '4px 0 12px', lineHeight: 1.25 }}>
+              Empowering Renters with <span>Complete Self-Drive Freedom</span>
             </h2>
 
-            <p style={{ fontSize: 'clamp(13.5px, 1.8vw, 15px)', color: '#475569', lineHeight: 1.7, marginBottom: 14, maxWidth: 850 }}>
+            <p className="section-desc" style={{ fontSize: 'clamp(13.5px, 1.8vw, 15px)', lineHeight: 1.65, marginBottom: 12, maxWidth: 850 }}>
               {settings?.aboutMissionText || 'We believe having a car for weekend family trips, business meetings, or hill-station drives should be simple — accessible on demand without ownership hassle.'}
             </p>
 
-            <p style={{ fontSize: 'clamp(13px, 1.6vw, 14.5px)', color: '#64748B', lineHeight: 1.7, marginBottom: 24, maxWidth: 850 }}>
+            <p style={{ fontSize: 'clamp(13px, 1.6vw, 14.5px)', color: '#1E293B', fontWeight: 550, lineHeight: 1.7, marginBottom: 24, maxWidth: 850 }}>
               {settings?.aboutStoryText || 'Every vehicle in our fleet is deep-sanitized, digitally verified, and handed over with complete document verification.'}
             </p>
 
@@ -200,10 +216,10 @@ export default function AboutPage() {
                     <FiCheck />
                   </div>
                   <div>
-                    <strong style={{ fontSize: 13, color: '#111318', display: 'block', marginBottom: 3, fontWeight: 800 }}>
+                    <strong style={{ fontSize: 13, color: '#0F172A', display: 'block', marginBottom: 3, fontWeight: 850 }}>
                       {mp.title}
                     </strong>
-                    <span style={{ fontSize: 12, color: '#64748B', lineHeight: 1.4, display: 'block' }}>
+                    <span style={{ fontSize: 12, color: '#1E293B', lineHeight: 1.4, display: 'block', fontWeight: 600 }}>
                       {mp.desc}
                     </span>
                   </div>
@@ -212,17 +228,17 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* ─── RENTAL TERMS & MANDATORY DOCUMENTS SECTION ─── */}
+          {/* ─── RENTAL TERMS & PRIVACY POLICY SECTION ─── */}
           <div style={{ marginBottom: 32 }}>
-            <TermsAndConditions expandable={false} defaultOpen={true} />
+            <TermsAndConditions expandable={true} defaultOpen={false} />
           </div>
 
           {/* ─── WHY CHOOSE US CARD GRID ─── */}
           <div style={{ marginBottom: 36 }}>
-            <div style={{ marginBottom: 20 }}>
+            <div style={{ marginBottom: 18 }}>
               <span className="section-label-red" style={{ display: 'inline-block', marginBottom: 6 }}>Why Choose Us</span>
-              <h2 style={{ fontSize: 'clamp(18px, 3vw, 24px)', fontWeight: 900, color: '#111318', margin: 0 }}>
-                Everything You Need For A Safe Trip
+              <h2 className="section-title" style={{ fontSize: 'clamp(20px, 3.2vw, 28px)', margin: 0 }}>
+                Everything You Need For A <span>Safe Trip</span>
               </h2>
             </div>
             <div className="about-cards-grid">
@@ -255,32 +271,28 @@ export default function AboutPage() {
                   }}>
                     {p.icon}
                   </div>
-                  <h3 style={{ fontSize: 15, fontWeight: 800, color: '#111318', margin: '0 0 6px' }}>{p.title}</h3>
-                  <p style={{ fontSize: 13, color: '#64748B', margin: 0, lineHeight: 1.5 }}>{p.desc}</p>
+                  <h3 style={{ fontSize: 15, fontWeight: 800, color: '#0F172A', margin: '0 0 6px' }}>{p.title}</h3>
+                  <p style={{ fontSize: 13, color: '#1E293B', fontWeight: 550, margin: 0, lineHeight: 1.5 }}>{p.desc}</p>
                 </motion.div>
               ))}
             </div>
           </div>
 
-          {/* ─── LIVE DYNAMIC REVIEWS SECTION ─── */}
-          <div style={{ marginBottom: 32 }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, flexWrap: 'wrap', gap: 10 }}>
-              <div>
-                <span className="section-label-red" style={{ display: 'inline-block', marginBottom: 6 }}>Customer Feedback</span>
-                <h2 style={{ fontSize: 'clamp(18px, 3vw, 24px)', fontWeight: 900, color: '#111318', margin: 0 }}>
-                  What Our Renters Say
-                </h2>
+          {/* ─── LIVE DYNAMIC REVIEWS SECTION (ONLY DISPLAY REAL ADMIN-ADDED REVIEWS) ─── */}
+          {reviews && reviews.length > 0 && (
+            <div style={{ marginBottom: 32 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, flexWrap: 'wrap', gap: 10 }}>
+                <div>
+                  <span className="section-label-red" style={{ display: 'inline-block', marginBottom: 6 }}>Verified Customer Feedback</span>
+                  <h2 className="text-gradient-dark" style={{ fontSize: 'clamp(18px, 3vw, 24px)', fontWeight: 900, margin: 0 }}>
+                    What Our Renters Say
+                  </h2>
+                </div>
+                <span style={{ fontSize: 12, color: '#16A34A', fontWeight: 800, display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <FiCheckCircle /> Verified Reviews ({reviews.length})
+                </span>
               </div>
-              <span style={{ fontSize: 12, color: '#16A34A', fontWeight: 800, display: 'flex', alignItems: 'center', gap: 4 }}>
-                <FiCheckCircle /> Verified Renter Reviews ({reviews.length})
-              </span>
-            </div>
 
-            {reviews.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '24px 0', color: '#64748B', fontSize: 13 }}>
-                No customer reviews published yet. Admin can add live reviews in Admin Panel Settings.
-              </div>
-            ) : (
               <div className="about-cards-grid">
                 {reviews.map((rev, idx) => (
                   <div
@@ -304,10 +316,10 @@ export default function AboutPage() {
                             <BsStarFill key={rIdx} size={14} />
                           ))}
                         </div>
-                        <span style={{ fontSize: 11, color: '#94A3B8', fontWeight: 600 }}>{rev.date || 'Verified'}</span>
+                        <span style={{ fontSize: 11, color: '#C8000A', fontWeight: 700 }}>{rev.date || 'Verified Trip'}</span>
                       </div>
 
-                      <p style={{ fontSize: 13, color: '#334155', lineHeight: 1.6, margin: 0, fontStyle: 'italic' }}>
+                      <p style={{ fontSize: 13.5, color: '#1E293B', lineHeight: 1.6, margin: 0, fontWeight: 550 }}>
                         "{rev.comment}"
                       </p>
                     </div>
@@ -316,8 +328,8 @@ export default function AboutPage() {
                       <div style={{
                         width: 36, height: 36,
                         borderRadius: '50%',
-                        background: 'rgba(200,0,10,0.08)',
-                        color: '#C8000A',
+                        background: 'linear-gradient(135deg, #FF1E2D 0%, #C8000A 100%)',
+                        color: '#FFFFFF',
                         fontWeight: 800,
                         fontSize: 14,
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -325,15 +337,15 @@ export default function AboutPage() {
                         {rev.name?.charAt(0) || 'R'}
                       </div>
                       <div>
-                        <strong style={{ fontSize: 13, color: '#111318', display: 'block', lineHeight: 1.2 }}>{rev.name}</strong>
-                        <span style={{ fontSize: 11, color: '#64748B' }}>{rev.location || 'Pune'} • {rev.carName || 'Self Drive'}</span>
+                        <strong style={{ fontSize: 13.5, color: '#0F172A', display: 'block', lineHeight: 1.2, fontWeight: 800 }}>{rev.name}</strong>
+                        <span style={{ fontSize: 11, color: '#C8000A', fontWeight: 700 }}>{rev.location || 'Pune'} • {rev.carName || 'Self Drive'}</span>
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
         </div>
       </main>

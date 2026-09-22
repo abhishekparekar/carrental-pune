@@ -23,11 +23,11 @@ import BookingForm from '../../components/ui/BookingForm';
 import TermsAndConditions from '../../components/ui/TermsAndConditions';
 import RevvCarCard from '../../components/ui/RevvCarCard';
 import CarSkeleton from '../../components/ui/CarSkeleton';
-import Modal from '../../components/ui/Modal';
 
 import { useTenant } from '../../contexts/TenantContext';
 import { getCar, getCars } from '../../firebase/firestore';
 import { formatCurrency } from '../../utils/formatCurrency';
+import { Helmet } from 'react-helmet-async';
 
 export default function CarDetailPage() {
   const { carId } = useParams();
@@ -38,7 +38,6 @@ export default function CarDetailPage() {
   const [similarCars, setSimilarCars] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -61,7 +60,7 @@ export default function CarDetailPage() {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#F8FAFC' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--gradient-page-bg)' }}>
         <Navbar />
         <main style={{ paddingTop: 90, flex: 1 }} className="container">
           <CarSkeleton />
@@ -73,11 +72,11 @@ export default function CarDetailPage() {
 
   if (!car) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#F8FAFC' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--gradient-page-bg)' }}>
         <Navbar />
         <main style={{ paddingTop: 120, flex: 1, textAlign: 'center' }} className="container">
-          <h2>Car Not Found</h2>
-          <p style={{ color: 'var(--color-text-2)', marginBottom: 20 }}>
+          <h2 className="text-gradient-dark">Car Not Found</h2>
+          <p style={{ color: '#475569', marginBottom: 20 }}>
             The requested car listing does not exist or has been removed.
           </p>
           <Link to="/fleet" className="btn btn-primary">
@@ -93,123 +92,98 @@ export default function CarDetailPage() {
     ? car.images
     : ['https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80'];
 
+  const categoryName = (car.category || 'Hatchback').toUpperCase();
+  const transmission = car.transmission 
+    ? (car.transmission.charAt(0).toUpperCase() + car.transmission.slice(1).toLowerCase())
+    : 'Manual';
+  const fuelType = (car.fuelType || 'Petrol').toUpperCase();
+
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#F8FAFC' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--gradient-page-bg)' }}>
+      <Helmet>
+        <title>{car?.name ? `${car.name} Rental Pune | Book Self Drive | SA Self Drive Cars` : 'Self Drive Car Booking in Pune | SA Self Drive Cars'}</title>
+        <meta name="title" content={car?.name ? `${car.name} Rental Pune | Book Self Drive | SA Self Drive Cars` : 'Self Drive Car Booking in Pune | SA Self Drive Cars'} />
+        <meta name="description" content={car?.name ? `Rent ${car.name} in Pune with 300 KM daily limit, doorstep delivery across Pune & PCMC. 24/7 instant booking & sanitized handover.` : 'Book self drive car in Pune with 300 KM daily limit & doorstep delivery.'} />
+        <link rel="canonical" href={`https://www.saselfdrivecar.com/fleet/${carId}`} />
+      </Helmet>
       <Navbar />
 
-      <main style={{ paddingTop: 'clamp(68px, 8vw, 82px)', paddingBottom: 40, flex: 1 }}>
-        <div className="container">
+      <main style={{ paddingTop: 'clamp(74px, 7.5vw, 84px)', paddingBottom: 40, flex: 1 }}>
+        <div className="container" style={{ maxWidth: 1200 }}>
           
-          {/* Top Bar: Navigation & Badges */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12, flexWrap: 'wrap', gap: 10 }}>
+          {/* Top Compact Bar: Back Button & Badges */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12, flexWrap: 'wrap', gap: 8 }}>
             <Link
               to="/fleet"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: 6,
+                gap: 5,
                 fontSize: 12.5,
                 fontWeight: 700,
                 color: '#C8000A',
                 textDecoration: 'none',
-                background: 'rgba(200, 0, 10, 0.06)',
+                background: 'linear-gradient(135deg, rgba(200, 0, 10, 0.08) 0%, rgba(200, 0, 10, 0.02) 100%)',
                 padding: '6px 14px',
                 borderRadius: 99,
-                border: '1px solid rgba(200, 0, 10, 0.15)',
+                border: '1px solid rgba(200, 0, 10, 0.18)',
                 transition: 'all 0.15s ease',
               }}
             >
-              <FiArrowLeft /> Back to Fleet
+              <FiArrowLeft size={13} /> Back to Fleet
             </Link>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-              <span className="badge badge-accent" style={{ background: '#C8000A', color: '#FFFFFF', fontWeight: 800, fontSize: 11 }}>
-                {car.category ? car.category.toUpperCase() : 'CAR'}
+              <span style={{ background: 'var(--gradient-accent-btn)', color: '#FFFFFF', fontWeight: 800, fontSize: 10.5, padding: '3px 10px', borderRadius: 99 }}>
+                {categoryName}
               </span>
-              {car.rating && (
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, color: '#D97706', fontSize: 11.5, fontWeight: 800, background: '#FEF3C7', padding: '3px 10px', borderRadius: 99, border: '1px solid rgba(217,119,6,0.2)' }}>
-                  <BsStarFill size={11} /> {car.rating} Rating
-                </span>
-              )}
-              <span style={{ fontSize: 11.5, color: '#16A34A', display: 'inline-flex', alignItems: 'center', gap: 4, fontWeight: 800, background: '#DCFCE7', padding: '3px 10px', borderRadius: 99, border: '1px solid rgba(22,163,74,0.2)' }}>
-                <FiCheckCircle size={11} /> Available Now
+              <span style={{ fontSize: 11, color: '#16A34A', display: 'inline-flex', alignItems: 'center', gap: 4, fontWeight: 800, background: '#DCFCE7', padding: '3px 10px', borderRadius: 99, border: '1px solid rgba(22,163,74,0.2)' }}>
+                <FiCheckCircle size={11} /> Pune & PCMC Delivery
               </span>
             </div>
           </div>
 
-          {/* Car Name Title Header */}
-          <div style={{ marginBottom: 16 }}>
-            <h1 style={{ fontSize: 'clamp(22px, 3.5vw, 32px)', margin: '0 0 4px', color: '#0F172A', fontWeight: 900, lineHeight: 1.2 }}>
-              {car.name}
-            </h1>
-            <p style={{ fontSize: 13.5, color: '#64748B', margin: 0, lineHeight: 1.5 }}>
-              {car.description || 'Sanitized self-drive rental vehicle with 300 km daily limit & doorstep delivery in Pune & PCMC.'}
-            </p>
-          </div>
-
-          {/* Main 2-Column Balanced Grid */}
-          <div className="car-detail-layout">
+          {/* Compact 2-Column Responsive Layout */}
+          <div className="car-detail-compact-grid">
             
-            {/* Left Column: Photo Gallery + Specs + Tariffs + Terms */}
-            <div style={{ minWidth: 0, display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {/* ── LEFT COLUMN: Visual Showcase, Specs & Policies ── */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               
-              {/* Photo Gallery Card */}
+              {/* 1. Compact Vehicle Photo Showcase */}
               <div style={{
-                padding: 6,
-                overflow: 'hidden',
                 background: '#FFFFFF',
                 borderRadius: 16,
                 border: '1px solid #E2E8F0',
-                boxShadow: '0 4px 20px rgba(15, 23, 42, 0.04)',
+                boxShadow: '0 4px 18px rgba(15, 23, 42, 0.05)',
+                padding: '12px',
+                position: 'relative',
               }}>
                 <div
                   style={{
                     position: 'relative',
                     width: '100%',
+                    height: 'clamp(180px, 22vw, 250px)',
                     borderRadius: 12,
                     overflow: 'hidden',
-                    background: '#0B0F17',
+                    background: 'linear-gradient(180deg, #F8FAFC 0%, #EEF2F6 100%)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    marginBottom: images.length > 1 ? 6 : 0,
+                    border: '1px solid #EDF2F7',
                   }}
-                  className="car-gallery-main"
                 >
-                  {/* Ambient Background Fill */}
-                  <img
-                    src={images[selectedImageIndex]}
-                    alt=""
-                    aria-hidden="true"
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      filter: 'blur(20px) brightness(0.55)',
-                      transform: 'scale(1.2)',
-                      zIndex: 1,
-                    }}
-                  />
-
-                  {/* Sharp 100% Full Uncropped Car Photo */}
                   <img
                     src={images[selectedImageIndex]}
                     alt={car.name}
                     style={{
-                      position: 'relative',
-                      zIndex: 2,
-                      maxWidth: '100%',
-                      maxHeight: '100%',
-                      width: 'auto',
-                      height: 'auto',
+                      maxWidth: '92%',
+                      maxHeight: '92%',
                       objectFit: 'contain',
                       display: 'block',
-                      margin: '0 auto',
-                      filter: 'drop-shadow(0 8px 24px rgba(0, 0, 0, 0.45))',
+                      filter: 'drop-shadow(0 8px 20px rgba(15, 23, 42, 0.18))',
                     }}
                   />
+
                   <button
                     className="btn-icon"
                     onClick={() => {
@@ -218,216 +192,244 @@ export default function CarDetailPage() {
                     }}
                     style={{
                       position: 'absolute',
-                      top: 12,
-                      right: 12,
+                      top: 10,
+                      right: 10,
                       zIndex: 2,
                       borderRadius: '50%',
                       background: '#FFFFFF',
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+                      width: 32,
+                      height: 32,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      border: '1px solid #E2E8F0',
+                      cursor: 'pointer',
                     }}
                     title="Share Car Link"
                   >
-                    <FiShare2 size={15} />
+                    <FiShare2 size={14} color="#334155" />
                   </button>
                 </div>
 
-                {/* Thumbnails Strip */}
+                {/* Compact Thumbnails Strip (if multiple) */}
                 {images.length > 1 && (
-                  <div style={{ display: 'flex', gap: 6, overflowX: 'auto', padding: '2px 0 4px', scrollbarWidth: 'none' }}>
+                  <div style={{ display: 'flex', gap: 6, overflowX: 'auto', paddingTop: 8, scrollbarWidth: 'none' }}>
                     {images.map((img, idx) => (
                       <button
                         key={idx}
                         onClick={() => setSelectedImageIndex(idx)}
                         style={{
-                          width: 64,
-                          height: 44,
+                          width: 54,
+                          height: 36,
                           borderRadius: 8,
                           overflow: 'hidden',
-                          border: selectedImageIndex === idx ? '2px solid #C8000A' : '2px solid transparent',
+                          border: selectedImageIndex === idx ? '2px solid #C8000A' : '1px solid #CBD5E1',
                           cursor: 'pointer',
-                          padding: 0,
+                          padding: 1,
+                          background: '#F8FAFC',
                           flexShrink: 0,
+                          transition: 'all 0.15s ease',
                         }}
                       >
-                        <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                       </button>
                     ))}
                   </div>
                 )}
               </div>
 
-              {/* Vehicle Specifications */}
+              {/* 2. Car Title & Quick Description */}
               <div style={{
-                padding: '14px 16px',
                 background: '#FFFFFF',
-                borderRadius: 16,
+                borderRadius: 14,
+                padding: '12px 16px',
                 border: '1px solid #E2E8F0',
-                boxShadow: '0 4px 16px rgba(15, 23, 42, 0.04)',
+                boxShadow: '0 2px 10px rgba(15, 23, 42, 0.04)',
               }}>
-                <h3 style={{ fontSize: 14, marginBottom: 10, color: '#0F172A', fontWeight: 800 }}>
-                  Key Vehicle Specifications
-                </h3>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: 8 }}>
-                  <div style={{ padding: '8px 10px', background: '#F8FAFC', borderRadius: 10, border: '1px solid #F1F5F9' }}>
-                    <span style={{ fontSize: 10, color: '#64748B', textTransform: 'uppercase', fontWeight: 800 }}>Transmission</span>
-                    <strong style={{ fontSize: 12.5, color: '#111318', textTransform: 'capitalize', display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
-                      <FiSettings style={{ color: '#C8000A', flexShrink: 0 }} size={12} /> {car.transmission || 'Manual'}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, flexWrap: 'wrap', marginBottom: 4 }}>
+                  <h1 className="text-gradient-dark" style={{ fontSize: 'clamp(20px, 3vw, 26px)', margin: 0, fontWeight: 900, lineHeight: 1.25 }}>
+                    {car.name}
+                  </h1>
+                  <span style={{ fontSize: 11, fontWeight: 800, color: '#C8000A', background: 'rgba(200,0,10,0.08)', padding: '3px 8px', borderRadius: 6 }}>
+                    {car.modelYear || '2025'} Model
+                  </span>
+                </div>
+                <p style={{ fontSize: 13, color: '#1E293B', margin: 0, lineHeight: 1.5, fontWeight: 600 }}>
+                  {car.description || 'Premium sanitized self-drive rental vehicle with 300 km daily limit, comprehensive insurance & doorstep delivery in Pune & PCMC.'}
+                </p>
+              </div>
+
+              {/* 3. Compact Key Specifications Grid */}
+              <div style={{
+                background: '#FFFFFF',
+                borderRadius: 14,
+                padding: '12px 16px',
+                border: '1px solid #E2E8F0',
+                boxShadow: '0 2px 10px rgba(15, 23, 42, 0.04)',
+              }}>
+                <span className="section-label-red" style={{ fontSize: 10, marginBottom: 8, display: 'inline-block' }}>
+                  Specifications & Performance
+                </span>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }} className="specs-compact-row">
+                  <div style={{ padding: '8px 10px', background: '#F8FAFC', borderRadius: 10, border: '1px solid #E2E8F0' }}>
+                    <span style={{ fontSize: 9.5, color: '#C8000A', textTransform: 'uppercase', fontWeight: 850, display: 'block' }}>Fuel</span>
+                    <strong style={{ fontSize: 12.5, color: '#0F172A', display: 'flex', alignItems: 'center', gap: 4, marginTop: 2, fontWeight: 800 }}>
+                      <BsFuelPump style={{ color: '#C8000A' }} size={12} /> {fuelType}
                     </strong>
                   </div>
 
-                  <div style={{ padding: '8px 10px', background: '#F8FAFC', borderRadius: 10, border: '1px solid #F1F5F9' }}>
-                    <span style={{ fontSize: 10, color: '#64748B', textTransform: 'uppercase', fontWeight: 800 }}>Fuel Type</span>
-                    <strong style={{ fontSize: 12.5, color: '#111318', textTransform: 'capitalize', display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
-                      <BsFuelPump style={{ color: '#C8000A', flexShrink: 0 }} size={12} /> {car.fuelType || 'Petrol'}
+                  <div style={{ padding: '8px 10px', background: '#F8FAFC', borderRadius: 10, border: '1px solid #E2E8F0' }}>
+                    <span style={{ fontSize: 9.5, color: '#C8000A', textTransform: 'uppercase', fontWeight: 850, display: 'block' }}>Gearbox</span>
+                    <strong style={{ fontSize: 12.5, color: '#0F172A', display: 'flex', alignItems: 'center', gap: 4, marginTop: 2, fontWeight: 800 }}>
+                      <FiSettings style={{ color: '#C8000A' }} size={12} /> {transmission}
                     </strong>
                   </div>
 
-                  <div style={{ padding: '8px 10px', background: '#F8FAFC', borderRadius: 10, border: '1px solid #F1F5F9' }}>
-                    <span style={{ fontSize: 10, color: '#64748B', textTransform: 'uppercase', fontWeight: 800 }}>Seating</span>
-                    <strong style={{ fontSize: 12.5, color: '#111318', display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
-                      <FiUsers style={{ color: '#C8000A', flexShrink: 0 }} size={12} /> {car.seats || 5} Seats
+                  <div style={{ padding: '8px 10px', background: '#F8FAFC', borderRadius: 10, border: '1px solid #E2E8F0' }}>
+                    <span style={{ fontSize: 9.5, color: '#C8000A', textTransform: 'uppercase', fontWeight: 850, display: 'block' }}>Seats</span>
+                    <strong style={{ fontSize: 12.5, color: '#0F172A', display: 'flex', alignItems: 'center', gap: 4, marginTop: 2, fontWeight: 800 }}>
+                      <FiUsers style={{ color: '#C8000A' }} size={12} /> {car.seats || 5} Seater
                     </strong>
                   </div>
 
-                  <div style={{ padding: '8px 10px', background: '#F8FAFC', borderRadius: 10, border: '1px solid #F1F5F9' }}>
-                    <span style={{ fontSize: 10, color: '#64748B', textTransform: 'uppercase', fontWeight: 800 }}>Mileage</span>
-                    <strong style={{ fontSize: 12.5, color: '#111318', display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
-                      <FiZap style={{ color: '#C8000A', flexShrink: 0 }} size={12} /> {car.mileage || '18 kmpl'}
-                    </strong>
-                  </div>
-
-                  <div style={{ padding: '8px 10px', background: '#F8FAFC', borderRadius: 10, border: '1px solid #F1F5F9' }}>
-                    <span style={{ fontSize: 10, color: '#64748B', textTransform: 'uppercase', fontWeight: 800 }}>Luggage</span>
-                    <strong style={{ fontSize: 12.5, color: '#111318', display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
-                      <BsLuggage style={{ color: '#C8000A', flexShrink: 0 }} size={12} /> {car.luggageCapacity || '2 Bags'}
+                  <div style={{ padding: '8px 10px', background: '#F8FAFC', borderRadius: 10, border: '1px solid #E2E8F0' }}>
+                    <span style={{ fontSize: 9.5, color: '#C8000A', textTransform: 'uppercase', fontWeight: 850, display: 'block' }}>Mileage</span>
+                    <strong style={{ fontSize: 12.5, color: '#0F172A', display: 'flex', alignItems: 'center', gap: 4, marginTop: 2, fontWeight: 800 }}>
+                      <FiZap style={{ color: '#C8000A' }} size={12} /> {car.mileage || '18 kmpl'}
                     </strong>
                   </div>
                 </div>
               </div>
 
-              {/* Pricing Tariff Card */}
+              {/* 4. Compact Tariff & Surcharges Grid */}
               <div style={{
-                padding: '14px 16px',
                 background: '#FFFFFF',
-                borderRadius: 16,
+                borderRadius: 14,
+                padding: '12px 16px',
                 border: '1px solid #E2E8F0',
-                boxShadow: '0 4px 16px rgba(15, 23, 42, 0.04)',
+                boxShadow: '0 2px 10px rgba(15, 23, 42, 0.04)',
               }}>
-                <h3 style={{ fontSize: 14, marginBottom: 10, color: '#0F172A', fontWeight: 800 }}>
-                  Rental Tariff & Extra Surcharges
-                </h3>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(115px, 1fr))', gap: 8 }}>
-                  <div style={{ padding: 10, borderRadius: 10, background: 'linear-gradient(135deg, rgba(200, 0, 10, 0.06) 0%, #FFFFFF 100%)', border: '1px solid rgba(200, 0, 10, 0.22)' }}>
-                    <span style={{ fontSize: 10.5, color: '#C8000A', fontWeight: 800 }}>Daily Rate (24h)</span>
-                    <h4 style={{ fontSize: 16, margin: '2px 0 0', color: '#C8000A', fontWeight: 900 }}>{formatCurrency(car.pricePerDay || 2300)} / d</h4>
+                <span className="section-label-red" style={{ fontSize: 10, marginBottom: 8, display: 'inline-block' }}>
+                  Tariff Structure
+                </span>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }} className="tariff-compact-row">
+                  <div style={{ padding: '8px 10px', borderRadius: 10, background: 'linear-gradient(135deg, rgba(200, 0, 10, 0.08) 0%, rgba(200, 0, 10, 0.02) 100%)', border: '1px solid rgba(200, 0, 10, 0.22)' }}>
+                    <span style={{ fontSize: 9.5, color: '#C8000A', fontWeight: 850, textTransform: 'uppercase', display: 'block' }}>Daily (24h)</span>
+                    <strong style={{ fontSize: 14, color: '#C8000A', fontWeight: 900, display: 'block', marginTop: 2 }}>
+                      {formatCurrency(car.pricePerDay || 2800)}
+                    </strong>
+                    <span style={{ fontSize: 10, color: '#16A34A', fontWeight: 800 }}>✓ 300 KM</span>
                   </div>
-                  <div style={{ padding: 10, borderRadius: 10, background: '#F8FAFC', border: '1px solid #E2E8F0' }}>
-                    <span style={{ fontSize: 10.5, color: '#64748B', fontWeight: 700 }}>Extra KM</span>
-                    <h4 style={{ fontSize: 14, margin: '2px 0 0', color: '#111318', fontWeight: 800 }}>
+
+                  <div style={{ padding: '8px 10px', borderRadius: 10, background: '#F8FAFC', border: '1px solid #E2E8F0' }}>
+                    <span style={{ fontSize: 9.5, color: '#C8000A', fontWeight: 850, textTransform: 'uppercase', display: 'block' }}>Extra KM</span>
+                    <strong style={{ fontSize: 13, color: '#0F172A', fontWeight: 850, display: 'block', marginTop: 2 }}>
                       ₹{car.extraKmRate || (car.seats === 7 ? 7 : 6)} / km
-                    </h4>
+                    </strong>
+                    <span style={{ fontSize: 10, color: '#1E293B', fontWeight: 600 }}>After 300 km</span>
                   </div>
-                  <div style={{ padding: 10, borderRadius: 10, background: '#F8FAFC', border: '1px solid #E2E8F0' }}>
-                    <span style={{ fontSize: 10.5, color: '#64748B', fontWeight: 700 }}>Overtime</span>
-                    <h4 style={{ fontSize: 14, margin: '2px 0 0', color: '#111318', fontWeight: 800 }}>
+
+                  <div style={{ padding: '8px 10px', borderRadius: 10, background: '#F8FAFC', border: '1px solid #E2E8F0' }}>
+                    <span style={{ fontSize: 9.5, color: '#C8000A', fontWeight: 850, textTransform: 'uppercase', display: 'block' }}>Overtime</span>
+                    <strong style={{ fontSize: 13, color: '#0F172A', fontWeight: 850, display: 'block', marginTop: 2 }}>
                       ₹{car.extraTimeRate || (car.name?.toLowerCase().includes('thar') ? 300 : 200)} / hr
-                    </h4>
+                    </strong>
+                    <span style={{ fontSize: 10, color: '#1E293B', fontWeight: 600 }}>30m grace</span>
                   </div>
-                  <div style={{ padding: 10, borderRadius: 10, background: '#F8FAFC', border: '1px solid #E2E8F0' }}>
-                    <span style={{ fontSize: 10.5, color: '#64748B', fontWeight: 700 }}>Security Deposit</span>
-                    <h4 style={{ fontSize: 14, margin: '2px 0 0', color: '#111318', fontWeight: 800 }}>{formatCurrency(car.securityDeposit || 2000)}</h4>
+
+                  <div style={{ padding: '8px 10px', borderRadius: 10, background: '#F8FAFC', border: '1px solid #E2E8F0' }}>
+                    <span style={{ fontSize: 9.5, color: '#C8000A', fontWeight: 850, textTransform: 'uppercase', display: 'block' }}>Deposit</span>
+                    <strong style={{ fontSize: 13, color: '#0F172A', fontWeight: 850, display: 'block', marginTop: 2 }}>
+                      {formatCurrency(car.securityDeposit || 2000)}
+                    </strong>
+                    <span style={{ fontSize: 10, color: '#16A34A', fontWeight: 800 }}>Refundable</span>
                   </div>
                 </div>
               </div>
 
-              {/* Rental Terms & Conditions */}
-              <div>
-                <TermsAndConditions expandable={true} defaultOpen={false} />
+              {/* 5. Terms & Conditions Accordion (DEFAULT CLOSED / OFF) */}
+              <div style={{ width: '100%' }}>
+                <TermsAndConditions expandable={true} defaultOpen={false} compact={true} />
               </div>
             </div>
 
-            {/* Right Column: Direct Embedded Booking Card (Zero Gap) */}
-            <aside className="car-detail-sidebar">
+            {/* ── RIGHT COLUMN: Compact Instant Reservation Card (Sticky on desktop) ── */}
+            <div className="car-booking-sticky-col">
               <div style={{
                 background: '#FFFFFF',
                 borderRadius: 18,
-                border: '1px solid #E2E8F0',
+                border: '1.5px solid rgba(200, 0, 10, 0.22)',
                 boxShadow: '0 8px 30px rgba(15, 23, 42, 0.08)',
-                padding: '18px 18px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 12,
+                overflow: 'hidden',
               }}>
-                {/* Top Pricing Banner */}
+                {/* Header Rate Banner */}
                 <div style={{
-                  padding: '12px 14px',
-                  borderRadius: 12,
-                  background: 'linear-gradient(135deg, rgba(200, 0, 10, 0.06) 0%, rgba(255, 255, 255, 1) 100%)',
-                  border: '1px solid rgba(200, 0, 10, 0.20)',
+                  padding: '14px 18px',
+                  background: 'linear-gradient(135deg, rgba(200, 0, 10, 0.08) 0%, rgba(248, 250, 252, 0.95) 100%)',
+                  borderBottom: '1px solid rgba(200, 0, 10, 0.15)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
+                  gap: 8,
                 }}>
                   <div>
-                    <span style={{ fontSize: 10.5, color: '#64748B', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.8px', display: 'block' }}>
-                      Daily Rental Rate
+                    <span style={{ fontSize: 10.5, color: '#C8000A', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.6px', display: 'block' }}>
+                      Fast Online Booking
                     </span>
-                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginTop: 2 }}>
-                      <span style={{ fontSize: 24, fontWeight: 900, color: '#C8000A', lineHeight: 1 }}>
-                        {formatCurrency(car.pricePerDay || 2300)}
-                      </span>
-                      <span style={{ fontSize: 12, color: '#64748B', fontWeight: 700 }}>/ 24 hrs</span>
-                    </div>
+                    <h2 className="text-gradient-dark" style={{ fontSize: 16, margin: '2px 0 0', fontWeight: 900 }}>
+                      Book {car.name}
+                    </h2>
                   </div>
+
                   <div style={{ textAlign: 'right' }}>
-                    <span style={{ fontSize: 11, background: '#DCFCE7', color: '#16A34A', fontWeight: 800, padding: '3px 8px', borderRadius: 99, display: 'inline-block' }}>
-                      ✓ 300 KM Included
+                    <span className="text-gradient-red" style={{ fontSize: 22, fontWeight: 900, display: 'block', lineHeight: 1.1 }}>
+                      {formatCurrency(car.pricePerDay || 2800)}
                     </span>
-                    <span style={{ fontSize: 10.5, color: '#64748B', display: 'block', marginTop: 3 }}>
-                      Doorstep in 30 Mins
-                    </span>
+                    <span style={{ fontSize: 10.5, background: 'linear-gradient(135deg, #C8000A 0%, #990008 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontWeight: 850, textTransform: 'uppercase', letterSpacing: '0.4px', display: 'block' }}>per 24 hrs</span>
                   </div>
                 </div>
 
-                {/* Direct Embedded Booking Form */}
-                <div style={{ marginTop: 2 }}>
+                {/* Interactive Booking Form */}
+                <div style={{ padding: '16px 18px' }}>
                   <BookingForm car={car} onSuccess={() => toast.success(`Booking request for ${car.name} received!`)} />
-                </div>
 
-                {/* Instant WhatsApp Help Button */}
-                <a
-                  href={`https://wa.me/919270762176?text=Hi%20SA%20Self%20Drive%20Cars,%20I%20want%20to%20inquire%20about%20booking%20${encodeURIComponent(car.name)}%20(${formatCurrency(car.pricePerDay || 2300)}/day).`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: 8,
-                    padding: '9px 14px',
-                    borderRadius: 10,
-                    background: 'linear-gradient(135deg, #25D366 0%, #1EAA52 100%)',
-                    color: '#FFFFFF',
-                    fontSize: 12.5,
-                    fontWeight: 800,
-                    textDecoration: 'none',
-                    boxShadow: '0 4px 14px rgba(37, 211, 102, 0.35)',
-                    transition: 'transform 0.15s ease',
-                  }}
-                >
-                  <BsWhatsapp size={15} /> WhatsApp Instant Booking
-                </a>
+                  {/* WhatsApp Quick Link */}
+                  <div style={{ marginTop: 14, paddingTop: 12, borderTop: '1px solid #F1F5F9', textAlign: 'center' }}>
+                    <a
+                      href={`https://wa.me/919270762176?text=Hi%20SA%20Self%20Drive%20Cars,%20I%20want%20to%20book%20${encodeURIComponent(car.name)}%20(${formatCurrency(car.pricePerDay || 2800)}/day).`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-whatsapp"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 7,
+                        padding: '9px 18px',
+                        fontSize: 13,
+                        fontWeight: 800,
+                        width: '100%',
+                        borderRadius: 10,
+                      }}
+                    >
+                      <BsWhatsapp size={15} /> WhatsApp Instant Booking (+91 9270762176)
+                    </a>
+                  </div>
+                </div>
               </div>
-            </aside>
+            </div>
 
           </div>
 
-          {/* Similar Vehicles Grid */}
+          {/* Similar Vehicles (Compact Row) */}
           {similarCars.length > 0 && (
-            <div style={{ marginTop: 32 }}>
+            <div style={{ marginTop: 24, paddingTop: 20, borderTop: '1px solid #E2E8F0' }}>
               <div style={{ marginBottom: 12 }}>
-                <span className="section-label-red">More Options</span>
-                <h2 style={{ fontSize: 18, margin: '4px 0 0', color: '#111318', fontWeight: 800 }}>Similar Vehicles in Fleet</h2>
+                <span className="section-label-red" style={{ fontSize: 10.5 }}>Similar Fleet</span>
+                <h3 className="section-title" style={{ fontSize: 18, margin: '2px 0 0' }}>
+                  More Available <span>{categoryName}s</span>
+                </h3>
               </div>
               <div className="similar-cars-grid">
                 {similarCars.map((sCar) => (
@@ -436,55 +438,56 @@ export default function CarDetailPage() {
               </div>
             </div>
           )}
+
         </div>
       </main>
 
       <Footer />
 
       <style>{`
-        .car-detail-layout {
+        .car-detail-compact-grid {
           display: grid;
-          grid-template-columns: minmax(0, 1.25fr) minmax(340px, 420px);
-          gap: clamp(16px, 2.5vw, 28px);
+          grid-template-columns: 1.18fr 0.82fr;
+          gap: 18px;
           align-items: start;
         }
-        .car-detail-sidebar {
+
+        .car-booking-sticky-col {
           position: sticky;
-          top: 80px;
+          top: 76px;
         }
-        .car-gallery-main {
-          height: clamp(240px, 26vw, 360px);
-        }
+
         .similar-cars-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 16px;
+          gap: 14px;
         }
-        @media (max-width: 1024px) {
-          .car-detail-layout {
+
+        @media (max-width: 900px) {
+          .car-detail-compact-grid {
             grid-template-columns: 1fr !important;
-            gap: 20px;
+            gap: 16px !important;
           }
-          .car-detail-sidebar {
+          .car-booking-sticky-col {
             position: static !important;
           }
-          .car-gallery-main {
-            height: clamp(220px, 45vw, 320px);
+          .specs-compact-row,
+          .tariff-compact-row {
+            grid-template-columns: repeat(2, 1fr) !important;
           }
         }
-        @media (max-width: 820px) {
+
+        @media (max-width: 768px) {
           .similar-cars-grid {
             grid-template-columns: repeat(2, 1fr) !important;
             gap: 10px !important;
           }
         }
-        @media (max-width: 480px) {
-          .car-gallery-main {
-            height: 220px;
-          }
+
+        @media (max-width: 520px) {
           .similar-cars-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-            gap: 8px !important;
+            grid-template-columns: 1fr !important;
+            gap: 12px !important;
           }
         }
       `}</style>

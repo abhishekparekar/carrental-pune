@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FiSettings, FiUsers, FiArrowRight, FiClock } from 'react-icons/fi';
-import { BsCarFront } from 'react-icons/bs';
+import { FiArrowRight } from 'react-icons/fi';
 import { formatCurrency } from '../../utils/formatCurrency';
 
 export default function RevvCarCard({ car, onEnquire }) {
@@ -11,246 +10,272 @@ export default function RevvCarCard({ car, onEnquire }) {
 
   const primaryImage = car.images && car.images.length > 0
     ? car.images[0]
-    : 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=600&q=80';
+    : 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80';
 
   const categoryName = (car.category || 'Hatchback').toUpperCase();
-  const seatsNum = car.seats || 5;
-  const extraKm = car.extraKmRate || (seatsNum === 7 ? 7 : 6);
-  const extraTime = car.extraTimeRate || (car.name?.toLowerCase().includes('thar') ? 300 : 200);
+  const transmission = car.transmission 
+    ? (car.transmission.charAt(0).toUpperCase() + car.transmission.slice(1).toLowerCase())
+    : 'Manual';
+  const fuelType = (car.fuelType || 'Petrol').toUpperCase();
 
-  const handleCardClick = () => navigate(`/cars/${car.id}`);
+  const handleCardClick = () => {
+    navigate(`/cars/${car.id}`);
+  };
 
-  const handleInquireClick = (e) => {
+  const handleActionClick = (e) => {
     e.stopPropagation();
-    if (onEnquire) onEnquire(car);
+    navigate(`/cars/${car.id}`);
   };
 
   return (
     <>
       <motion.div
-        whileHover={{ y: -3 }}
-        transition={{ duration: 0.18 }}
-        className="revv-car-card"
+        whileHover={{ y: -4 }}
+        transition={{ duration: 0.2 }}
+        className="vk-car-card"
         onClick={handleCardClick}
       >
-        {/* Car Image Container with Ambient Studio Framing */}
-        <div className="revv-card-img" style={{ position: 'relative', background: '#0F172A', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          {car.isPopular && (
-            <div style={{
-              position: 'absolute',
-              top: 8,
-              left: 8,
-              zIndex: 3,
-              background: 'linear-gradient(135deg, #C8000A 0%, #990000 100%)',
-              color: '#FFFFFF',
-              fontSize: 9.5,
-              fontWeight: 900,
-              padding: '3px 8px',
-              borderRadius: 99,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 3,
-              boxShadow: '0 2px 10px rgba(200, 0, 10, 0.4)',
-              letterSpacing: '0.5px',
-            }}>
+        {/* Full-Bleed Edge-to-Edge Car Image */}
+        <div className="vk-card-img-wrap">
+          {car.isPopular !== false && (
+            <div className="vk-badge-popular">
               <span>🔥 POPULAR</span>
             </div>
           )}
 
-          {/* Ambient Blurred Fill */}
-          <img
-            src={primaryImage}
-            alt=""
-            aria-hidden="true"
-            style={{
-              position: 'absolute',
-              inset: 0,
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              filter: 'blur(16px) brightness(0.6)',
-              transform: 'scale(1.2)',
-              zIndex: 1,
-            }}
-          />
+          <div className="vk-badge-category">
+            <span>{categoryName}</span>
+          </div>
 
-          {/* 100% Complete Uncropped Sharp Car Photo */}
           <img
             src={primaryImage}
             alt={car.name}
-            style={{
-              position: 'relative',
-              zIndex: 2,
-              maxWidth: '100%',
-              maxHeight: '100%',
-              width: 'auto',
-              height: 'auto',
-              objectFit: 'contain',
-              display: 'block',
-              margin: '0 auto',
-              filter: 'drop-shadow(0 4px 14px rgba(0, 0, 0, 0.4))',
-              transition: 'transform 0.3s ease',
-            }}
+            className="vk-card-img"
+            loading="lazy"
             onError={(e) => {
-              e.target.src = 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=600&q=80';
+              e.target.src = 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80';
             }}
           />
-
-          <div style={{
-            position: 'absolute',
-            top: 8,
-            right: 8,
-            zIndex: 2,
-            background: 'rgba(15, 23, 42, 0.75)',
-            backdropFilter: 'blur(4px)',
-            color: '#FFFFFF',
-            fontSize: 9.5,
-            fontWeight: 800,
-            padding: '3px 8px',
-            borderRadius: 99,
-            display: 'flex',
-            alignItems: 'center',
-            gap: 4,
-          }}>
-            <span>+₹{extraKm}/km</span>
-          </div>
         </div>
 
         {/* Card Body */}
-        <div className="revv-card-body" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 4, marginBottom: 2 }}>
-              <span className="revv-modelyear" style={{ fontSize: 11, color: '#475569', fontWeight: 700 }}>
-                {car.modelYear || `${car.name.split(' ').slice(-1)[0]} 2025`}
-              </span>
-              <span className="revv-card-subtitle" style={{ fontSize: 11, color: '#1E293B', fontWeight: 800, margin: 0 }}>
-                {car.brand || car.name.split(' ')[0]} • {car.fuelType ? car.fuelType.toUpperCase() : 'PETROL'}
-              </span>
-            </div>
-            
-            <h3 className="revv-card-title" style={{ fontSize: 15.5, fontWeight: 900, color: '#0F172A', margin: '0 0 4px', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-              {car.name}
-            </h3>
+        <div className="vk-card-body">
+          <h3 className="vk-card-title" title={car.name}>
+            {car.name}
+          </h3>
+
+          <div className="vk-card-specs">
+            <span>{fuelType}</span>
+            <span className="vk-dot">•</span>
+            <span>{transmission}</span>
+            <span className="vk-dot">•</span>
+            <span>300 km/day</span>
           </div>
 
-          {/* Specs bar */}
-          <div className="revv-specs-bar" style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: 4,
-            fontSize: 11,
-            fontWeight: 700,
-            color: '#334155',
-            paddingTop: 5,
-            paddingBottom: 6,
-            borderTop: '1px solid #F1F5F9',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-              <BsCarFront size={12} style={{ color: '#C8000A' }} />
-              <span>{categoryName}</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-              <FiSettings size={12} style={{ color: '#C8000A' }} />
-              <span style={{ textTransform: 'capitalize' }}>{car.transmission || 'Manual'}</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-              <FiUsers size={12} style={{ color: '#C8000A' }} />
-              <span>{seatsNum} Seats</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Card Footer: Pricing & Action */}
-        <div className="revv-card-footer" style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          borderTop: '1px solid #F1F5F9',
-          gap: 6,
-        }}>
-          <div>
-            <span style={{ fontSize: 9.5, color: '#475569', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.6px', display: 'block', lineHeight: 1 }}>
-              Daily Tariff
-            </span>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: 2 }}>
-              <span className="revv-card-price" style={{ fontSize: 17, fontWeight: 900, color: '#C8000A', lineHeight: 1.2 }}>
-                {formatCurrency(car.pricePerDay || 2300)}
+          {/* Pricing & CTA */}
+          <div className="vk-card-footer">
+            <div className="vk-price-box">
+              <span className="vk-price-num">
+                {formatCurrency(car.pricePerDay || 2800)}
               </span>
-              <span style={{ fontSize: 11, color: '#475569', fontWeight: 700 }}>/day</span>
+              <span className="vk-price-sub">per 24 hrs</span>
             </div>
-          </div>
 
-          <button
-            type="button"
-            onClick={handleInquireClick}
-            className="btn btn-primary btn-sm revv-inquire-btn"
-            style={{
-              padding: '6px 14px',
-              fontSize: 11.5,
-              fontWeight: 800,
-              borderRadius: 'var(--radius-full)',
-              background: '#C8000A',
-              borderColor: '#C8000A',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 4,
-              boxShadow: '0 2px 8px rgba(200, 0, 10, 0.30)',
-            }}
-          >
-            <span>Book Now</span>
-            <FiArrowRight size={11} />
-          </button>
+            <button
+              type="button"
+              onClick={handleActionClick}
+              className="vk-btn-details"
+            >
+              <span>View Details</span>
+              <FiArrowRight size={14} />
+            </button>
+          </div>
         </div>
       </motion.div>
 
       <style>{`
-        .revv-car-card {
+        .vk-car-card {
           background: #FFFFFF;
-          border-radius: 12px;
+          border-radius: 14px;
           overflow: hidden;
-          box-shadow: 0 2px 12px rgba(15, 23, 42, 0.05);
-          border: 1px solid #E2E8F0;
+          box-shadow: 0 2px 12px rgba(15, 23, 42, 0.06);
+          border: 1px solid #E5E7EB;
           display: flex;
           flex-direction: column;
           cursor: pointer;
-          transition: all 0.2s ease;
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
           height: 100%;
-        }
-        .revv-car-card:hover {
-          box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
-          border-color: #CBD5E1;
-        }
-        .revv-car-card:hover .revv-card-img img {
-          transform: scale(1.02);
-        }
-        .revv-card-img {
-          width: 100%;
-          aspect-ratio: 16 / 9.5;
-          height: clamp(140px, 13vw, 175px);
-          overflow: hidden;
-          background: #0F172A;
-          flex-shrink: 0;
           position: relative;
         }
-        .revv-card-body {
-          padding: 8px 10px 0;
+        .vk-car-card:hover {
+          box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+          border-color: #CBD5E1;
+          transform: translateY(-4px);
         }
-        .revv-card-footer {
-          padding: 5px 10px 8px;
+        .vk-card-img-wrap {
+          width: 100%;
+          height: 195px;
+          position: relative;
+          background: #0F172A;
+          overflow: hidden;
         }
+        .vk-card-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+          transition: transform 0.35s ease;
+        }
+        .vk-car-card:hover .vk-card-img {
+          transform: scale(1.05);
+        }
+        .vk-badge-popular {
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          z-index: 2;
+          background: linear-gradient(135deg, #FF1E2D 0%, #C8000A 100%);
+          color: #FFFFFF;
+          font-size: 10.5px;
+          font-weight: 800;
+          padding: 4px 10px;
+          border-radius: 99px;
+          display: flex;
+          align-items: center;
+          gap: 3px;
+          box-shadow: 0 2px 8px rgba(200, 0, 10, 0.4);
+          letter-spacing: 0.5px;
+        }
+        .vk-badge-category {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          z-index: 2;
+          background: rgba(15, 23, 42, 0.85);
+          backdrop-filter: blur(4px);
+          color: #FFFFFF;
+          font-size: 10px;
+          font-weight: 800;
+          padding: 3.5px 8px;
+          border-radius: 6px;
+          letter-spacing: 0.8px;
+          text-transform: uppercase;
+        }
+        .vk-card-body {
+          padding: 14px 16px 16px;
+          display: flex;
+          flex-direction: column;
+          justifyContent: space-between;
+          flex: 1;
+          background: #FFFFFF;
+        }
+        .vk-card-title {
+          font-size: 16px;
+          font-weight: 850;
+          background: linear-gradient(135deg, #0F172A 0%, #1E293B 45%, #334155 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          margin: 0 0 6px;
+          line-height: 1.35;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          transition: all 0.2s ease;
+        }
+        .vk-car-card:hover .vk-card-title {
+          background: linear-gradient(135deg, #FF1E2D 0%, #C8000A 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+        .vk-card-specs {
+          font-size: 12.5px;
+          color: #0F172A;
+          font-weight: 800;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          margin-bottom: 14px;
+        }
+        .vk-dot {
+          color: #E50010;
+          font-weight: 900;
+          opacity: 0.85;
+        }
+        .vk-card-footer {
+          display: flex;
+          align-items: flex-end;
+          justify-content: space-between;
+          padding-top: 12px;
+          border-top: 1px solid #F1F5F9;
+          gap: 10px;
+        }
+        .vk-price-box {
+          display: flex;
+          flex-direction: column;
+        }
+        .vk-price-num {
+          font-size: 20px;
+          font-weight: 900;
+          background: linear-gradient(135deg, #FF1E2D 0%, #C8000A 60%, #990008 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          line-height: 1.1;
+        }
+        .vk-price-sub {
+          font-size: 10.5px;
+          background: linear-gradient(135deg, #C8000A 0%, #990008 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          font-weight: 850;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          margin-top: 2px;
+        }
+        .vk-btn-details {
+          background: linear-gradient(135deg, #FF1E2D 0%, #C8000A 60%, #990008 100%);
+          color: #FFFFFF;
+          border: none;
+          outline: none;
+          padding: 8px 16px;
+          font-size: 13px;
+          font-weight: 800;
+          border-radius: 99px;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          cursor: pointer;
+          box-shadow: 0 4px 14px rgba(200, 0, 10, 0.35);
+          transition: all 0.2s ease;
+          white-space: nowrap;
+        }
+        .vk-btn-details:hover {
+          background: linear-gradient(135deg, #FF3340 0%, #D6000B 60%, #A80009 100%);
+          box-shadow: 0 6px 18px rgba(200, 0, 10, 0.48);
+          transform: translateY(-1.5px);
+        }
+
         @media (max-width: 640px) {
-          .revv-car-card { border-radius: 10px; }
-          .revv-card-img { height: clamp(105px, 28vw, 135px); aspect-ratio: 16 / 10; }
-          .revv-card-body { padding: 6px 7px 0; }
-          .revv-card-footer { padding: 4px 7px 6px; }
-          .revv-card-title { font-size: 12.5px !important; font-weight: 800 !important; }
-          .revv-card-subtitle { font-size: 9.5px !important; }
-          .revv-specs-bar { font-size: 9px !important; padding-top: 3px !important; padding-bottom: 3px !important; }
-          .revv-specs-bar svg { width: 8.5px !important; height: 8.5px !important; }
-          .revv-card-price { font-size: 13.5px !important; }
-          .revv-inquire-btn { padding: 3px 8px !important; font-size: 9.5px !important; border-radius: 99px !important; }
-          .revv-modelyear { font-size: 8.5px !important; }
+          .vk-card-img-wrap {
+            height: 165px;
+          }
+          .vk-card-body {
+            padding: 12px 13px 14px;
+          }
+          .vk-card-title {
+            font-size: 14.5px;
+          }
+          .vk-card-specs {
+            font-size: 11.5px;
+            gap: 4px;
+            margin-bottom: 10px;
+          }
+          .vk-price-num {
+            font-size: 18px;
+          }
+          .vk-btn-details {
+            padding: 7px 12px;
+            font-size: 11.5px;
+          }
         }
       `}</style>
     </>

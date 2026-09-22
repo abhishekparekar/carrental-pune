@@ -63,13 +63,22 @@ export default function Navbar() {
         top: 0, left: 0, right: 0,
         zIndex: 9999,
         transform: hidden && !menuOpen ? 'translateY(-100%)' : 'translateY(0)',
-        transition: 'transform 0.3s cubic-bezier(0.4,0,0.2,1), background 0.2s ease, box-shadow 0.2s ease',
-        background: scrolled || menuOpen ? 'rgba(255, 255, 255, 0.98)' : '#FFFFFF',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        borderBottom: scrolled ? '1px solid #E4E6EA' : '1px solid #EDEDF0',
-        boxShadow: scrolled ? '0 4px 20px rgba(17,19,24,0.08)' : 'none',
+        transition: 'transform 0.3s cubic-bezier(0.4,0,0.2,1), background 0.25s ease, box-shadow 0.25s ease',
+        background: scrolled || menuOpen 
+          ? 'linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%)' 
+          : 'linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.90) 100%)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        borderBottom: scrolled ? '1px solid rgba(226, 232, 240, 0.9)' : '1px solid rgba(226, 232, 240, 0.5)',
+        boxShadow: scrolled ? '0 4px 24px rgba(15, 23, 42, 0.08)' : '0 2px 10px rgba(15, 23, 42, 0.03)',
       }}>
+        {/* Top Accent Gradient Line */}
+        <div style={{
+          height: 3,
+          width: '100%',
+          background: 'linear-gradient(90deg, #E50010 0%, #C8000A 50%, #8C909A 100%)',
+        }} />
+
         <div style={{
           width: '100%',
           maxWidth: 1600,
@@ -78,7 +87,7 @@ export default function Navbar() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          height: 72,
+          height: 69,
           boxSizing: 'border-box',
         }}>
 
@@ -86,23 +95,25 @@ export default function Navbar() {
           <Link
             to="/"
             onClick={handleLogoClick}
-            style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}
+            style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', transition: 'transform 0.2s ease' }}
+            onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.02)'}
+            onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
           >
             <img
               src={logoImg}
               alt="SA Self Drive Cars"
               style={{
-                height: 56,
+                height: 52,
                 width: 'auto',
                 objectFit: 'contain',
                 display: 'block',
-                filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.10))',
+                filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.08))',
               }}
             />
           </Link>
 
           {/* ── Desktop Nav Links ── */}
-          <nav style={{ display: 'flex', alignItems: 'center', gap: 4 }} className="desktop-nav">
+          <nav style={{ display: 'flex', alignItems: 'center', gap: 6 }} className="desktop-nav">
             {navLinks.map(link => (
               <NavLink
                 key={link.to}
@@ -111,12 +122,15 @@ export default function Navbar() {
                 style={({ isActive }) => ({
                   padding: '7px 16px',
                   borderRadius: '9999px',
-                  fontSize: 14,
+                  fontSize: 13.5,
                   fontWeight: isActive ? 800 : 600,
                   color: isActive ? '#C8000A' : '#334155',
-                  background: isActive ? 'rgba(200,0,10,0.07)' : 'transparent',
-                  border: isActive ? '1px solid rgba(200,0,10,0.18)' : '1px solid transparent',
-                  transition: 'all 0.15s ease',
+                  background: isActive 
+                    ? 'linear-gradient(135deg, rgba(200,0,10,0.10) 0%, rgba(200,0,10,0.04) 100%)' 
+                    : 'transparent',
+                  border: isActive ? '1px solid rgba(200,0,10,0.22)' : '1px solid transparent',
+                  boxShadow: isActive ? '0 2px 8px rgba(200,0,10,0.10)' : 'none',
+                  transition: 'all 0.18s ease',
                   textDecoration: 'none',
                 })}
               >
@@ -127,33 +141,10 @@ export default function Navbar() {
 
           {/* ── Desktop CTA Buttons ── */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <a
-              href={`tel:${(settings?.phone || '+91 9270762176').replace(/\s+/g, '')}`}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
-                padding: '7px 14px',
-                borderRadius: '9999px',
-                background: '#F8FAFC',
-                border: '1px solid #E2E8F0',
-                color: '#1E293B',
-                fontSize: 13,
-                fontWeight: 700,
-                textDecoration: 'none',
-                transition: 'all 0.15s',
-              }}
-              className="desktop-nav"
-              onMouseEnter={e => { e.currentTarget.style.color = '#C8000A'; e.currentTarget.style.borderColor = 'rgba(200,0,10,0.25)'; }}
-              onMouseLeave={e => { e.currentTarget.style.color = '#1E293B'; e.currentTarget.style.borderColor = '#E2E8F0'; }}
-            >
-              <FiPhone size={13} style={{ color: '#C8000A' }} /> {settings?.phone || '+91 9270762176'}
-            </a>
-
             <button
               className="btn btn-primary btn-sm desktop-nav"
               onClick={() => navigate('/fleet')}
-              style={{ fontWeight: 800, letterSpacing: '0.3px', padding: '8px 18px', borderRadius: 'var(--radius-full)' }}
+              style={{ fontWeight: 800, letterSpacing: '0.3px', padding: '8px 20px', borderRadius: 'var(--radius-full)' }}
             >
               <FiCalendar size={14} /> Book Now
             </button>
@@ -218,27 +209,37 @@ export default function Navbar() {
                 width: '84%',
                 maxWidth: 320,
                 zIndex: 10001,
-                background: '#FFFFFF',
-                boxShadow: '-8px 0 36px rgba(0, 0, 0, 0.25)',
+                background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.96) 100%)',
+                backdropFilter: 'blur(24px)',
+                WebkitBackdropFilter: 'blur(24px)',
+                boxShadow: '-8px 0 36px rgba(15, 23, 42, 0.18)',
                 display: 'flex',
                 flexDirection: 'column',
                 overflowY: 'auto',
+                borderLeft: '1px solid rgba(226, 232, 240, 0.8)',
               }}
               className="mobile-only"
             >
+              {/* Top Accent Gradient Line Matching Navbar */}
+              <div style={{
+                height: 3,
+                width: '100%',
+                background: 'linear-gradient(90deg, #E50010 0%, #C8000A 50%, #8C909A 100%)',
+              }} />
+
               {/* Drawer Top Branding Header */}
               <div style={{
                 padding: '16px 18px',
-                borderBottom: '1px solid #E2E8F0',
+                borderBottom: '1px solid rgba(226, 232, 240, 0.8)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                background: 'linear-gradient(135deg, rgba(200,0,10,0.06) 0%, #FFFFFF 100%)',
+                background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.96) 100%)',
               }}>
                 <img
                   src={logoImg}
                   alt="SA Self Drive Cars"
-                  style={{ height: 48, width: 'auto', objectFit: 'contain' }}
+                  style={{ height: 46, width: 'auto', objectFit: 'contain' }}
                 />
 
                 <button
@@ -255,6 +256,7 @@ export default function Navbar() {
                     justifyContent: 'center',
                     cursor: 'pointer',
                   }}
+                  aria-label="Close Menu"
                 >
                   <FiX size={18} />
                 </button>
@@ -262,7 +264,7 @@ export default function Navbar() {
 
               {/* Drawer Navigation Links */}
               <div style={{ flex: 1, padding: '16px 14px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <span style={{ fontSize: 10, fontWeight: 800, color: '#C8000A', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: 4, paddingLeft: 4 }}>
+                <span style={{ fontSize: 10, fontWeight: 800, color: '#C8000A', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: 2, paddingLeft: 4 }}>
                   Navigation
                 </span>
 
@@ -275,16 +277,19 @@ export default function Navbar() {
                     style={({ isActive }) => ({
                       padding: '12px 14px',
                       borderRadius: 12,
-                      fontSize: 15,
+                      fontSize: 14.5,
                       fontWeight: isActive ? 800 : 600,
                       color: isActive ? '#C8000A' : '#1E293B',
-                      background: isActive ? 'rgba(200,0,10,0.08)' : '#F8FAFC',
+                      background: isActive 
+                        ? 'linear-gradient(135deg, rgba(200,0,10,0.10) 0%, rgba(200,0,10,0.04) 100%)' 
+                        : '#FFFFFF',
                       border: isActive ? '1px solid rgba(200,0,10,0.22)' : '1px solid #E2E8F0',
                       textDecoration: 'none',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       transition: 'all 0.15s ease',
+                      boxShadow: isActive ? '0 2px 8px rgba(200,0,10,0.08)' : '0 1px 3px rgba(0,0,0,0.02)',
                     })}
                   >
                     <span>{link.label}</span>
@@ -293,35 +298,52 @@ export default function Navbar() {
                 ))}
               </div>
 
-              {/* Drawer Bottom Direct Contact & Booking CTAs */}
+              {/* Drawer Bottom Quick Action */}
               <div style={{
                 padding: '16px 14px',
-                borderTop: '1px solid #E2E8F0',
-                background: '#F8FAFC',
+                borderTop: '1px solid rgba(226, 232, 240, 0.8)',
+                background: 'linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 10,
               }}>
                 <a
+                  href={`tel:${(settings?.phone || '+91 9270762176').replace(/\s+/g, '')}`}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 6,
+                    padding: '10px',
+                    borderRadius: 12,
+                    background: '#FFFFFF',
+                    border: '1px solid #CBD5E1',
+                    color: '#0F172A',
+                    fontSize: 13,
+                    fontWeight: 700,
+                    textDecoration: 'none',
+                  }}
+                >
+                  <FiPhone size={14} style={{ color: '#C8000A' }} /> Call: {settings?.phone || '+91 9270762176'}
+                </a>
+
+                <a
                   href={`https://wa.me/${(settings?.whatsapp || settings?.phone || '919270762176').replace(/\D/g, '')}?text=Hi%20${encodeURIComponent(settings?.businessName || 'SA Self Drive Cars')},%20I%20want%20to%20book%20a%20car.`}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="btn btn-whatsapp"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: 8,
-                    padding: '11px',
+                    padding: '10px',
                     borderRadius: 12,
-                    background: '#25D366',
-                    color: '#FFFFFF',
+                    fontSize: 13,
                     fontWeight: 800,
-                    fontSize: 13.5,
-                    textDecoration: 'none',
-                    boxShadow: '0 4px 14px rgba(37,211,102,0.3)',
                   }}
                 >
-                  <BsWhatsapp size={16} /> WhatsApp: {settings?.phone || '+91 9270762176'}
+                  <BsWhatsapp size={15} /> WhatsApp Instant
                 </a>
 
                 <button
@@ -330,18 +352,17 @@ export default function Navbar() {
                   className="btn btn-primary"
                   style={{
                     width: '100%',
-                    padding: '12px',
-                    fontSize: 14,
+                    padding: '11px',
+                    fontSize: 13.5,
                     fontWeight: 800,
                     borderRadius: 12,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: 8,
-                    boxShadow: '0 4px 16px rgba(200,0,10,0.3)',
                   }}
                 >
-                  <FiCalendar size={16} /> Book a Self-Drive Car Now
+                  <FiCalendar size={15} /> View Fleet & Book
                 </button>
               </div>
             </motion.aside>

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { BsFacebook, BsInstagram, BsTwitterX, BsYoutube, BsWhatsapp } from 'react-icons/bs';
-import { FiMail, FiPhone, FiMapPin, FiShield, FiZap, FiTruck, FiChevronRight } from 'react-icons/fi';
+import { FiMail, FiPhone, FiMapPin, FiShield, FiZap, FiTruck, FiChevronRight, FiExternalLink } from 'react-icons/fi';
 import logoImg from '../../assets/logo1_dark_bg.png';
 import { useTenant } from '../../contexts/TenantContext';
 
@@ -36,21 +36,33 @@ export default function Footer() {
 
   return (
     <footer className="footer-root" style={{
-      background: 'linear-gradient(180deg, #0D111A 0%, #06080D 100%)',
+      backgroundImage: 'radial-gradient(ellipse at 85% 95%, rgba(200, 0, 10, 0.14) 0%, transparent 50%), linear-gradient(145deg, #0B1120 0%, #111B30 35%, #0C1322 70%, #1A0D15 100%)',
       position: 'relative',
       marginTop: 'auto',
       color: '#F1F5F9',
-      borderTop: '1px solid rgba(229, 0, 16, 0.25)',
+      borderTop: '1px solid rgba(229, 0, 16, 0.35)',
+      boxShadow: '0 -10px 40px rgba(0, 0, 0, 0.25)',
     }}>
+      {/* Subtle Crimson Ambient Glow */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: '20%',
+        width: '60%',
+        height: 140,
+        background: 'radial-gradient(ellipse at 50% 0%, rgba(200, 0, 10, 0.16) 0%, transparent 70%)',
+        pointerEvents: 'none',
+      }} />
+
       {/* Top Crimson Red Accent Bar */}
       <div style={{
         height: 3,
-        background: 'linear-gradient(90deg, #E50010 0%, #C8000A 50%, #700005 100%)',
+        background: 'linear-gradient(90deg, #FF1E2D 0%, #E50010 35%, #C8000A 70%, #800005 100%)',
         width: '100%',
-        boxShadow: '0 0 16px rgba(229, 0, 16, 0.4)',
+        boxShadow: '0 0 16px rgba(229, 0, 16, 0.45)',
       }} />
 
-      <div style={{ padding: ' clamp(36px, 4.5vw, 52px) 0 20px' }}>
+      <div style={{ padding: 'clamp(36px, 4.5vw, 52px) 0 20px', position: 'relative', zIndex: 1 }}>
         <div className="container">
           
           <div className="footer-main-grid">
@@ -191,11 +203,25 @@ export default function Footer() {
             margin: 'clamp(24px, 3.5vw, 36px) 0 18px',
           }} />
 
-          {/* ── Bottom Copyright Bar ── */}
+          {/* ── Bottom Copyright & Credits Bar ── */}
           <div className="footer-bottom-row">
             <p className="footer-copyright-text">
               © {new Date().getFullYear()} <strong style={{ color: '#F1F5F9' }}>{settings?.businessName || 'SA Self Drive Cars'}</strong>. All rights reserved.
             </p>
+
+            {/* Designed by iCoded Automation Pvt. Ltd. */}
+            <a
+              href="https://www.icoded.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-icoded-credit"
+              title="Visit iCoded Automation Pvt. Ltd."
+            >
+              <span className="footer-credit-sparkle">✦</span>
+              <span className="footer-credit-label">Designed by</span>
+              <span className="footer-credit-brand">iCoded Automation Pvt. Ltd.</span>
+              <FiExternalLink size={12} className="footer-credit-icon" />
+            </a>
 
             <div className="footer-trust-pills">
               <span className="footer-trust-pill">
@@ -379,9 +405,64 @@ export default function Footer() {
 
         .footer-copyright-text {
           font-size: 12px;
-          color: #64748B;
+          color: #94A3B8;
           margin: 0;
           font-weight: 500;
+        }
+
+        .footer-icoded-credit {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 6px 14px;
+          border-radius: 999px;
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(229, 0, 16, 0.08) 100%);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          text-decoration: none;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          backdrop-filter: blur(8px);
+        }
+
+        .footer-icoded-credit:hover {
+          background: linear-gradient(135deg, rgba(229, 0, 16, 0.22) 0%, rgba(180, 0, 10, 0.32) 100%);
+          border-color: rgba(229, 0, 16, 0.55);
+          box-shadow: 0 4px 18px rgba(229, 0, 16, 0.35);
+          transform: translateY(-1.5px);
+        }
+
+        .footer-credit-sparkle {
+          color: #E50010;
+          font-size: 11px;
+          line-height: 1;
+        }
+
+        .footer-credit-label {
+          font-size: 11.5px;
+          color: #94A3B8;
+          font-weight: 500;
+          letter-spacing: 0.2px;
+        }
+
+        .footer-credit-brand {
+          font-size: 12px;
+          font-weight: 700;
+          color: #FFFFFF;
+          letter-spacing: 0.2px;
+          transition: color 0.2s ease;
+        }
+
+        .footer-icoded-credit:hover .footer-credit-brand {
+          color: #FECACA;
+        }
+
+        .footer-credit-icon {
+          color: #E50010;
+          transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        .footer-icoded-credit:hover .footer-credit-icon {
+          transform: translate(2px, -1px);
+          color: #FFFFFF;
         }
 
         .footer-trust-pills {
@@ -412,6 +493,10 @@ export default function Footer() {
           .footer-col-contact {
             grid-column: span 1;
           }
+          .footer-bottom-row {
+            justify-content: center;
+            gap: 16px;
+          }
         }
 
         /* ── Mobile Responsiveness (< 768px) ── */
@@ -433,8 +518,14 @@ export default function Footer() {
           .footer-bottom-row {
             flex-direction: column;
             text-align: center;
-            gap: 10px;
-            padding-bottom: 10px;
+            gap: 12px;
+            padding-bottom: 12px;
+          }
+          .footer-icoded-credit {
+            order: -1;
+            padding: 7px 16px;
+            width: fit-content;
+            margin: 0 auto;
           }
           .footer-trust-pills {
             justify-content: center;
@@ -451,6 +542,13 @@ export default function Footer() {
           }
           .footer-trust-pills {
             font-size: 11px;
+          }
+          .footer-icoded-credit {
+            padding: 6px 12px;
+            font-size: 11px;
+          }
+          .footer-credit-brand {
+            font-size: 11.5px;
           }
         }
       `}</style>

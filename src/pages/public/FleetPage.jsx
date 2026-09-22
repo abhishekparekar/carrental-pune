@@ -13,6 +13,7 @@ import BookingForm from '../../components/ui/BookingForm';
 
 import { useTenant } from '../../contexts/TenantContext';
 import { subscribeToCars } from '../../firebase/firestore';
+import { Helmet } from 'react-helmet-async';
 
 const CATEGORY_TABS = [
   { id: 'all', label: 'All Fleet', icon: <BsCarFront size={15} /> },
@@ -58,20 +59,29 @@ export default function FleetPage() {
   }, [cars, selectedCategory]);
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#F8FAFC' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--gradient-page-bg)' }}>
+      <Helmet>
+        <title>Self Drive Car Rental Fleet Pune | Rent Swift, Thar, Ertiga, Creta | SA Self Drive</title>
+        <meta name="title" content="Self Drive Car Rental Fleet Pune | Rent Swift, Thar, Ertiga, Creta | SA Self Drive" />
+        <meta name="description" content="Explore sanitized self drive cars in Pune. Rent Hatchbacks, Sedans, 7-Seater Ertiga, Creta & Thar 4x4 with 300 KM daily allowance and doorstep delivery in Pune & PCMC." />
+        <link rel="canonical" href="https://www.saselfdrivecar.com/fleet" />
+      </Helmet>
       <Navbar />
 
-      <main style={{ paddingTop: 72, paddingBottom: 36, flex: 1 }}>
+      <main style={{ paddingTop: 76, paddingBottom: 44, flex: 1 }}>
         
-        {/* Sleek Header */}
-        <div style={{ background: '#FFFFFF', borderBottom: '1px solid #E2E8F0', marginBottom: 20, padding: '24px 0 18px' }}>
+        {/* Sleek Gradient Header */}
+        <div style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)', borderBottom: '1px solid #E2E8F0', marginBottom: 24, padding: '28px 0 20px' }}>
           <div className="fleet-container">
             <span className="section-label-red" style={{ marginBottom: 6 }}>
               SA Self Drive Fleet
             </span>
-            <h1 style={{ fontSize: 'clamp(20px, 4vw, 32px)', fontWeight: 900, color: '#111318', margin: '0 0 6px' }}>
+            <h1 className="section-title" style={{ fontSize: 'clamp(22px, 4vw, 34px)', margin: '0 0 6px' }}>
               Explore Available <span>Self-Drive Cars</span>
             </h1>
+            <p className="section-desc" style={{ fontSize: 14, margin: 0 }}>
+              Sanitized vehicles with 300 km daily allowance & doorstep delivery across Pune & PCMC.
+            </p>
           </div>
         </div>
 
@@ -81,10 +91,10 @@ export default function FleetPage() {
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: 8,
+            gap: 10,
             overflowX: 'auto',
             paddingBottom: 16,
-            marginBottom: 8,
+            marginBottom: 12,
             scrollbarWidth: 'none',
             WebkitOverflowScrolling: 'touch',
           }}>
@@ -96,17 +106,17 @@ export default function FleetPage() {
                   type="button"
                   onClick={() => setSelectedCategory(tab.id)}
                   style={{
-                    padding: '8px 18px',
+                    padding: '9px 20px',
                     borderRadius: 99,
-                    background: isActive ? '#C8000A' : '#FFFFFF',
+                    background: isActive ? 'var(--gradient-accent-btn)' : 'linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)',
                     color: isActive ? '#FFFFFF' : '#475569',
-                    border: isActive ? '1px solid #C8000A' : '1px solid #E2E8F0',
+                    border: isActive ? '1px solid rgba(255,255,255,0.25)' : '1px solid #E2E8F0',
                     fontSize: 13,
                     fontWeight: 800,
                     cursor: 'pointer',
                     whiteSpace: 'nowrap',
-                    boxShadow: isActive ? '0 4px 14px rgba(200,0,10,0.30)' : '0 2px 6px rgba(0,0,0,0.02)',
-                    transition: 'all 0.18s ease',
+                    boxShadow: isActive ? '0 4px 16px rgba(200,0,10,0.35)' : '0 2px 6px rgba(0,0,0,0.03)',
+                    transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
                     display: 'flex',
                     alignItems: 'center',
                     gap: 6,
@@ -152,10 +162,10 @@ export default function FleetPage() {
                 }}>
                   <BsCarFront size={28} />
                 </div>
-                <h3 style={{ fontSize: 18, color: '#111318', fontWeight: 800, marginBottom: 6 }}>
+                <h3 className="text-gradient-dark" style={{ fontSize: 18, fontWeight: 900, marginBottom: 6 }}>
                   No Cars Found in This Category
                 </h3>
-                <p style={{ fontSize: 13, color: '#64748B', maxWidth: 420, margin: '0 auto 16px', lineHeight: 1.5 }}>
+                <p style={{ fontSize: 13, color: '#1E293B', fontWeight: 600, maxWidth: 420, margin: '0 auto 16px', lineHeight: 1.5 }}>
                   Select "All Fleet" to view all available self-drive rental cars.
                 </p>
                 <button
