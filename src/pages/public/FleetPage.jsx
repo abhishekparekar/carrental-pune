@@ -203,43 +203,46 @@ export default function FleetPage() {
             }
             .grid-fleet-catalog {
               display: grid;
-              grid-template-columns: repeat(4, 1fr);
+              grid-template-columns: repeat(4, minmax(0, 1fr));
               gap: clamp(14px, 1.8vw, 22px);
             }
             @media (min-width: 1600px) {
               .grid-fleet-catalog {
-                grid-template-columns: repeat(5, 1fr);
-                gap: 22px;
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: 24px;
               }
             }
             @media (max-width: 1280px) {
               .grid-fleet-catalog {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(3, minmax(0, 1fr));
                 gap: 16px;
               }
             }
-            @media (max-width: 820px) {
+            @media (max-width: 900px) {
               .fleet-container {
                 padding: 0 12px;
               }
               .grid-fleet-catalog {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
               }
             }
-            @media (max-width: 480px) {
+            @media (max-width: 580px) {
               .fleet-container {
                 padding: 0 10px;
               }
               .grid-fleet-catalog {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 8px;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
               }
             }
-            @media (max-width: 330px) {
+            @media (max-width: 360px) {
+              .fleet-container {
+                padding: 0 6px;
+              }
               .grid-fleet-catalog {
-                grid-template-columns: 1fr;
-                gap: 10px;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 6px;
               }
             }
           `}</style>

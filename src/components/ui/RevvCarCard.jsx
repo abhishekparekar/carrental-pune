@@ -195,6 +195,7 @@ export default function RevvCarCard({ car, onEnquire }) {
           align-items: center;
           gap: 6px;
           margin-bottom: 14px;
+          flex-wrap: wrap;
         }
         .vk-dot {
           color: #E50010;
@@ -255,26 +256,83 @@ export default function RevvCarCard({ car, onEnquire }) {
         }
 
         @media (max-width: 640px) {
+          .vk-car-card {
+            border-radius: 12px;
+          }
           .vk-card-img-wrap {
-            height: 165px;
+            height: 130px;
+          }
+          .vk-badge-popular {
+            font-size: 8.5px;
+            padding: 2.5px 7px;
+            top: 6px;
+            left: 6px;
+          }
+          .vk-badge-category {
+            font-size: 8.5px;
+            padding: 2.5px 6px;
+            top: 6px;
+            right: 6px;
           }
           .vk-card-body {
-            padding: 12px 13px 14px;
+            padding: 10px 10px 12px;
           }
           .vk-card-title {
-            font-size: 14.5px;
+            font-size: 13.5px;
+            margin-bottom: 3px;
           }
           .vk-card-specs {
-            font-size: 11.5px;
+            font-size: 10.5px;
             gap: 4px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          .vk-card-footer {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 6px;
+            padding-top: 8px;
+          }
+          .vk-price-box {
+            display: flex;
+            flex-direction: row;
+            align-items: baseline;
+            justify-content: space-between;
           }
           .vk-price-num {
-            font-size: 18px;
+            font-size: 16px;
+          }
+          .vk-price-sub {
+            font-size: 9.5px;
+            margin-top: 0;
           }
           .vk-btn-details {
-            padding: 7px 12px;
+            width: 100%;
+            justify-content: center;
+            padding: 6.5px 8px;
             font-size: 11.5px;
+            gap: 4px;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .vk-card-img-wrap {
+            height: 115px;
+          }
+          .vk-card-body {
+            padding: 8px 8px 10px;
+          }
+          .vk-card-title {
+            font-size: 12.5px;
+          }
+          .vk-price-num {
+            font-size: 15px;
+          }
+          .vk-btn-details {
+            padding: 5.5px 6px;
+            font-size: 11px;
           }
         }
       `}</style>

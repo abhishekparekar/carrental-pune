@@ -693,37 +693,31 @@ export default function HomePage() {
         }
         .home-fleet-grid {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: clamp(14px, 1.8vw, 20px);
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: clamp(14px, 1.8vw, 22px);
         }
-        @media (min-width: 1600px) {
+        @media (max-width: 1280px) {
           .home-fleet-grid {
-            grid-template-columns: repeat(4, 1fr);
-            gap: 22px;
-          }
-        }
-        @media (max-width: 1200px) {
-          .home-fleet-grid {
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 16px;
           }
         }
-        @media (max-width: 820px) {
+        @media (max-width: 900px) {
           .home-fleet-grid {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+          }
+        }
+        @media (max-width: 580px) {
+          .home-fleet-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 10px;
           }
         }
-        @media (max-width: 480px) {
+        @media (max-width: 360px) {
           .home-fleet-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-          }
-        }
-        @media (max-width: 330px) {
-          .home-fleet-grid {
-            grid-template-columns: 1fr;
-            gap: 10px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 6px;
           }
         }
       `}</style>
