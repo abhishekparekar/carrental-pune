@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { BsFacebook, BsInstagram, BsTwitterX, BsYoutube, BsWhatsapp } from 'react-icons/bs';
-import { FiMail, FiPhone, FiMapPin, FiShield, FiZap, FiTruck, FiChevronRight, FiExternalLink } from 'react-icons/fi';
+import { FiMail, FiPhone, FiMapPin, FiChevronRight, FiExternalLink } from 'react-icons/fi';
 import logoImg from '../../assets/logo1_dark_bg.png';
 import { useTenant } from '../../contexts/TenantContext';
 
@@ -222,18 +222,6 @@ export default function Footer() {
               <span className="footer-credit-brand">iCoded Automation Pvt. Ltd.</span>
               <FiExternalLink size={12} className="footer-credit-icon" />
             </a>
-
-            <div className="footer-trust-pills">
-              <span className="footer-trust-pill">
-                <FiShield size={12} color="#22C55E" /> 100% Verified Fleet
-              </span>
-              <span className="footer-trust-pill">
-                <FiZap size={12} color="#EAB308" /> 300 KM/Day Limit
-              </span>
-              <span className="footer-trust-pill">
-                <FiTruck size={12} color="#38BDF8" /> Doorstep Delivery
-              </span>
-            </div>
           </div>
 
         </div>
@@ -465,22 +453,6 @@ export default function Footer() {
           color: #FFFFFF;
         }
 
-        .footer-trust-pills {
-          display: flex;
-          align-items: center;
-          gap: 14px;
-          flex-wrap: wrap;
-        }
-
-        .footer-trust-pill {
-          display: inline-flex;
-          align-items: center;
-          gap: 5px;
-          font-size: 11.5px;
-          color: #94A3B8;
-          font-weight: 600;
-        }
-
         /* ── Tablet Responsiveness (768px – 1080px) ── */
         @media (max-width: 1080px) {
           .footer-main-grid {
@@ -527,10 +499,6 @@ export default function Footer() {
             width: fit-content;
             margin: 0 auto;
           }
-          .footer-trust-pills {
-            justify-content: center;
-            gap: 10px;
-          }
         }
 
         @media (max-width: 480px) {
@@ -539,9 +507,6 @@ export default function Footer() {
           }
           .footer-nav-link {
             font-size: 13px;
-          }
-          .footer-trust-pills {
-            font-size: 11px;
           }
           .footer-icoded-credit {
             padding: 6px 12px;

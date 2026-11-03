@@ -12,7 +12,6 @@ export default function RevvCarCard({ car, onEnquire }) {
     ? car.images[0]
     : 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80';
 
-  const categoryName = (car.category || 'Hatchback').toUpperCase();
   const transmission = car.transmission 
     ? (car.transmission.charAt(0).toUpperCase() + car.transmission.slice(1).toLowerCase())
     : 'Manual';
@@ -37,16 +36,6 @@ export default function RevvCarCard({ car, onEnquire }) {
       >
         {/* Full-Bleed Edge-to-Edge Car Image */}
         <div className="vk-card-img-wrap">
-          {car.isPopular !== false && (
-            <div className="vk-badge-popular">
-              <span>🔥 POPULAR</span>
-            </div>
-          )}
-
-          <div className="vk-badge-category">
-            <span>{categoryName}</span>
-          </div>
-
           <img
             src={primaryImage}
             alt={car.name}
